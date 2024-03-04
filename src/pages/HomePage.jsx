@@ -10,7 +10,7 @@ const HomePage = () => {
 			/>
 
 			<Section
-				title={'Phi ăn cức'}
+				title={'Huy ăn cức'}
 				sectionCardItems={sectionCardItems}
 			/>
 		</>
