@@ -1,6 +1,9 @@
 import { Icon } from '@iconify/react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+	const navigate = useNavigate();
+
 	return (
 		<div
 			className='relative'
@@ -48,7 +51,7 @@ const LoginPage = () => {
 								height={20}
 							/>
 							<input
-								type='text'
+								type='password'
 								className='h-11 pl-7 w-full bg-transparent overflow-visible block m-0 box-border'
 								style={{
 									borderBottom: '1px solid #ccc'
@@ -62,7 +65,10 @@ const LoginPage = () => {
 						</aside>
 					</section>
 					<section className='mt-5 flex overflow-hidden text-center gap-2'>
-						<button className='flex items-center justify-center py-3 px-5 gap-2 rounded-3xl font-bold text-white bg-primary w-[50%]'>
+						<button
+							onClick={() => navigate('/admin')}
+							className='flex items-center justify-center py-3 px-5 gap-2 rounded-3xl font-bold text-white bg-primary w-[50%]'
+						>
 							<Icon
 								icon='ph:chart-line'
 								height={22}
@@ -70,7 +76,10 @@ const LoginPage = () => {
 							Quản lý
 						</button>
 
-						<button className='flex items-center justify-center py-3 px-5 gap-2 rounded-3xl font-bold text-white bg-[#4bac4d] w-[50%]'>
+						<button
+							onClick={() => navigate('/cashier')}
+							className='flex items-center justify-center py-3 px-5 gap-2 rounded-3xl font-bold text-white bg-[#4bac4d] w-[50%]'
+						>
 							<Icon
 								icon='iconoir:cart'
 								height={22}

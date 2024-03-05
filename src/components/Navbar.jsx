@@ -77,7 +77,18 @@ const Navbar = () => {
 				} py-3 fixed inset-x-0 duration-300`}
 			>
 				<nav className='max-w-7xl mx-auto flex justify-between items-center px-4'>
-					<div className='cursor-pointer'>Logo</div>
+					<div className='cursor-pointer flex items-center gap-1'>
+						<img
+							src='../src/assets/images/logo.png'
+							alt='logo'
+							width={45}
+							height={45}
+							loading='lazy'
+						/>
+						<span className='text-2xl font-bold text-black/70'>
+							Viet
+						</span>
+					</div>
 
 					<div className='font-bold text-lg lg:flex items-center gap-12 hidden'>
 						<span className='hover:text-primary cursor-pointer relative group'>
