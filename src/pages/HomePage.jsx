@@ -8,11 +8,6 @@ const HomePage = () => {
 				title={'Giúp bạn quản lý dễ dàng, bán hàng hiệu quả'}
 				sectionCardItems={sectionCardItems}
 			/>
-
-			<Section
-				title={'Huy ăn cức'}
-				sectionCardItems={sectionCardItems}
-			/>
 		</>
 	);
 };
