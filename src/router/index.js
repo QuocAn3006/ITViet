@@ -1,3 +1,5 @@
+import AdminLayout from '../Layouts/AdminLayout';
+import AdminPage from '../pages/AdminPage';
 import CashierPage from '../pages/CashierPage';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
@@ -18,6 +20,11 @@ export const routes = [
 		path: '/cashier',
 		page: CashierPage,
 		layout: null
+	},
+	{
+		path: '/admin',
+		page: AdminPage,
+		layout: AdminLayout
 	},
 	{
 		path: '*',
