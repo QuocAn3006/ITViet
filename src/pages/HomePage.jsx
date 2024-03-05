@@ -5,9 +5,11 @@ const HomePage = () => {
 	return (
 		<>
 			<Section
-				title={'Giúp bạn quản lý dễ dàng, bán hàng hiệu quả'}
+				title={'Giúp bạn quản lý dễ dàng, bán hàng hiệu quả @@@@'}
 				sectionCardItems={sectionCardItems}
 			/>
+
+			
 		</>
 	);
 };
