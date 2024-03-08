@@ -31,20 +31,18 @@ const Navbar = () => {
 				</button>
 
 				<div
-					className={`fixed inset-0 duration-300 ${
-						openMenu
-							? 'pointer-events-auto bg-black/60 overflow-y-auto overflow-x-hidden z-[1010]'
-							: 'pointer-events-none'
-					}`}
+					className={`fixed inset-0 duration-300 ${openMenu
+						? 'pointer-events-auto bg-black/60 overflow-y-auto overflow-x-hidden z-[1010]'
+						: 'pointer-events-none'
+						}`}
 					onClick={e => {
 						if (e.target !== e.currentTarget) return;
 						setOpenMenu(false);
 					}}
 				>
 					<div
-						className={`absolute min-h-screen right-0 w-full max-w-xs bg-white font-bold text-xl duration-300 overflow-auto ${
-							openMenu ? 'translate-x-0' : 'translate-x-full '
-						}`}
+						className={`absolute min-h-screen right-0 w-full max-w-xs bg-white font-bold text-xl duration-300 overflow-auto ${openMenu ? 'translate-x-0' : 'translate-x-full '
+							}`}
 					>
 						<Icon
 							icon='ic:round-close'
@@ -72,9 +70,8 @@ const Navbar = () => {
 	return (
 		<>
 			<header
-				className={`${
-					displayBgColor ? 'bg-white' : 'bg-transparent'
-				} py-3 fixed inset-x-0 duration-300`}
+				className={`${displayBgColor ? 'bg-white' : 'bg-transparent'
+					} py-3 fixed inset-x-0 duration-300`}
 			>
 				<nav className='max-w-7xl mx-auto flex justify-between items-center px-4'>
 					<div className='cursor-pointer'>Logo</div>
