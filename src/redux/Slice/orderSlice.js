@@ -32,5 +32,5 @@ export const orderSlice = createSlice({
 	}
 });
 
-export const { addOrderProduct } = orderSlice.actions;
+export const { addOrderProduct, increaseAmount } = orderSlice.actions;
 export default orderSlice.reducer;

@@ -3,13 +3,82 @@ import pig from '../assets/images/pig.png';
 import success from '../assets/images/success.png';
 import tableIcon from '../assets/images/tableIcon.svg';
 
+export const mobileDropMenus = {
+	products: [
+		{
+			title: 'Ngành hàng bán buôn, bán lẻ',
+			icon: 'mdi:cart-outline'
+		},
+
+		{
+			title: 'Ngành hàng ăn uống, giải trí',
+			icon: 'ion:restaurant-outline'
+		},
+
+		{
+			title: 'Ngành dịch vụ làm đẹp',
+			icon: 'ph:flower-lotus-light'
+		},
+
+		{
+			title: 'Quản lý nhà nghỉ, khách sạn',
+			icon: 'material-symbols:hotel-outline'
+		}
+	],
+	solutions: [
+		{
+			title: 'Thời trang',
+			icon: 'icon-park:clothes-cardigan'
+		},
+
+		{
+			title: 'Mỹ phẩm',
+			icon: 'mdi:lipstick'
+		},
+
+		{
+			title: 'Tạp hóa & Siêu thị mini',
+			icon: 'mdi:cart-outline'
+		},
+		{
+			title: 'Nội thất & gia dụng',
+			icon: 'material-symbols-light:chair-outline'
+		},
+		{
+			title: 'Mẹ và bé',
+			icon: 'iconoir:stroller'
+		},
+
+		{
+			title: 'Nhà hàng',
+			icon: 'guidance:reception-hotel-bell'
+		},
+
+		{
+			title: 'Quán ăn',
+			icon: 'cil:restaurant'
+		},
+
+		{
+			title: 'Cafe, Trà sữa',
+			icon: 'carbon:cafe'
+		},
+
+		{
+			title: 'Karaoke, Bida',
+			icon: 'maki:karaoke'
+		}
+	]
+};
+
 export const navItems = [
 	{
 		title: 'Sản phẩm',
 		key: 'product'
 	},
 	{
-		title: 'Giải pháp'
+		title: 'Giải pháp',
+		key: 'solution'
 	},
 	{
 		title: 'Khách hàng'
