@@ -36,21 +36,42 @@ const Banner = props => {
 						}}
 					>
 						<div className=' absolute left-[3%] lg:top-[18%] lg:left-0 top-0 w-fit'>
-							<span className='bg-white px-6 py-4 rounded-3xl font-semibold lg:w-fit'>
+							<div className='bg-white px-6 py-4 rounded-3xl font-semibold lg:w-fit flex items-center gap-2'>
+								<img
+									src='../src/assets/images/logo.png'
+									alt='logo'
+									width={22}
+									height={22}
+									loading='lazy'
+								/>
 								Phần mềm quản lý bán hàng
-							</span>
+							</div>
 						</div>
 
 						<div className='absolute bottom-0 lg:bottom-[20%] left-[5%] w-fit '>
-							<span className='bg-white px-6 py-4 rounded-3xl font-semibold'>
+							<div className='bg-white px-6 py-4 rounded-3xl font-semibold lg:w-fit flex items-center gap-2'>
+								<img
+									src='../src/assets/images/logo.png'
+									alt='logo'
+									width={22}
+									height={22}
+									loading='lazy'
+								/>
 								Giải pháp thanh toán
-							</span>
+							</div>
 						</div>
 
 						<div className='absolute top-[45%] right-[1%] w-fit '>
-							<span className='bg-white px-6 py-4 rounded-3xl font-semibold'>
+							<div className='bg-white px-6 py-4 rounded-3xl font-semibold lg:w-fit flex items-center gap-2'>
+								<img
+									src='../src/assets/images/logo.png'
+									alt='logo'
+									width={22}
+									height={22}
+									loading='lazy'
+								/>
 								Dịch vụ với chi phí hợp lý
-							</span>
+							</div>
 						</div>
 					</div>
 				</div>
