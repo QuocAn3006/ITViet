@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { navItemTypes, navItems } from '../constants';
+import { mobileDropMenus, navItemTypes, navItems } from '../constants';
 import Banner from './Banner';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,6 +20,16 @@ const Navbar = () => {
 	}, []);
 
 	const MobileMenu = () => {
+		const [menuType, setMenuType] = useState(null);
+
+		const handleOpenSubMenu = type => {
+			if (menuType === type) {
+				setMenuType(null);
+			} else {
+				setMenuType(type);
+			}
+		};
+
 		return (
 			<>
 				<button className='lg:hidden'>
@@ -31,18 +41,20 @@ const Navbar = () => {
 				</button>
 
 				<div
-					className={`fixed inset-0 duration-300 ${openMenu
-						? 'pointer-events-auto bg-black/60 overflow-y-auto overflow-x-hidden z-[1010]'
-						: 'pointer-events-none'
-						}`}
+					className={`fixed inset-0 duration-300 ${
+						openMenu
+							? 'pointer-events-auto bg-black/60 overflow-y-auto overflow-x-hidden z-[1010]'
+							: 'pointer-events-none'
+					}`}
 					onClick={e => {
 						if (e.target !== e.currentTarget) return;
 						setOpenMenu(false);
 					}}
 				>
 					<div
-						className={`absolute min-h-screen right-0 w-full max-w-xs bg-white font-bold text-xl duration-300 overflow-auto ${openMenu ? 'translate-x-0' : 'translate-x-full '
-							}`}
+						className={`absolute min-h-screen right-0 w-full max-w-xs bg-white font-bold text-xl duration-300 overflow-auto ${
+							openMenu ? 'translate-x-0' : 'translate-x-full '
+						}`}
 					>
 						<Icon
 							icon='ic:round-close'
@@ -50,15 +62,64 @@ const Navbar = () => {
 							className='cursor-pointer mb-5 mt-2 mx-4 float-right'
 							onClick={() => setOpenMenu(false)}
 						/>
-
+						<div className='mt-[2.25rem]'></div>
 						{navItems.map((item, idx) => (
-							<div
-								key={idx}
-								className='m-3'
-							>
-								<span className='hover:text-primary cursor-pointer flex flex-col py-2'>
-									{item.title}
-								</span>
+							<div key={idx}>
+								<div
+									className={`m-3 flex gap-2 items-center ${
+										menuType === item.key
+											? 'text-primary'
+											: ''
+									}`}
+									onClick={() => handleOpenSubMenu(item.key)}
+								>
+									<span className='hover:text-primary cursor-pointer flex flex-col py-2'>
+										{item.title}
+									</span>
+
+									{item.key && (
+										<Icon
+											icon='icon-park-outline:right'
+											height={22}
+											className={`duration-300 mt-[6px] ${
+												menuType === item.key
+													? 'rotate-90'
+													: ''
+											}`}
+										/>
+									)}
+								</div>
+								<ul
+									className='grid grid-cols-2 gap-x-2.5 gap-y-1 font-normal text-base overflow-hidden duration-300 m-3'
+									style={{
+										maxHeight:
+											menuType === item.key ? '50rem' : 0
+									}}
+								>
+									{menuType === 'product' &&
+										mobileDropMenus.products.map(
+											product => (
+												<li
+													key={product.title}
+													className='text-black pb-2 font-medium cursor-pointer hover:text-primary'
+												>
+													{product.title}
+												</li>
+											)
+										)}
+
+									{menuType === 'solution' &&
+										mobileDropMenus.solutions.map(
+											solution => (
+												<li
+													key={solution.title}
+													className='text-black pb-2 font-medium cursor-pointer hover:text-primary'
+												>
+													{solution.title}
+												</li>
+											)
+										)}
+								</ul>
 							</div>
 						))}
 					</div>
@@ -70,8 +131,9 @@ const Navbar = () => {
 	return (
 		<>
 			<header
-				className={`${displayBgColor ? 'bg-white' : 'bg-transparent'
-					} py-3 fixed inset-x-0 duration-300`}
+				className={`${
+					displayBgColor ? 'bg-white' : 'bg-transparent'
+				} py-3 fixed inset-x-0 duration-300`}
 			>
 				<nav className='max-w-7xl mx-auto flex justify-between items-center px-4'>
 					<div className='cursor-pointer flex items-center gap-1'>

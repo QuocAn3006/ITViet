@@ -43,13 +43,13 @@ const AdminPage = () => {
 		setKeySelected(key);
 	};
 	return (
-		<div className='flex items-center'>
-			<div className='w-[30%] h-screen bg-slate-600 text-white'>
+		<div className='flex'>
+			<div className='w-[20%] h-screen bg-slate-600 text-white'>
 				{itemMenu.map(item => (
 					<div
 						className={`${
 							keySelected === item.key
-								? 'bg-white text-primary hover:bg-white'
+								? 'bg-white text-primary hover:bg-white font-semibold'
 								: ''
 						} p-4 flex gap-2 items-center text-lg hover:bg-white/60 hover:text-primary cursor-pointer`}
 						key={item.key}
@@ -73,7 +73,9 @@ const AdminPage = () => {
 					<h2>Đăng xuất</h2>
 				</div>
 			</div>
-			<div className='w-[70%] p-4'>{renderPage(keySelected)}</div>
+			<div className='w-[80%] p-4 bg-[#f0f2f5]'>
+				{renderPage(keySelected)}
+			</div>
 		</div>
 	);
 };

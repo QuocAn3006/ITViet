@@ -1,8 +1,50 @@
 import { Icon } from '@iconify/react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+
+	const buttomItems = [
+		{
+			key: 'admin',
+			title: 'Quản lý',
+			icon: 'ph:chart-line'
+		},
+		{
+			key: 'cashier',
+			title: 'Cửa hàng',
+			icon: 'iconoir:cart'
+		}
+	];
+
 	const navigate = useNavigate();
+	const handleLogin = async (data, key) => {
+		const res = await axios.post(
+			`${import.meta.env.VITE_DATABASE_URL}/user/login`,
+			data
+		);
+
+		const response = res.data;
+
+		if (response?.status === 'OK') {
+			switch (key) {
+				case 'cashier':
+					return navigate('/cashier');
+				case 'admin':
+					return navigate('/admin');
+			}
+
+			localStorage.setItem('access_token', response?.accessToken);
+			localStorage.setItem('refresh_token', response?.refreshToken);
+		}
+	};
+
+	useEffect(() => {
+		handleLogin();
+	}, []);
 
 	return (
 		<div
@@ -36,6 +78,8 @@ const LoginPage = () => {
 								height={22}
 							/>
 							<input
+								value={email}
+								onChange={e => setEmail(e.target.value)}
 								type='text'
 								className='h-11 pl-7 w-full bg-transparent overflow-visible block m-0 box-border'
 								style={{
@@ -51,6 +95,8 @@ const LoginPage = () => {
 								height={20}
 							/>
 							<input
+								value={password}
+								onChange={e => setPassword(e.target.value)}
 								type='password'
 								className='h-11 pl-7 w-full bg-transparent overflow-visible block m-0 box-border'
 								style={{
@@ -60,32 +106,33 @@ const LoginPage = () => {
 							/>
 						</div>
 
+						{/* {error && (
+							<aside className='mt-5 text-red-500 text-sm'>
+								{error}
+							</aside>
+						)} */}
+
 						<aside className='mt-5 text-right text-sm text-primary'>
 							<label htmlFor=''>Quên mật khẩu?</label>
 						</aside>
 					</section>
 					<section className='mt-5 flex overflow-hidden text-center gap-2'>
-						<button
-							onClick={() => navigate('/admin')}
-							className='flex items-center justify-center py-3 px-5 gap-2 rounded-3xl font-bold text-white bg-primary w-[50%]'
-						>
-							<Icon
-								icon='ph:chart-line'
-								height={22}
-							/>
-							Quản lý
-						</button>
-
-						<button
-							onClick={() => navigate('/cashier')}
-							className='flex items-center justify-center py-3 px-5 gap-2 rounded-3xl font-bold text-white bg-[#4bac4d] w-[50%]'
-						>
-							<Icon
-								icon='iconoir:cart'
-								height={22}
-							/>
-							Cửa hàng
-						</button>
+						{buttomItems.map(item => (
+							<button
+								type='button'
+								key={item.key}
+								onClick={() =>
+									handleLogin({ email, password }, item.key)
+								}
+								className='flex items-center justify-center py-3 px-5 gap-2 rounded-3xl font-bold text-white bg-primary w-[50%]'
+							>
+								<Icon
+									icon={item.icon}
+									height={22}
+								/>
+								{item.title}
+							</button>
+						))}
 					</section>
 				</div>
 			</form>

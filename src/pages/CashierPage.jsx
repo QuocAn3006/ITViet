@@ -1,12 +1,14 @@
 import { Icon } from '@iconify/react';
 import { Tabs } from 'antd';
 import { tableOrder } from '../constants';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addOrderProduct } from '../redux/Slice/orderSlice';
+import { addOrderProduct, increaseAmount } from '../redux/Slice/orderSlice';
+import { useReactToPrint } from 'react-to-print';
 const CashierPage = () => {
 	const [selectedTable, setSelectedTable] = useState(null);
 	const [selectedTabKey, setSelectedTabKey] = useState('1');
+	const printref = useRef();
 	const dispatch = useDispatch();
 	const order = useSelector(state => state?.order);
 	const handleTableClick = idx => {
@@ -26,6 +28,14 @@ const CashierPage = () => {
 				}
 			})
 		);
+	};
+
+	const handlePrint = useReactToPrint({
+		content: () => printref.current
+	});
+
+	const handleIncrease = ({ id }) => {
+		dispatch(increaseAmount(id));
 	};
 	const items = [
 		{
@@ -154,6 +164,7 @@ const CashierPage = () => {
 						<div
 							key={item.name}
 							className='my-[5px]'
+							ref={printref}
 						>
 							<div
 								style={{
@@ -198,7 +209,7 @@ const CashierPage = () => {
 
 												<input
 													min={1}
-													defaultValue={1}
+													value={item?.amount}
 													className='w-8 h-5 border-none text-center'
 													type='text'
 												/>
@@ -208,6 +219,9 @@ const CashierPage = () => {
 													style={{
 														border: '1px solid #4D5258'
 													}}
+													onClick={() =>
+														handleIncrease(1)
+													}
 												>
 													+
 												</button>
@@ -228,7 +242,10 @@ const CashierPage = () => {
 					))}
 				</div>
 				<div className='flex gap-2'>
-					<button className='flex items-center py-4 px-6 w-[50%] bg-[#28b44f] rounded-2xl justify-center font-semibold text-white'>
+					<button
+						onClick={handlePrint}
+						className='flex items-center py-4 px-6 w-[50%] bg-[#28b44f] rounded-2xl justify-center font-semibold text-white'
+					>
 						<Icon icon='solar:dollar-linear' />
 						Thanh toán (F9)
 					</button>
