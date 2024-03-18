@@ -1,13 +1,10 @@
+import { Icon } from "@iconify/react";
+import { useNavigate } from "react-router-dom";
+
 const NavbarAdmin = () => {
+	const navigate = useNavigate();
 	return (
-		<header className='flex flex-col'>
-			<nav className='w-full'>
-				<div className='max-w-7xl mx-auto '>nav tren</div>
-			</nav>
-			<nav className='w-full bg-gray-500'>
-				<div className='max-w-7xl mx-auto '>nav tren</div>
-			</nav>
-		</header>
+		<div className='w-[30%] bg-slate-700 h-screen text-white'>navbar</div>
 	);
 };
 
