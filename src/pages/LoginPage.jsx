@@ -1,11 +1,15 @@
 import { Icon } from '@iconify/react';
-import axios from 'axios';
+import * as UserService from '../services/user';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import { useDispatch } from 'react-redux';
+import { updatedUser } from '../redux/Slice/userSlice';
 
 const LoginPage = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const dispatch = useDispatch();
 
 	const buttomItems = [
 		{
@@ -21,27 +25,41 @@ const LoginPage = () => {
 	];
 
 	const navigate = useNavigate();
-	const handleLogin = async (data, key) => {
-		const res = await axios.post(
-			`${import.meta.env.VITE_DATABASE_URL}/user/login`,
-			data
+
+	const handleGetDetailUser = async (id, token) => {
+		const refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
+		const res = await UserService.getDetailUser(id, token);
+		dispatch(
+			updatedUser({ ...res?.data, accessToken: token, refreshToken })
 		);
+	};
 
-		const response = res.data;
+	const handleLogin = async (data, key) => {
+		const res = await UserService.login(data);
 
-		if (response?.status === 'OK') {
+		if (res?.status === 'OK') {
+			localStorage.setItem(
+				'accessToken',
+				JSON.stringify(res?.accessToken)
+			);
+			localStorage.setItem(
+				'refreshToken',
+				JSON.stringify(res?.refreshToken)
+			);
+			if (res?.accessToken) {
+				const decoded = jwtDecode(res?.accessToken);
+				if (decoded?.userId) {
+					handleGetDetailUser(decoded?.userId, res?.accessToken);
+				}
+			}
 			switch (key) {
 				case 'cashier':
 					return navigate('/cashier');
 				case 'admin':
 					return navigate('/admin');
 			}
-
-			localStorage.setItem('access_token', response?.accessToken);
-			localStorage.setItem('refresh_token', response?.refreshToken);
 		}
 	};
-
 	useEffect(() => {
 		handleLogin();
 	}, []);

@@ -4,6 +4,7 @@ const initialState = {
 	name: '',
 	email: '',
 	isAdmin: false,
+	id: '',
 	accessToken: '',
 	refreshToken: ''
 };
@@ -17,6 +18,7 @@ export const userSlice = createSlice({
 				name = '',
 				email = '',
 				isAdmin,
+				_id = '',
 				accessToken = '',
 				refreshToken = ''
 			} = action.payload;
@@ -24,6 +26,7 @@ export const userSlice = createSlice({
 			state.name = name ? name : state.name;
 			state.email = email ? email : state.email;
 			state.isAdmin = isAdmin ? isAdmin : state.isAdmin;
+			state.id = _id ? _id : state?.id;
 			state.accessToken = accessToken ? accessToken : state.accessToken;
 			state.refreshToken = refreshToken
 				? refreshToken
@@ -34,8 +37,8 @@ export const userSlice = createSlice({
 			(state.name = ''),
 				(state.email = ''),
 				(state.isAdmin = ''),
-				(state.accessToken = ''),
-				(state.refreshToken = '');
+				(state.id = '');
+			(state.accessToken = ''), (state.refreshToken = '');
 		}
 	}
 });

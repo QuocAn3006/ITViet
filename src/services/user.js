@@ -3,12 +3,24 @@ import axios from 'axios';
 export const axiosJWT = axios.create();
 
 export const login = async user => {
-	const res = await fetch(
+	const res = await axios.post(
 		`${import.meta.env.VITE_DATABASE_URL}/user/login`,
 		user
 	);
-	const data = await res.json();
-	return data;
+
+	return res.data;
+};
+
+export const getDetailUser = async (id, accessToken) => {
+	const res = await axiosJWT.get(
+		`${import.meta.env.VITE_DATABASE_URL}/user/get-detail-user/${id}`,
+		{
+			headers: {
+				token: `Bearer ${accessToken}`
+			}
+		}
+	);
+	return res.data;
 };
 
 export const refreshToken = async token => {
