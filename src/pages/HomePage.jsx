@@ -551,9 +551,8 @@ const HomePage = () => {
 				</div>
 			</section>
 
-			<Footer/>
-=======
->>>>>>> 468c2edb05aa1304e28eb56c7ac48d8adf410169
+			<Footer />
+
 		</>
 	);
 };
