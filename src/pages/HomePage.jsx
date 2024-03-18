@@ -552,6 +552,7 @@ const HomePage = () => {
 			</section>
 
 			<Footer />
+
 		</>
 	);
 };
