@@ -1,204 +1,262 @@
 import { Icon } from '@iconify/react';
+import { Form, Modal, Table, Upload, message } from 'antd';
+import { useForm } from 'antd/es/form/Form';
+import { useEffect, useState } from 'react';
+import { getBase64 } from '../../utils';
+import * as ProductService from '../../services/product';
 
 const ProductAdmin = () => {
+	const initial = () => ({
+		name: '',
+		image: '',
+		brand: '',
+		price: ''
+	});
+	const [openModal, setOpenModal] = useState(false);
+	const [product, setProduct] = useState(initial());
+	const [dataCreateProduct, setDataCreateProduct] = useState({ data: null });
+	const [allProduct, setAllProduct] = useState([]);
+	const [form] = useForm();
+
+	const handleOnChange = e => {
+		setProduct({ ...product, [e.target.name]: e.target.value });
+	};
+	const handleCancelModal = () => {
+		setOpenModal(false);
+		setProduct({
+			name: '',
+			image: '',
+			brand: '',
+			price: ''
+		});
+		form.resetFields();
+	};
+
+	const handleOnChangeImage = async ({ fileList }) => {
+		const file = fileList[0];
+		if (!file.url && !file.preview) {
+			file.preview = await getBase64(file.originFileObj);
+		}
+		setProduct({ ...product, image: file.preview });
+	};
+
+	const createProductApi = async data => {
+		const { name, image, brand, price } = data;
+		const res = await ProductService.createProduct({
+			name,
+			image,
+			brand,
+			price
+		});
+		setDataCreateProduct(res);
+	};
+
+	const handleCreateProduct = () => {
+		const params = {
+			name: product.name,
+			image: product.image,
+			brand: product.brand,
+			price: product.price
+		};
+		createProductApi(params);
+	};
+
+	useEffect(() => {
+		if (dataCreateProduct.status === 'OK') {
+			message.success('Thêm sản phẩm thành công');
+			handleCancelModal();
+		}
+		if (dataCreateProduct.status === 'ERR') {
+			message.error('Thêm sản phẩm không thành công');
+		}
+	}, [dataCreateProduct.status]);
+
+	const getProductList = async () => {
+		const res = await ProductService.getProductList();
+		setAllProduct(res.data);
+	};
+
+	useEffect(() => {
+		getProductList();
+	}, []);
+
+	const columns = [
+		{
+			title: 'Tên sản phẩm',
+			dataIndex: 'name',
+			sorter: (a, b) => a.name.length - b.name.length
+		},
+		{
+			title: 'Giá',
+			dataIndex: 'price',
+			sorter: (a, b) => a.price - b.price,
+			filters: [
+				{
+					text: '>= 50',
+					value: '>='
+				},
+				{
+					text: '<= 50',
+					value: '<='
+				}
+			],
+
+			onFilter: (value, record) => {
+				if (value === '>=') {
+					return record.price >= 50;
+				} else return record.price <= 50;
+			}
+		},
+		{
+			title: 'Nhóm sản phẩm',
+			dataIndex: 'brand'
+		}
+	];
+
+	const dataTables =
+		allProduct?.length > 0 &&
+		allProduct?.map(item => {
+			return { ...item, key: item._id };
+		});
 	return (
-		<div className='flex flex-col'>
-			<div className='flex gap-4'>
-				<div className='flex-1 relative'>
-					<input
-						type='text'
-						className='w-full p-2 border border-black rounded-lg'
+		<div className='bg-[#f0f2f5] w-full h-screen'>
+			<div className='max-w-7xl mx-auto pt-5'>
+				<div className='flex justify-between items-center'>
+					<span className='text-xl'>Hàng hóa</span>
+					<div className='flex items-center gap-2'>
+						<button
+							onClick={() => setOpenModal(true)}
+							className='bg-green-600 text-white font-semibold text-base px-2 py-3 rounded-md flex items-center gap-1'
+						>
+							<Icon icon='ic:baseline-plus' />
+							Thêm mới
+						</button>
+
+						<button className='bg-green-600 text-white font-semibold text-base px-2 py-3 rounded-md flex items-center gap-1'>
+							<Icon
+								icon='clarity:export-solid'
+								height={19}
+							/>
+							Xuất file
+						</button>
+					</div>
+				</div>
+
+				<div className='mt-3'>
+					<Table
+						columns={columns}
+						dataSource={dataTables}
 					/>
-					<div className='absolute right-3 top-2 text-primary font-bold'>
-						<Icon
-							icon='ph:magnifying-glass-light'
-							height={22}
-						/>
-					</div>
 				</div>
-				<button
-					type='button'
-					className='bg-primary py-2 px-4 rounded-md text-white font-semibold'
+			</div>
+			<Modal
+				title='Tạo sản phẩm mới'
+				open={openModal}
+				footer={null}
+				onCancel={handleCancelModal}
+			>
+				<Form
+					form={form}
+					labelCol={{ span: 4 }}
+					wrapperCol={{ span: 20 }}
+					style={{ maxWidth: 550 }}
+					onFinish={handleCreateProduct}
 				>
-					Thêm mới sản phẩm
-				</button>
-			</div>
-			<div className='grid grid-cols-4 mt-5 gap-4'>
-				<div className='p-5 bg-white rounded-md flex flex-col'>
-					<div className='border border-[#ccc] flex items-center justify-center overflow-hidden'>
-						<img
-							src='../src/assets/images/logo.png'
-							alt='image'
-							className='object-cover'
-							width={152}
-							height={110}
+					<Form.Item
+						label='Name'
+						name='name'
+						rules={[
+							{
+								required: true,
+								message: 'Please input your name product!'
+							}
+						]}
+					>
+						<input
+							value={product.name}
+							onChange={handleOnChange}
+							name='name'
+							className='border border-black w-full px-2 py-1 rounded-md focus:outline-none'
 						/>
-					</div>
-					<h3 className='mt-2'>Sản phảm 1</h3>
-					<ul>
-						<li>12</li>
-						<li>12</li>
-						<li>12</li>
-						<li>12</li>
-					</ul>
-					<div className='mt-2 w-full flex justify-between gap-2'>
-						<button
-							type='button'
-							className='p-4 border-primary text-primary font-semibold border w-full rounded-lg flex items-center justify-center gap-2'
-						>
-							<Icon icon='bi:pen' />
-							Edit
-						</button>
-						<button
-							type='button'
-							className='p-4 border-red-500 text-red-500 border w-full rounded-lg flex items-center justify-center gap-2'
-						>
-							<Icon icon='ph:trash-light' />
-							delete
-						</button>
-					</div>
-				</div>
+					</Form.Item>
 
-				<div className='p-5 bg-white rounded-md flex flex-col'>
-					<div className='border border-[#ccc] flex items-center justify-center overflow-hidden'>
-						<img
-							src='../src/assets/images/logo.png'
-							alt='image'
-							className='object-cover'
-							width={152}
-							height={110}
+					<Form.Item
+						label='Brand'
+						name='brand'
+						rules={[
+							{
+								required: true,
+								message: 'Please input your name brand!'
+							}
+						]}
+					>
+						<input
+							value={product.brand}
+							onChange={handleOnChange}
+							name='brand'
+							className='border border-black w-full px-2 py-1 rounded-md focus:outline-none'
 						/>
-					</div>
-					<h3 className='mt-2'>Sản phảm 1</h3>
-					<ul>
-						<li>12</li>
-						<li>12</li>
-						<li>12</li>
-						<li>12</li>
-					</ul>
-					<div className='mt-2 w-full flex justify-between gap-2'>
-						<button
-							type='button'
-							className='p-4 border-primary text-primary font-semibold border w-full rounded-lg flex items-center justify-center gap-2'
-						>
-							<Icon icon='bi:pen' />
-							Edit
-						</button>
-						<button
-							type='button'
-							className='p-4 border-red-500 text-red-500 border w-full rounded-lg flex items-center justify-center gap-2'
-						>
-							<Icon icon='ph:trash-light' />
-							delete
-						</button>
-					</div>
-				</div>
+					</Form.Item>
 
-				<div className='p-5 bg-white rounded-md flex flex-col'>
-					<div className='border border-[#ccc] flex items-center justify-center overflow-hidden'>
-						<img
-							src='../src/assets/images/logo.png'
-							alt='image'
-							className='object-cover'
-							width={152}
-							height={110}
+					<Form.Item
+						label='Price'
+						name='price'
+						rules={[
+							{
+								required: true,
+								message: 'Please input your price!'
+							}
+						]}
+					>
+						<input
+							value={product.price}
+							onChange={handleOnChange}
+							name='price'
+							className='border border-black w-full px-2 py-1 rounded-md focus:outline-none'
 						/>
-					</div>
-					<h3 className='mt-2'>Sản phảm 1</h3>
-					<ul>
-						<li>12</li>
-						<li>12</li>
-						<li>12</li>
-						<li>12</li>
-					</ul>
-					<div className='mt-2 w-full flex justify-between gap-2'>
-						<button
-							type='button'
-							className='p-4 border-primary text-primary font-semibold border w-full rounded-lg flex items-center justify-center gap-2'
-						>
-							<Icon icon='bi:pen' />
-							Edit
-						</button>
-						<button
-							type='button'
-							className='p-4 border-red-500 text-red-500 border w-full rounded-lg flex items-center justify-center gap-2'
-						>
-							<Icon icon='ph:trash-light' />
-							delete
-						</button>
-					</div>
-				</div>
+					</Form.Item>
 
-				<div className='p-5 bg-white rounded-md flex flex-col'>
-					<div className='border border-[#ccc] flex items-center justify-center overflow-hidden'>
-						<img
-							src='../src/assets/images/logo.png'
-							alt='image'
-							className='object-cover'
-							width={152}
-							height={110}
-						/>
-					</div>
-					<h3 className='mt-2'>Sản phảm 1</h3>
-					<ul>
-						<li>12</li>
-						<li>12</li>
-						<li>12</li>
-						<li>12</li>
-					</ul>
-					<div className='mt-2 w-full flex justify-between gap-2'>
-						<button
-							type='button'
-							className='p-4 border-primary text-primary font-semibold border w-full rounded-lg flex items-center justify-center gap-2'
-						>
-							<Icon icon='bi:pen' />
-							Edit
-						</button>
-						<button
-							type='button'
-							className='p-4 border-red-500 text-red-500 border w-full rounded-lg flex items-center justify-center gap-2'
-						>
-							<Icon icon='ph:trash-light' />
-							delete
-						</button>
-					</div>
-				</div>
+					<Form.Item
+						label='Image'
+						name='image'
+						rules={[
+							{
+								required: true,
+								message: 'Please input your name product!'
+							}
+						]}
+					>
+						<div>
+							<Upload
+								onChange={handleOnChangeImage}
+								maxCount={1}
+							>
+								<button className='flex items-center gap-2 border border-black p-2 rounded-md'>
+									<Icon
+										icon='material-symbols:upload'
+										height={20}
+									/>
+									Upload
+								</button>
+							</Upload>
+						</div>
+					</Form.Item>
 
-				<div className='p-5 bg-white rounded-md flex flex-col'>
-					<div className='border border-[#ccc] flex items-center justify-center overflow-hidden'>
-						<img
-							src='../src/assets/images/logo.png'
-							alt='image'
-							className='object-cover'
-							width={152}
-							height={110}
-						/>
-					</div>
-					<h3 className='mt-2'>Sản phảm 1</h3>
-					<ul>
-						<li>12</li>
-						<li>12</li>
-						<li>12</li>
-						<li>12</li>
-					</ul>
-					<div className='mt-2 w-full flex justify-between gap-2'>
+					<Form.Item
+						wrapperCol={{
+							offset: 16,
+							span: 16
+						}}
+					>
 						<button
-							type='button'
-							className='p-4 border-primary text-primary font-semibold border w-full rounded-lg flex items-center justify-center gap-2'
+							className='bg-primary p-2 font-semibold w-full rounded-md text-white'
+							type='primary'
 						>
-							<Icon icon='bi:pen' />
-							Edit
+							Submit
 						</button>
-						<button
-							type='button'
-							className='p-4 border-red-500 text-red-500 border w-full rounded-lg flex items-center justify-center gap-2'
-						>
-							<Icon icon='ph:trash-light' />
-							delete
-						</button>
-					</div>
-				</div>
-			</div>
+					</Form.Item>
+				</Form>
+			</Modal>
 		</div>
 	);
 };
