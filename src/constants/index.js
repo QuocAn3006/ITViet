@@ -123,6 +123,11 @@ export const navItemTypes = {
 			},
 
 			{
+				title: 'Thời trang',
+				icon: 'icon-park:clothes-cardigan'
+			},
+
+			{
 				title: 'Mỹ phẩm',
 				icon: 'mdi:lipstick'
 			},
