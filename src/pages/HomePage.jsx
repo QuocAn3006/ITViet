@@ -10,6 +10,7 @@ const HomePage = () => {
 				title={'Giúp bạn quản lý dễ dàng, bán hàng hiệu quả'}
 				sectionCardItems={sectionCardItems}
 			/>
+			
 			<section className='bg-[#f0f2f5] w-full'>
 				<div className='max-w-7xl mx-auto px-4 pb-[6.4rem]'>
 					<h1 className='text-center font-bold text-2xl mb-10'>
