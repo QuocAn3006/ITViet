@@ -1,7 +1,11 @@
 import ProductAdmin from '../components/Admin/ProductAdmin';
 
 const AdminPage = () => {
-	return <ProductAdmin />;
+	return (
+		<>
+			<ProductAdmin />
+		</>
+	);
 };
 
 export default AdminPage;

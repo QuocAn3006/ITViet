@@ -154,16 +154,17 @@ const ProductAdmin = () => {
 				open={openModal}
 				footer={null}
 				onCancel={handleCancelModal}
+				className='w-[700px]'
 			>
 				<Form
 					form={form}
 					labelCol={{ span: 4 }}
 					wrapperCol={{ span: 20 }}
-					style={{ maxWidth: 550 }}
+					style={{ maxWidth: 685 }}
 					onFinish={handleCreateProduct}
 				>
 					<Form.Item
-						label='Name'
+						label='Tên hàng'
 						name='name'
 						rules={[
 							{
@@ -176,12 +177,12 @@ const ProductAdmin = () => {
 							value={product.name}
 							onChange={handleOnChange}
 							name='name'
-							className='border border-black w-full px-2 py-1 rounded-md focus:outline-none'
+							className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
 						/>
 					</Form.Item>
 
 					<Form.Item
-						label='Brand'
+						label='Loại thực đơn'
 						name='brand'
 						rules={[
 							{
@@ -194,12 +195,12 @@ const ProductAdmin = () => {
 							value={product.brand}
 							onChange={handleOnChange}
 							name='brand'
-							className='border border-black w-full px-2 py-1 rounded-md focus:outline-none'
+							className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
 						/>
 					</Form.Item>
 
 					<Form.Item
-						label='Price'
+						label='Giá bán'
 						name='price'
 						rules={[
 							{
@@ -212,12 +213,12 @@ const ProductAdmin = () => {
 							value={product.price}
 							onChange={handleOnChange}
 							name='price'
-							className='border border-black w-full px-2 py-1 rounded-md focus:outline-none'
+							className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
 						/>
 					</Form.Item>
 
 					<Form.Item
-						label='Image'
+						label='Ảnh sản phẩm'
 						name='image'
 						rules={[
 							{
@@ -228,16 +229,14 @@ const ProductAdmin = () => {
 					>
 						<div>
 							<Upload
+								listType='picture-card'
 								onChange={handleOnChangeImage}
 								maxCount={1}
 							>
-								<button className='flex items-center gap-2 border border-black p-2 rounded-md'>
-									<Icon
-										icon='material-symbols:upload'
-										height={20}
-									/>
-									Upload
-								</button>
+								<Icon
+									icon='material-symbols:upload'
+									height={20}
+								/>
 							</Upload>
 						</div>
 					</Form.Item>
