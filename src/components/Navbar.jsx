@@ -147,7 +147,7 @@ const Navbar = () => {
 					<div className='font-bold text-lg lg:flex items-center gap-12 hidden'>
 						<span className='hover:text-primary cursor-pointer relative group'>
 							Sản phẩm
-							<ul className='dropdown-menu grid-cols-1'>
+							<ul className='dropdown-menu w-72 grid-cols-1'>
 								{navItemTypes.product.map(item => (
 									<li
 										key={item.title}
@@ -165,10 +165,10 @@ const Navbar = () => {
 
 						<span className='hover:text-primary cursor-pointer relative group'>
 							Giải pháp
-							<ul className='dropdown-menu grid-cols-3 flex items-center flex-col lg:flex-row justify-between gap-2 z-2000'>
-								<li className='w-56'>
-									<div className='rounded-2xl flex items-center flex-col gap-2'>
-										<p className=' font-extrabold items-center flex gap-2 py-1'>
+							<ul className='dropdown-menu grid-cols-3 ml-4 flex items-center flex-col justify-between lg:flex-row gap-2 '>
+								<li className='w-full'>
+									<div className='rounded-2xl flex items-center w-full flex-col gap-2'>
+										<p className='font-bold text-xl items-center flex gap-4 py-1'>
 											<div className='flex justify-center items-center rounded-xl'>
 												<Icon
 													icon='fa6-solid:store'
@@ -180,7 +180,7 @@ const Navbar = () => {
 												Bán buôn, bán lẻ
 											</h1>
 										</p>
-										<div className='flex-col flex w-full'>
+										<div className='flex-col flex w-full gap-2'>
 											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
 												<Icon
 													icon='game-icons:clothes'
