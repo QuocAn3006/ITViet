@@ -1,15 +1,20 @@
 import { Icon } from '@iconify/react';
 import Section from '../components/Section';
 import { sectionCardItems } from '../constants';
-import Footer from '../components/Footer';
+import Banner from '../components/Banner';
 
 const HomePage = () => {
 	return (
 		<>
+			<Banner
+				title={'Phần mềm quản lý bán hàng phổ biến nhất'}
+				isHomeBanner={true}
+			/>
 			<Section
 				title={'Giúp bạn quản lý dễ dàng, bán hàng hiệu quả'}
 				sectionCardItems={sectionCardItems}
 			/>
+
 			<section className='bg-[#f0f2f5] w-full'>
 				<div className='max-w-7xl mx-auto px-4 pb-[6.4rem]'>
 					<h1 className='text-center font-bold text-2xl mb-10'>
@@ -550,9 +555,6 @@ const HomePage = () => {
 					</div>
 				</div>
 			</section>
-
-			<Footer />
-
 		</>
 	);
 };

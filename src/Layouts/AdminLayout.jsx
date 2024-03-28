@@ -5,7 +5,7 @@ const AdminLayout = ({ children }) => {
 	return (
 		<>
 			<NavbarAdmin />
-			{children}
+			<div className='bg-[#eee]'>{children}</div>
 		</>
 	);
 };
