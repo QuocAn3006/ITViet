@@ -119,7 +119,7 @@ export const navItemTypes = {
 		trade: [
 			{
 				title: 'Thời trang',
-				icon: 'icon-park:clothes-cardigan'
+				icon: 'game-icons:clothes'
 			},
 
 			{
@@ -152,7 +152,7 @@ export const navItemTypes = {
 
 			{
 				title: 'Nông sản & Thực phẩm',
-				icon: 'jam:tools'
+				icon: 'fluent:food-grains-20-regular'
 			},
 
 			{
@@ -164,23 +164,95 @@ export const navItemTypes = {
 		entertainment: [
 			{
 				title: 'Nhà hàng',
-				icon: 'guidance:reception-hotel-bell'
+				icon: 'uil:restaurant'
 			},
 
 			{
 				title: 'Quán ăn',
-				icon: 'cil:restaurant'
+				icon: 'maki:restaurant-noodle'
 			},
 
 			{
 				title: 'Cafe, Trà sữa',
-				icon: 'carbon:cafe'
+				icon: 'ep:milk-tea'
 			},
 
 			{
-				title: 'Karaoke, Bida',
-				icon: 'maki:karaoke'
-			}
+				title: 'Karaoke',
+				icon: 'f7:music-mic'
+			},
+
+			{
+				title: 'Bida',
+				icon: 'mdi:billiards'
+			},
+
+			{
+				title: 'Bar, Pub & Club',
+				icon: 'carbon:bar'
+			},
+
+			{
+				title: 'Căng tin',
+				icon: 'ic:outline-fastfood'
+			},
+
+			{
+				title: 'Trạm dừng chân',
+				icon: 'icon-park-outline:resting'
+			},
+
+			{
+				title: 'Khác',
+				icon: 'fa-regular:plus-square'
+			},
+		],
+
+		beauty: [
+			{
+				title: 'Beauty Spa',
+				icon: 'solar:star-fall-outline'
+			},
+
+			{
+				title: 'Massage',
+				icon: 'tabler:massage'
+			},
+
+			{
+				title: 'Hair Salon & Nail',
+				icon: 'mingcute:hair-2-line'
+			},
+
+			{
+				title: 'Khách sạn & Nhà nghỉ',
+				icon: 'icon-park-outline:hotel'
+			},
+
+			{
+				title: 'Homestay',
+				icon: 'icon-park-outline:homestay'
+			},
+
+			{
+				title: 'Villa, Resort',
+				icon: 'material-symbols:holiday-village-outline'
+			},
+
+			{
+				title: 'Fitness & Yoga',
+				icon: 'ion:fitness-outline'
+			},
+
+			{
+				title: 'Phòng khám',
+				icon: 'mingcute:hospital-line'
+			},
+
+			{
+				title: 'Khác',
+				icon: 'fa-regular:plus-square'
+			},
 		]
 	}
 };

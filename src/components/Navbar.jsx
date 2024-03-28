@@ -41,18 +41,20 @@ const Navbar = () => {
 				</button>
 
 				<div
-					className={`fixed inset-0 duration-300 ${openMenu
-						? 'pointer-events-auto bg-black/60 overflow-y-auto overflow-x-hidden z-[1010]'
-						: 'pointer-events-none'
-						}`}
+					className={`fixed inset-0 duration-300 ${
+						openMenu
+							? 'pointer-events-auto bg-black/60 overflow-y-auto overflow-x-hidden'
+							: 'pointer-events-none'
+					}`}
 					onClick={e => {
 						if (e.target !== e.currentTarget) return;
 						setOpenMenu(false);
 					}}
 				>
 					<div
-						className={`absolute min-h-screen right-0 w-full max-w-xs bg-white font-bold text-xl duration-300 overflow-auto ${openMenu ? 'translate-x-0' : 'translate-x-full '
-							}`}
+						className={`absolute min-h-screen right-0 w-full bg-white font-bold text-xl duration-300 overflow-auto z-10  ${
+							openMenu ? 'translate-x-0' : 'translate-x-full '
+						}`}
 					>
 						<Icon
 							icon='ic:round-close'
@@ -180,97 +182,24 @@ const Navbar = () => {
 												Bán buôn, bán lẻ
 											</h1>
 										</p>
-										<div className='flex-col flex w-full gap-2'>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='game-icons:clothes'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Thời trang
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='ic:twotone-local-grocery-store'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Tạp hóa & Siêu thị
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='gridicons:phone'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Điện thoại & Điện máy
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='icon-park-outline:boy-stroller'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Mẹ & Bé
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='mi:book'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Sách & Văn phòng phẩm
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='solar:cosmetic-linear'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Mỹ phẩm
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='jam:tools'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Sản xuất
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='fluent:food-grains-20-regular'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Nông sản & Thực phẩm
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='fa-regular:plus-square'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Khác
-												</h4>
-											</div>
+										<div className='flex-col flex w-full'>
+											{navItemTypes.solutions.trade.map(
+												(item, idx) => (
+													<div
+														key={idx}
+														className='flex items-center py-2 px-2 border-t-2  hover:bg-primary/10 gap-2'
+													>
+														<Icon
+															icon={item.icon}
+															className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
+															height={20}
+														/>
+														<h4 className='text-lg text-left font-medium'>
+															{item.title}
+														</h4>
+													</div>
+												)
+											)}
 										</div>
 									</div>
 								</li>
@@ -289,11 +218,14 @@ const Navbar = () => {
 												Ăn uống, giải trí
 											</h1>
 										</p>
-										<div className='flex-col flex w-full'>
+										<div className='flex-col flex w-full gap-2'>
 											<div
-												onClick={() => navigate('/solution')}
+												onClick={() =>
+													navigate('/solution')
+												}
 												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
+												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
+											>
 												<Icon
 													icon='uil:restaurant'
 													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
@@ -304,9 +236,12 @@ const Navbar = () => {
 												</h4>
 											</div>
 											<div
-												onClick={() => navigate('/solution')}
+												onClick={() =>
+													navigate('/solution')
+												}
 												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
+												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
+											>
 												<Icon
 													icon='maki:restaurant-noodle'
 													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
@@ -317,9 +252,12 @@ const Navbar = () => {
 												</h4>
 											</div>
 											<div
-												onClick={() => navigate('/solution')}
+												onClick={() =>
+													navigate('/solution')
+												}
 												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
+												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
+											>
 												<Icon
 													icon='ep:milk-tea'
 													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
@@ -330,9 +268,12 @@ const Navbar = () => {
 												</h4>
 											</div>
 											<div
-												onClick={() => navigate('/solution')}
+												onClick={() =>
+													navigate('/solution')
+												}
 												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
+												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
+											>
 												<Icon
 													icon='f7:music-mic'
 													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
@@ -343,9 +284,12 @@ const Navbar = () => {
 												</h4>
 											</div>
 											<div
-												onClick={() => navigate('/solution')}
+												onClick={() =>
+													navigate('/solution')
+												}
 												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
+												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
+											>
 												<Icon
 													icon='mdi:billiards'
 													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
@@ -356,9 +300,12 @@ const Navbar = () => {
 												</h4>
 											</div>
 											<div
-												onClick={() => navigate('/solution')}
+												onClick={() =>
+													navigate('/solution')
+												}
 												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
+												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
+											>
 												<Icon
 													icon='carbon:bar'
 													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
@@ -369,9 +316,12 @@ const Navbar = () => {
 												</h4>
 											</div>
 											<div
-												onClick={() => navigate('/solution')}
+												onClick={() =>
+													navigate('/solution')
+												}
 												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
+												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
+											>
 												<Icon
 													icon='ic:outline-fastfood'
 													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
@@ -382,9 +332,12 @@ const Navbar = () => {
 												</h4>
 											</div>
 											<div
-												onClick={() => navigate('/solution')}
+												onClick={() =>
+													navigate('/solution')
+												}
 												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
+												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
+											>
 												<Icon
 													icon='icon-park-outline:resting'
 													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
@@ -395,9 +348,12 @@ const Navbar = () => {
 												</h4>
 											</div>
 											<div
-												onClick={() => navigate('/solution')}
+												onClick={() =>
+													navigate('/solution')
+												}
 												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
+												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
+											>
 												<Icon
 													icon='fa-regular:plus-square'
 													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
@@ -425,26 +381,30 @@ const Navbar = () => {
 												Lưu trú,làm đẹp
 											</h1>
 										</p>
-										<div className='flex-col flex w-full'>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='solar:star-fall-outline'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Beauty Spa
-												</h4>
+										<div className='flex-col flex w-full '>
+											<div className='flex items-center py-3 px-2 hover:bg-primary/10'>
+												<div className='flex items-center gap-1 '>
+													<Icon
+														icon='solar:star-fall-outline'
+														className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
+														height={20}
+													/>
+													<h4 className='text-lg text-left font-medium'>
+														Beauty Spa
+													</h4>
+												</div>
 											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='tabler:massage'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Massage
-												</h4>
+											<div className='flex items-center py-3 px-2 border-t-2 p-1 hover:bg-primary/10'>
+												<div className='flex items-center gap-1 '>
+													<Icon
+														icon='solar:star-fall-outline'
+														className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
+														height={20}
+													/>
+													<h4 className='text-lg text-left font-medium'>
+														Massage
+													</h4>
+												</div>
 											</div>
 											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
 												<Icon
