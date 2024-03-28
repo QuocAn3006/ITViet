@@ -123,16 +123,6 @@ export const navItemTypes = {
 			},
 
 			{
-				title: 'Thời trang',
-				icon: 'icon-park:clothes-cardigan'
-			},
-
-			{
-				title: 'Mỹ phẩm',
-				icon: 'mdi:lipstick'
-			},
-
-			{
 				title: 'Tạp hóa & Siêu thị mini',
 				icon: 'mdi:cart-outline'
 			},
@@ -143,6 +133,31 @@ export const navItemTypes = {
 			{
 				title: 'Mẹ và bé',
 				icon: 'iconoir:stroller'
+			},
+
+			{
+				title: 'Sách và văn phòng phẩm',
+				icon: 'mi:book'
+			},
+
+			{
+				title: 'Mỹ phẩm',
+				icon: 'solar:cosmetic-linear'
+			},
+
+			{
+				title: 'Sản xuất',
+				icon: 'jam:tools'
+			},
+
+			{
+				title: 'Nông sản & Thực phẩm',
+				icon: 'jam:tools'
+			},
+
+			{
+				title: 'Khác',
+				icon: 'fa-regular:plus-square'
 			}
 		],
 

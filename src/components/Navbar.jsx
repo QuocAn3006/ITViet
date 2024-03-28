@@ -154,7 +154,7 @@ const Navbar = () => {
 					<div className='font-bold text-lg lg:flex items-center gap-12 hidden'>
 						<span className='hover:text-primary cursor-pointer relative group'>
 							Sản phẩm
-							<ul className='dropdown-menu grid-cols-1'>
+							<ul className='dropdown-menu w-72 grid-cols-1'>
 								{navItemTypes.product.map(item => (
 									<li
 										key={item.title}
@@ -172,7 +172,7 @@ const Navbar = () => {
 
 						<span className='hover:text-primary cursor-pointer relative group'>
 							Giải pháp
-							<ul className='dropdown-menu grid-cols-3 ml-4 flex items-center flex-col justify-between lg:flex-row gap-2 '>
+							<ul className='dropdown-menu w-[1200px] grid-cols-3 ml-4 flex items-center flex-col justify-between lg:flex-row gap-2 '>
 								<li className='w-full'>
 									<div className='rounded-2xl flex items-center w-full flex-col gap-2'>
 										<p className='font-bold text-xl items-center flex gap-4 py-1'>
@@ -187,97 +187,24 @@ const Navbar = () => {
 												Bán buôn, bán lẻ
 											</h1>
 										</p>
-										<div className='flex-col flex w-full gap-2'>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='game-icons:clothes'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Thời trang
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='ic:twotone-local-grocery-store'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Tạp hóa & Siêu thị
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='gridicons:phone'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Điện thoại & Điện máy
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='icon-park-outline:boy-stroller'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Mẹ & Bé
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='mi:book'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Sách & Văn phòng phẩm
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='solar:cosmetic-linear'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Mỹ phẩm
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='jam:tools'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Sản xuất
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='fluent:food-grains-20-regular'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Nông sản & Thực phẩm
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='fa-regular:plus-square'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Khác
-												</h4>
-											</div>
+										<div className='flex-col flex w-full'>
+											{navItemTypes.solutions.trade.map(
+												(item, idx) => (
+													<div
+														key={idx}
+														className='flex items-center py-2 px-2 border-t-2  hover:bg-primary/10 gap-2'
+													>
+														<Icon
+															icon={item.icon}
+															className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
+															height={20}
+														/>
+														<h4 className='text-lg text-left font-medium'>
+															{item.title}
+														</h4>
+													</div>
+												)
+											)}
 										</div>
 									</div>
 								</li>
