@@ -40,20 +40,18 @@ const Navbar = () => {
 				</button>
 
 				<div
-					className={`fixed inset-0 duration-300 ${
-						openMenu
-							? 'pointer-events-auto bg-black/60 overflow-y-auto overflow-x-hidden'
-							: 'pointer-events-none'
-					}`}
+					className={`fixed inset-0 duration-300 ${openMenu
+						? 'pointer-events-auto bg-black/60 overflow-y-auto overflow-x-hidden'
+						: 'pointer-events-none'
+						}`}
 					onClick={e => {
 						if (e.target !== e.currentTarget) return;
 						setOpenMenu(false);
 					}}
 				>
 					<div
-						className={`absolute min-h-screen right-0 w-full bg-white font-bold text-xl duration-300 overflow-auto z-10  ${
-							openMenu ? 'translate-x-0' : 'translate-x-full '
-						}`}
+						className={`absolute min-h-screen right-0 w-full bg-white font-bold text-xl duration-300 overflow-auto z-10  ${openMenu ? 'translate-x-0' : 'translate-x-full '
+							}`}
 					>
 						<Icon
 							icon='ic:round-close'
@@ -65,11 +63,10 @@ const Navbar = () => {
 						{navItems.map((item, idx) => (
 							<div key={idx}>
 								<div
-									className={`m-3 flex gap-2 items-center ${
-										menuType === item.key
-											? 'text-primary'
-											: ''
-									}`}
+									className={`m-3 flex gap-2 items-center ${menuType === item.key
+										? 'text-primary'
+										: ''
+										}`}
 									onClick={() => handleOpenSubMenu(item.key)}
 								>
 									<span className='hover:text-primary cursor-pointer flex flex-col py-2'>
@@ -80,11 +77,10 @@ const Navbar = () => {
 										<Icon
 											icon='icon-park-outline:right'
 											height={22}
-											className={`duration-300 mt-[6px] ${
-												menuType === item.key
-													? 'rotate-90'
-													: ''
-											}`}
+											className={`duration-300 mt-[6px] ${menuType === item.key
+												? 'rotate-90'
+												: ''
+												}`}
 										/>
 									)}
 								</div>
@@ -130,9 +126,8 @@ const Navbar = () => {
 	return (
 		<>
 			<header
-				className={`${
-					displayBgColor ? 'bg-white' : 'bg-transparent'
-				} py-3 fixed inset-x-0 duration-300`}
+				className={`${displayBgColor ? 'bg-white' : 'bg-transparent'
+					} py-3 fixed inset-x-0 duration-300`}
 			>
 				<nav className='max-w-7xl mx-auto flex justify-between items-center px-4'>
 					<div
@@ -192,7 +187,7 @@ const Navbar = () => {
 												(item, idx) => (
 													<div
 														key={idx}
-														className='flex items-center py-2 px-2 border-t-2  hover:bg-primary/10 gap-2'
+														className='flex items-center py-2 px-2 border-t-2 hover:bg-primary/10 gap-2'
 													>
 														<Icon
 															icon={item.icon}
@@ -223,151 +218,25 @@ const Navbar = () => {
 												Ăn uống, giải trí
 											</h1>
 										</p>
-										<div className='flex-col flex w-full gap-2'>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='uil:restaurant'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Nhà hàng
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='maki:restaurant-noodle'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Quán ăn
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='ep:milk-tea'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Cà phê, Trà sữa
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='f7:music-mic'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Karaoke
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='mdi:billiards'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Bida
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='carbon:bar'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Bar, Pub & Club
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='ic:outline-fastfood'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Căng tin
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='icon-park-outline:resting'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Trạm dừng chân
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='fa-regular:plus-square'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Khác
-												</h4>
-											</div>
+										<div className='flex-col flex w-full'>
+											{navItemTypes.solutions.entertainment.map(
+												(item, idx) => (
+													<div
+														key={idx}
+														className='flex items-center py-2 px-2 border-t-2 hover:bg-primary/10 gap-2'
+														onClick={() => navigate('/solution')}
+													>
+														<Icon
+															icon={item.icon}
+															className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
+															height={20}
+														/>
+														<h4 className='text-lg text-left font-medium'>
+															{item.title}
+														</h4>
+													</div>
+												)
+											)}
 										</div>
 									</div>
 								</li>
@@ -386,100 +255,24 @@ const Navbar = () => {
 												Lưu trú,làm đẹp
 											</h1>
 										</p>
-										<div className='flex-col flex w-full '>
-											<div className='flex items-center py-3 px-2 hover:bg-primary/10'>
-												<div className='flex items-center gap-1 '>
-													<Icon
-														icon='solar:star-fall-outline'
-														className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-														height={20}
-													/>
-													<h4 className='text-lg text-left font-medium'>
-														Beauty Spa
-													</h4>
-												</div>
-											</div>
-											<div className='flex items-center py-3 px-2 border-t-2 p-1 hover:bg-primary/10'>
-												<div className='flex items-center gap-1 '>
-													<Icon
-														icon='solar:star-fall-outline'
-														className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-														height={20}
-													/>
-													<h4 className='text-lg text-left font-medium'>
-														Massage
-													</h4>
-												</div>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='mingcute:hair-2-line'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-												/>
-												<h4 className='text-base text-left'>
-													Hair Salon & Nail
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='icon-park-outline:hotel'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Khách sạn & Nhà nghỉ
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='icon-park-outline:homestay'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Homestay
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='material-symbols:holiday-village-outline'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Villa, Resort
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='ion:fitness-outline'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Fitness & Yoga
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='mingcute:hospital-line'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Phòng khám
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='fa-regular:plus-square'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Khác
-												</h4>
-											</div>
+										<div className='flex-col flex w-full'>
+											{navItemTypes.solutions.beauty.map(
+												(item, idx) => (
+													<div
+														key={idx}
+														className='flex items-center py-2 px-2 border-t-2 hover:bg-primary/10 gap-2'
+													>
+														<Icon
+															icon={item.icon}
+															className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
+															height={20}
+														/>
+														<h4 className='text-lg text-left font-medium'>
+															{item.title}
+														</h4>
+													</div>
+												)
+											)}
 										</div>
 									</div>
 								</li>
