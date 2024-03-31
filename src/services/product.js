@@ -23,3 +23,32 @@ export const getProductList = async (limit, search) => {
 	}
 	return res.data;
 };
+
+export const getAllType = async () => {
+	const res = await axios.get(
+		`${import.meta.env.VITE_DATABASE_URL}/product/get-all-type`
+	);
+	return res.data;
+};
+
+export const getAllCategory = async () => {
+	const res = await axios.get(
+		`${import.meta.env.VITE_DATABASE_URL}/product/get-all-category`
+	);
+	return res.data;
+};
+
+export const getDetailProduct = async id => {
+	const res = await axios.get(
+		`${import.meta.env.VITE_DATABASE_URL}/product/get-details-product/${id}`
+	);
+	return res.data;
+};
+
+export const updatedProduct = async (id, data) => {
+	const res = await axios.put(
+		`${import.meta.env.VITE_DATABASE_URL}/product/update-product/${id}`,
+		data
+	);
+	return res;
+};
