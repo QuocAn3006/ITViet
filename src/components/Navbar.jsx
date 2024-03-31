@@ -154,7 +154,7 @@ const Navbar = () => {
 					<div className='font-bold text-lg lg:flex items-center gap-12 hidden'>
 						<span className='hover:text-primary cursor-pointer relative group'>
 							Sản phẩm
-							<ul className='dropdown-menu grid-cols-1'>
+							<ul className='dropdown-menu w-[300px] grid-cols-1'>
 								{navItemTypes.product.map(item => (
 									<li
 										key={item.title}
@@ -172,7 +172,7 @@ const Navbar = () => {
 
 						<span className='hover:text-primary cursor-pointer relative group'>
 							Giải pháp
-							<ul className='dropdown-menu grid-cols-3 ml-4 flex items-center flex-col justify-between lg:flex-row gap-2 '>
+							<ul className='dropdown-menu w-[1200px] grid-cols-3 ml-4 flex items-center flex-col justify-between lg:flex-row gap-2 '>
 								<li className='w-full'>
 									<div className='rounded-2xl flex items-center w-full flex-col gap-2'>
 										<p className='font-bold text-xl items-center flex gap-4 py-1'>
@@ -467,7 +467,7 @@ const Navbar = () => {
 														className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
 														height={20}
 													/>
-													<h4 className='text-lg text-left font-medium'>
+													<h4 className='text-base text-left font-medium'>
 														Beauty Spa
 													</h4>
 												</div>
@@ -479,7 +479,7 @@ const Navbar = () => {
 														className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
 														height={20}
 													/>
-													<h4 className='text-lg text-left font-medium'>
+													<h4 className='text-base text-left font-medium'>
 														Massage
 													</h4>
 												</div>
@@ -489,7 +489,7 @@ const Navbar = () => {
 													icon='mingcute:hair-2-line'
 													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
 												/>
-												<h4 className='text-base text-left'>
+												<h4 className='text-base text-left font-medium'>
 													Hair Salon & Nail
 												</h4>
 											</div>
