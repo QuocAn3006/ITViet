@@ -13,6 +13,7 @@ import { useForm } from 'antd/es/form/Form';
 import { useEffect, useState } from 'react';
 import { convertPrice, getBase64, renderOptions } from '../../utils';
 import * as ProductService from '../../services/product';
+import { Excel } from 'antd-table-saveas-excel';
 
 const ProductAdmin = () => {
 	const initial = () => ({
@@ -38,6 +39,7 @@ const ProductAdmin = () => {
 	const [searchValue, setSearchValue] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [isUpdating, setIsUpdating] = useState(false);
+	const [isDeleting, setIsDeleting] = useState(false);
 	const [form] = useForm();
 
 	const handleOnChange = e => {
@@ -150,6 +152,7 @@ const ProductAdmin = () => {
 			setDataUpdateProduct(res);
 			if (res.statusText === 'OK') {
 				message.success('Sửa sản phẩm thành công');
+				setRowSelected('');
 				handleCancelUpdateModal();
 				getProductList();
 			} else {
@@ -161,6 +164,28 @@ const ProductAdmin = () => {
 			setIsUpdating(false);
 		}
 	};
+
+	// delete product
+
+	const handleDeleteProduct = async id => {
+		setIsDeleting(true);
+		try {
+			const res = await ProductService.deleteProduct(id);
+			if (res.status == 'OK') {
+				message.success('Xóa sản phẩm thành công!');
+				setOpenDeleteModal(false);
+				getProductList();
+			} else {
+				message.error('Xóa sản phẩm thất bại');
+			}
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setIsDeleting(false);
+		}
+	};
+
+	// product handle
 
 	const getProductDetail = async id => {
 		const res = await ProductService.getDetailProduct(id);
@@ -196,28 +221,6 @@ const ProductAdmin = () => {
 		getAllCategory();
 	}, []);
 
-	const handleOpenModal = type => {
-		if (type === 'update') {
-			setOpenUpdateModal(true);
-		} else {
-			setOpenUpdateModal(false);
-			setOpenDeleteModal(true);
-		}
-	};
-
-	const renderAction = () => {
-		return (
-			<div
-				className='text-center ml-3 hover:text-red-600 cursor-pointer'
-				onClick={() => handleOpenModal('delete')}
-			>
-				<Icon
-					icon='material-symbols:delete-outline'
-					height={20}
-				/>
-			</div>
-		);
-	};
 	const columns = [
 		{
 			title: 'Tên sản phẩm',
@@ -236,18 +239,98 @@ const ProductAdmin = () => {
 		{
 			title: 'Loại hàng',
 			dataIndex: 'category'
-		},
-		{
-			title: 'Action',
-			dataIndex: 'action',
-			render: renderAction
 		}
 	];
+
 	const dataTables =
 		allProduct?.length > 0 &&
 		allProduct?.map(item => {
 			return { ...item, price: convertPrice(item.price), key: item._id };
 		});
+
+	const expandRowRender = () => {
+		return (
+			<div
+				className={`flex items-center gap-2 border border-[#4bac4d] p-1`}
+			>
+				<div className='min-h-[290px] p-3 w-[35%] flex items-center flex-col'>
+					<h1 className='text-lg text-primary font-semibold mb-8'>
+						{productDetail.name}
+					</h1>
+					<img
+						src={productDetail.image}
+						alt='image'
+						loading='lazy'
+					/>
+				</div>
+
+				<div className='flex flex-1 flex-col gap-3'>
+					<div className='flex flex-col gap-3'>
+						<div className='border-b border-b-[#ccc] pb-2 flex items-center gap-2'>
+							<span>Mã hàng hóa: </span>
+							<span className='font-semibold'>
+								{productDetail._id}
+							</span>
+						</div>
+
+						<div className='border-b border-b-[#ccc] pb-2 flex items-center gap-2'>
+							<span>Loại thực đơn: </span>
+							<span className='font-semibold'>
+								{productDetail.brand}
+							</span>
+						</div>
+
+						<div className='border-b border-b-[#ccc] pb-2 flex items-center gap-2'>
+							<span>Nhóm hàng: </span>
+							<span className='font-semibold'>
+								{productDetail.category}
+							</span>
+						</div>
+
+						<div className='border-b border-b-[#ccc] pb-2 flex items-center gap-2'>
+							<span>Giá bán: </span>
+							<span className='font-semibold'>
+								{convertPrice(productDetail.price)}
+							</span>
+						</div>
+					</div>
+
+					<div className='flex justify-end gap-2'>
+						<button
+							onClick={() => setOpenUpdateModal(true)}
+							className='px-[20px] py-[7px] text-white bg-[#4bac4d] font-medium rounded-md flex items-center gap-1'
+						>
+							<Icon
+								icon='material-symbols:check-box'
+								height={18}
+							/>
+							Cập nhật
+						</button>
+
+						<button
+							onClick={() => setOpenDeleteModal(true)}
+							className='px-[20px] py-[7px] text-white bg-[#db4e65] font-medium rounded-md flex items-center gap-1'
+						>
+							<Icon
+								icon='ph:trash-light'
+								height={18}
+							/>
+							Xóa
+						</button>
+					</div>
+				</div>
+			</div>
+		);
+	};
+
+	const exportExcel = () => {
+		const excel = new Excel();
+		excel
+			.addSheet('Danh sách sản phẩm')
+			.addColumns(columns)
+			.addDataSource(dataTables, { str2Percent: true })
+			.saveAs('DSSanPham.xlsx');
+	};
 	return (
 		<div className='w-full h-screen'>
 			<div className='max-w-7xl mx-auto pt-5'>
@@ -323,7 +406,10 @@ const ProductAdmin = () => {
 									Thêm mới
 								</button>
 
-								<button className='bg-green-600 text-white font-semibold text-base px-2 py-3 rounded-md flex items-center gap-1'>
+								<button
+									onClick={exportExcel}
+									className='bg-green-600 text-white font-semibold text-base px-2 py-3 rounded-md flex items-center gap-1'
+								>
 									<Icon
 										icon='clarity:export-solid'
 										height={19}
@@ -341,11 +427,17 @@ const ProductAdmin = () => {
 								<Table
 									columns={columns}
 									dataSource={dataTables}
+									expandable={{
+										expandedRowRender: expandRowRender,
+										expandRowByClick: true,
+										rowExpandable: () => true,
+										expandedRowKeys: [rowSelected],
+										expandIcon: () => <div />
+									}}
 									onRow={record => {
 										return {
 											onClick: () => {
 												setRowSelected(record._id);
-												setOpenUpdateModal(true);
 											}
 										};
 									}}
@@ -687,15 +779,40 @@ const ProductAdmin = () => {
 				onCancel={() => setOpenDeleteModal(false)}
 				footer={null}
 			>
-				<div className='flex flex-col gap-2 '>
-					<span>
-						Sản phẩm sẽ bị xóa hoàn toàn trong hệ thống <br />
-						Bạn có chắc chắn muốn xóa
-					</span>
-					<button className='flex  p-3 bg-red-700 text-white items-center text-center'>
-						Xác nhận
-					</button>
-				</div>
+				<Spin
+					delay={400}
+					spinning={isDeleting}
+				>
+					<div className='flex flex-col'>
+						<span className='pt-2 pb-4 text-lg'>
+							Sản phẩm sẽ bị xóa hoàn toàn trong hệ thống <br />
+							Bạn có chắc chắn muốn xóa
+						</span>
+						<div className='flex text-right justify-end items-baseline gap-2'>
+							<button
+								onClick={() => handleDeleteProduct(rowSelected)}
+								className='p-3 bg-[#db4e65] text-white font-semibold rounded-md flex items-center gap-1'
+							>
+								<Icon
+									icon='material-symbols:check-box'
+									height={18}
+								/>
+								Xác nhận
+							</button>
+
+							<button
+								onClick={() => setOpenDeleteModal(false)}
+								className='p-3 bg-[#898c8d] text-white font-semibold rounded-md flex items-center gap-1'
+							>
+								<Icon
+									icon='ion:ban-outline'
+									height={18}
+								/>
+								Bỏ qua
+							</button>
+						</div>
+					</div>
+				</Spin>
 			</Modal>
 		</div>
 	);

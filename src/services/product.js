@@ -45,6 +45,13 @@ export const getDetailProduct = async id => {
 	return res.data;
 };
 
+export const deleteProduct = async id => {
+	const res = await axios.delete(
+		`${import.meta.env.VITE_DATABASE_URL}/product/delete-product/${id}`
+	);
+	return res.data;
+};
+
 export const updatedProduct = async (id, data) => {
 	const res = await axios.put(
 		`${import.meta.env.VITE_DATABASE_URL}/product/update-product/${id}`,
