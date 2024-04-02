@@ -35,12 +35,11 @@ const NavbarAdmin = () => {
 									className='my-3 items-center'
 									height={25}
 								></Icon>
-								<h1 className='text-sm'>
-									Tiếng Việt
-								</h1>
+								<h1 className='text-sm'>Tiếng Việt</h1>
 								<Icon
 									icon='teenyicons:down-solid'
-									height={10}></Icon>
+									height={10}
+								></Icon>
 							</button>
 							<div className='hidden peer-hover:flex hover:flex bg-white drop-shadow-lg rounded-md gap-1 absolute top-12 z-40'>
 								<div className='hover:bg-gray-200 rounded-md flex items-center gap-2 p-5'>
@@ -49,25 +48,25 @@ const NavbarAdmin = () => {
 										className='items-center'
 										height={20}
 									></Icon>
-									<h1 className='text-sm'>
-										Tiếng Anh
-									</h1>
+									<h1 className='text-sm'>Tiếng Anh</h1>
 								</div>
 							</div>
 						</div>
 						<div className='h-[49px] py-4 cursor-pointer'>
 							<Icon
 								icon='material-symbols:mail-outline'
-								height={20}></Icon>
+								height={20}
+							></Icon>
 						</div>
 						<div className='flex h-[49px] items-center gap-1 px-3'>
 							<h1>Thiết lập</h1>
 							<Icon
 								icon='uiw:setting'
-								height={15}></Icon>
+								height={15}
+							></Icon>
 						</div>
 						<div className=''>
-							<button className=' flex peer hover:bg-gray-200 text-black gap-1 px-2 rounded-md relative'>
+							<button className='flex group hover:bg-gray-200 text-black gap-1 px-2 rounded-md relative'>
 								<h1 className='py-3 font-semibold'>
 									{user?.name}
 								</h1>
@@ -99,7 +98,9 @@ const NavbarAdmin = () => {
 									<h1>Thông tin gian hàng</h1>
 								</a>
 								<div
-									onClick={() => navigate('/')}
+									onClick={() =>
+										navigate(config.routes.login)
+									}
 									type='button'
 									className='hover:bg-gray-200 p-3 rounded-md flex gap-3 items-center'
 								>
