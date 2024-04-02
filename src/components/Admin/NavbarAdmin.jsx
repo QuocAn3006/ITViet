@@ -20,6 +20,41 @@ const NavbarAdmin = () => {
 						</h1>
 					</div>
 					<div className='flex hover cursor-pointer gap-1 '>
+						<div className='flex hover cursor-pointer items-center gap-1 px-3 text-gray-600'>
+							<Icon icon='ic:outline-contact-support'></Icon>
+							<h1>Hỗ trợ</h1>
+						</div>
+						<div className='flex hover cursor-pointer gap-2 items-center px-3 text-gray-600'>
+							<h1>Chi nhánh trung tâm</h1>
+							<Icon icon='mdi:address-marker'></Icon>
+						</div>
+						<div className='px-3 text-gray-600'>
+							<button className='flex peer gap-2 px-2 rounded-md relative items-center'>
+								<Icon
+									icon='emojione:flag-for-vietnam'
+									className='my-3 items-center'
+									height={25}
+								></Icon>
+								<h1 className='text-sm'>
+									Tiếng Việt
+								</h1>
+								<Icon
+									icon='teenyicons:down-solid'
+									height={10}></Icon>
+							</button>
+							<div className='hidden peer-hover:flex hover:flex bg-white drop-shadow-lg rounded-md gap-1 absolute top-12 z-40'>
+								<div className='hover:bg-gray-200 rounded-md flex items-center gap-2 p-5'>
+									<Icon
+										icon='emojione:flag-for-united-states'
+										className='items-center'
+										height={20}
+									></Icon>
+									<h1 className='text-sm'>
+										Tiếng Anh
+									</h1>
+								</div>
+							</div>
+						</div>
 						<div className=''>
 							<button className=' flex peer hover:bg-gray-200 text-black gap-1 px-2 rounded-md relative'>
 								<h1 className='py-3 font-semibold'>
