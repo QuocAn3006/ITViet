@@ -20,15 +20,15 @@ const NavbarAdmin = () => {
 						</h1>
 					</div>
 					<div className='flex hover cursor-pointer gap-1 '>
-						<div className='flex hover cursor-pointer items-center gap-1 px-3 text-gray-600'>
+						<div className='flex h-[49px] hover cursor-pointer items-center gap-1 px-3 text-gray-600'>
 							<Icon icon='ic:outline-contact-support'></Icon>
 							<h1>Hỗ trợ</h1>
 						</div>
-						<div className='flex hover cursor-pointer gap-2 items-center px-3 text-gray-600'>
+						<div className='flex h-[49px] hover cursor-pointer gap-2 items-center px-3 text-gray-600'>
 							<h1>Chi nhánh trung tâm</h1>
 							<Icon icon='mdi:address-marker'></Icon>
 						</div>
-						<div className='px-3 text-gray-600'>
+						<div className='px-3 h-[49px] text-gray-600'>
 							<button className='flex peer gap-2 px-2 rounded-md relative items-center'>
 								<Icon
 									icon='emojione:flag-for-vietnam'
@@ -54,6 +54,17 @@ const NavbarAdmin = () => {
 									</h1>
 								</div>
 							</div>
+						</div>
+						<div className='h-[49px] py-4 cursor-pointer'>
+							<Icon
+								icon='material-symbols:mail-outline'
+								height={20}></Icon>
+						</div>
+						<div className='flex h-[49px] items-center gap-1 px-3'>
+							<h1>Thiết lập</h1>
+							<Icon
+								icon='uiw:setting'
+								height={15}></Icon>
 						</div>
 						<div className=''>
 							<button className=' flex peer hover:bg-gray-200 text-black gap-1 px-2 rounded-md relative'>
