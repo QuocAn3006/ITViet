@@ -15,19 +15,21 @@ import { convertPrice, getBase64, renderOptions } from '../../utils';
 import * as ProductService from '../../services/product';
 import { Excel } from 'antd-table-saveas-excel';
 
-const ProductAdmin = () => {
+const ManageProductPage = () => {
 	const initial = () => ({
 		name: '',
 		image: '',
 		brand: '',
 		category: '',
 		price: '',
-		newType: ''
+		newType: '',
+		newCategory: ''
 	});
 	const [openModal, setOpenModal] = useState(false);
 	const [openUpdateModal, setOpenUpdateModal] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 	const [isAddNewType, setIsAddNewType] = useState(false);
+	const [isAddnewCategory, setIsAddnewCategory] = useState(false);
 	const [product, setProduct] = useState(initial());
 	const [productDetail, setProductDetail] = useState(initial());
 	const [dataCreateProduct, setDataCreateProduct] = useState({ data: null });
@@ -57,7 +59,8 @@ const ProductAdmin = () => {
 			image: '',
 			brand: '',
 			price: '',
-			newType: ''
+			newType: '',
+			newCategory: ''
 		});
 		form.resetFields();
 	};
@@ -69,7 +72,8 @@ const ProductAdmin = () => {
 			image: '',
 			brand: '',
 			price: '',
-			newType: ''
+			newType: '',
+			newCategory: ''
 		});
 		form.resetFields();
 	};
@@ -109,7 +113,7 @@ const ProductAdmin = () => {
 			image: product.image,
 			brand: isAddNewType ? product.newType : product.brand,
 			price: product.price,
-			category: product.category
+			category: isAddnewCategory ? product.newCategory : product.category
 		};
 		createProductApi(params);
 	};
@@ -449,6 +453,7 @@ const ProductAdmin = () => {
 				</div>
 			</div>
 			<Modal
+				forceRender
 				title='Thêm sản phẩm mới'
 				open={openModal}
 				footer={null}
@@ -478,7 +483,7 @@ const ProductAdmin = () => {
 						label='Loại thực đơn'
 						name='brand'
 					>
-						<div className='flex items-center gap-2 border-b-2 border-b-[#ccc] w-full px-2 py-1 '>
+						<div className='flex items-center gap-2 border-b-2 border-b-[#ccc] w-full px-2 py-1'>
 							<ConfigProvider
 								theme={{
 									token: {
@@ -503,7 +508,7 @@ const ProductAdmin = () => {
 								icon='ic:baseline-plus'
 								height={19}
 								className='hover:bg-[#ccc] hover:rounded-full cursor-pointer'
-								onClick={() => setIsAddNewType(true)}
+								onClick={() => setIsAddNewType(!isAddNewType)}
 							/>
 						</div>
 					</Form.Item>
@@ -554,9 +559,26 @@ const ProductAdmin = () => {
 								icon='ic:baseline-plus'
 								height={19}
 								className='hover:bg-[#ccc] hover:rounded-full cursor-pointer'
+								onClick={() =>
+									setIsAddnewCategory(!isAddnewCategory)
+								}
 							/>
 						</div>
 					</Form.Item>
+
+					{isAddnewCategory && (
+						<Form.Item
+							label='Loại hàng mới'
+							name='newCategory'
+						>
+							<input
+								value={product.category}
+								onChange={handleOnChange}
+								name='newCategory'
+								className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
+							/>
+						</Form.Item>
+					)}
 
 					<Form.Item
 						label='Giá bán'
@@ -605,6 +627,7 @@ const ProductAdmin = () => {
 			</Modal>
 
 			<Modal
+				forceRender
 				title='Sửa sản phẩm'
 				open={openUpdateModal}
 				footer={null}
@@ -774,6 +797,7 @@ const ProductAdmin = () => {
 			</Modal>
 
 			<Modal
+				forceRender
 				title='Xóa hàng hóa'
 				open={openDeleteModal}
 				onCancel={() => setOpenDeleteModal(false)}
@@ -818,4 +842,4 @@ const ProductAdmin = () => {
 	);
 };
 
-export default ProductAdmin;
+export default ManageProductPage;

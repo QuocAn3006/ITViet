@@ -1,11 +1,18 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../provider/authProvider';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import config from '../config';
 
-export const ProtectedRoute = () => {
-	const { token } = useAuth();
+// eslint-disable-next-line react/prop-types
+export const ProtectedRoute = ({ children }) => {
+	const navigate = useNavigate();
+	const user = useSelector(state => state?.user);
+	console.log(user);
+	useEffect(() => {
+		if (!user.accessToken) {
+			navigate(config.routes.login);
+		}
+	}, [user]);
 
-	if (!token) {
-		return <Navigate to='/login' />;
-	}
-	return <Outlet />;
+	return <>{children}</>;
 };

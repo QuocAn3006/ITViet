@@ -1,55 +1,67 @@
 import AdminLayout from '../Layouts/AdminLayout';
 import DefaultLayout from '../Layouts/DefaultLayout';
-import AdminPage from '../pages/AdminPage';
-import CashierPage from '../pages/CashierPage';
+import config from '../config';
+import AdminPage from '../pages/Admin/AdminPage';
+import CashierPage from '../pages/Admin/CashierPage';
 import ChargePage from '../pages/ChargePage';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
+import ManageProductPage from '../pages/Admin/ManageProductPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import RegisterPage from '../pages/RegisterPage';
 import SolutionPage from '../pages/SolutionPage';
+import { ProtectedRoute } from './ProtectedRoute';
 
 export const privateRoutes = [
 	{
-		path: '/cashier',
+		path: config.routes.cashier,
 		page: CashierPage,
-		layout: null
+		layout: null,
+		protected: ProtectedRoute
 	},
 	{
-		path: '/admin',
+		path: config.routes.admin,
 		page: AdminPage,
-		layout: AdminLayout
+		layout: AdminLayout,
+		protected: ProtectedRoute
+	},
+
+	{
+		path: config.routes.manageProduct,
+		page: ManageProductPage,
+		layout: AdminLayout,
+		protected: ProtectedRoute
 	}
 ];
 
 export const routes = [
 	{
-		path: '/',
+		path: config.routes.home,
 		page: HomePage
 	},
 	{
-		path: '/login',
+		path: config.routes.login,
 		page: LoginPage,
 		layout: null
 	},
 
 	{
-		path: '/register',
+		path: config.routes.register,
 		page: RegisterPage,
 		layout: null
 	},
 
 	{
-		path: '*',
+		path: config.routes.notfound,
 		page: NotFoundPage
 	},
 	{
-		path: '/solution',
+		path: config.routes.solution,
 		page: SolutionPage,
 		layout: DefaultLayout
 	},
 	{
-		path: '/charge',
+		path: config.routes.charge,
 		page: ChargePage,
 		layout: DefaultLayout
 	}

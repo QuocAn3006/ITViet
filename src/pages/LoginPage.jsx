@@ -1,10 +1,11 @@
 import { Icon } from '@iconify/react';
 import * as UserService from '../services/user';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { useDispatch } from 'react-redux';
 import { updatedUser } from '../redux/Slice/userSlice';
+import { useEffect, useState } from 'react';
+import config from '../config';
 
 const LoginPage = () => {
 	const [email, setEmail] = useState('');
@@ -34,6 +35,8 @@ const LoginPage = () => {
 		);
 	};
 
+	// const {handleLogin} = useContext(userAuthContext)
+
 	const handleLogin = async (data, key) => {
 		const res = await UserService.login(data);
 
@@ -54,16 +57,15 @@ const LoginPage = () => {
 			}
 			switch (key) {
 				case 'cashier':
-					return navigate('/cashier');
+					return navigate(config.routes.cashier);
 				case 'admin':
-					return navigate('/admin');
+					return navigate(config.routes.admin);
 			}
 		}
 	};
 	useEffect(() => {
-		handleLogin();
+		handleLogin;
 	}, []);
-
 	return (
 		<div
 			className='relative'

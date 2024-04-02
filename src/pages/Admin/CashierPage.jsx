@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 import { Icon } from '@iconify/react';
 import { Modal, Table, Tabs } from 'antd';
-import { tableOrder } from '../constants';
+import { tableOrder } from '../../constants';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -11,11 +11,12 @@ import {
 	decreaseAmount,
 	increaseAmount,
 	removeProduct
-} from '../redux/Slice/orderSlice';
+} from '../../redux/Slice/orderSlice';
 import { useReactToPrint } from 'react-to-print';
-import * as ProductService from '../services/product';
-import { convertPrice } from '../utils';
+import * as ProductService from '../../services/product';
+import { convertPrice } from '../../utils';
 import { useNavigate } from 'react-router-dom';
+import config from '../../config';
 
 const CashierPage = () => {
 	const [selectedTable, setSelectedTable] = useState(null);
@@ -258,7 +259,7 @@ const CashierPage = () => {
 						height={20}
 					/>
 					{user.name}
-					<ul className='dropdown-menu grid-cols-1 right-20 z-20'>
+					<ul className='dropdown-menu grid-cols-1 group-hover:top-5 right-20 z-20'>
 						<li className='hover:text-primary text-base flex items-center gap-1'>
 							<Icon
 								icon='ph:user-light'
@@ -275,7 +276,7 @@ const CashierPage = () => {
 						</li>
 						<li
 							className='hover:text-primary text-base flex items-center gap-1'
-							onClick={() => navigate('/login')}
+							onClick={() => navigate(config.routes.login)}
 						>
 							<Icon
 								icon='ic:twotone-logout'

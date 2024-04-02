@@ -1,6 +1,7 @@
 import { Icon } from '@iconify/react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import config from '../../config';
 
 const NavbarAdmin = () => {
 	const navigate = useNavigate();
@@ -9,7 +10,10 @@ const NavbarAdmin = () => {
 		<header className='flex flex-col'>
 			<nav className='gap-2 h-12  w-full'>
 				<div className='max-w-7xl mx-auto flex item-center justify-between'>
-					<div className='flex gap-1 items-center'>
+					<div
+						className='flex gap-1 items-center'
+						onClick={() => navigate(config.routes.home)}
+					>
 						<img
 							src='../src/assets/images/logo.png'
 							alt=''
@@ -54,7 +58,9 @@ const NavbarAdmin = () => {
 									<h1>Thông tin gian hàng</h1>
 								</a>
 								<div
-									onClick={() => navigate('/')}
+									onClick={() =>
+										navigate(config.routes.login)
+									}
 									type='button'
 									className='hover:bg-gray-200 p-3 rounded-md flex gap-3 items-center'
 								>
@@ -75,7 +81,10 @@ const NavbarAdmin = () => {
 						<Icon icon='ph:eye-bold'></Icon>
 						<h1>Tổng quan</h1>
 					</div>
-					<div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
+					<div
+						onClick={() => navigate(config.routes.manageProduct)}
+						className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'
+					>
 						<Icon icon='gravity-ui:box'></Icon>
 						<h1>Hàng hóa</h1>
 					</div>

@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import config from '../config';
 
 const NotFoundPage = () => {
 	const navigate = useNavigate();
@@ -11,7 +12,7 @@ const NotFoundPage = () => {
 				Oops! Trang không tồn tại
 			</h3>
 			<div
-				onClick={() => navigate('/')}
+				onClick={() => navigate(config.routes.home)}
 				type='button'
 				className='cursor-pointer mt-4 rounded-full px-6 py-2.5 bg-primary text-black font-bold'
 			>
