@@ -1,20 +1,16 @@
 /* eslint-disable react/prop-types */
-import {
-	BrowserRouter as Router,
-	Route,
-	Routes,
-	Navigate
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { privateRoutes, routes } from './router/index';
 import DefaultLayout from './Layouts/DefaultLayout';
 import * as UserService from './services/user';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { jwtDecode } from 'jwt-decode';
 import { resetUser, updatedUser } from './redux/Slice/userSlice';
+import AdminLayout from './Layouts/AdminLayout';
+import { ProtectedRoute } from './router/ProtectedRoute';
 
 function App() {
-	const [isAuthenciated, setIsAuthenciated] = useState(false);
 	const user = useSelector(state => state?.user);
 	const dispatch = useDispatch();
 	const handleGetDetailUser = async (id, token) => {
@@ -40,14 +36,6 @@ function App() {
 		}
 	}, []);
 
-	useEffect(() => {
-		if (user) {
-			setIsAuthenciated(true);
-		} else {
-			setIsAuthenciated(false);
-		}
-	});
-
 	UserService.axiosJWT.interceptors.request.use(
 		async config => {
 			const { decoded } = handleDecode();
@@ -70,10 +58,6 @@ function App() {
 			return Promise.reject(error);
 		}
 	);
-
-	const PrivateRoutes = ({ isAuthenciated, route }) => {
-		return isAuthenciated ? <route.page /> : <Navigate to='/login' />;
-	};
 
 	return (
 		<>
@@ -101,7 +85,8 @@ function App() {
 					})}
 
 					{privateRoutes.map(route => {
-						let Layout = DefaultLayout;
+						const Page = route.page;
+						let Layout = AdminLayout;
 						if (route?.layout) {
 							Layout = route?.layout;
 						} else if (route?.layout === null) {
@@ -113,10 +98,9 @@ function App() {
 								path={route.path}
 								element={
 									<Layout>
-										<PrivateRoutes
-											isAuthenciated={isAuthenciated}
-											route={route}
-										/>
+										<ProtectedRoute>
+											<Page />
+										</ProtectedRoute>
 									</Layout>
 								}
 							/>

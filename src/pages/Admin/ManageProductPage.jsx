@@ -1,8 +1,17 @@
 import { Icon } from '@iconify/react';
-import { Form, Modal, Table, Upload, message } from 'antd';
+import {
+	ConfigProvider,
+	Form,
+	Modal,
+	Select,
+	Spin,
+	Table,
+	Upload,
+	message
+} from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, useState } from 'react';
-import { getBase64 } from '../../utils';
+import { convertPrice, getBase64, renderOptions } from '../../utils';
 import * as ProductService from '../../services/product';
 import { Excel } from 'antd-table-saveas-excel';
 
@@ -11,11 +20,18 @@ const ProductAdmin = () => {
 		name: '',
 		image: '',
 		brand: '',
-		price: ''
+		category: '',
+		price: '',
+		newType: ''
 	});
 	const [openModal, setOpenModal] = useState(false);
+	const [openUpdateModal, setOpenUpdateModal] = useState(false);
+	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const [isAddNewType, setIsAddNewType] = useState(false);
 	const [product, setProduct] = useState(initial());
+	const [productDetail, setProductDetail] = useState(initial());
 	const [dataCreateProduct, setDataCreateProduct] = useState({ data: null });
+	const [dataUpdateProduct, setDataUpdateProduct] = useState({ data: null });
 	const [allProduct, setAllProduct] = useState([]);
 	const [typeProduct, setTypeProduct] = useState([]);
 	const [category, setCategory] = useState([]);
@@ -23,18 +39,37 @@ const ProductAdmin = () => {
 	const [searchValue, setSearchValue] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [isUpdating, setIsUpdating] = useState(false);
+	const [isDeleting, setIsDeleting] = useState(false);
 	const [form] = useForm();
 
 	const handleOnChange = e => {
 		setProduct({ ...product, [e.target.name]: e.target.value });
 	};
+
+	const handleOnChangeDetails = e => {
+		setProductDetail({ ...productDetail, [e.target.name]: e.target.value });
+	};
+
 	const handleCancelModal = () => {
 		setOpenModal(false);
 		setProduct({
 			name: '',
 			image: '',
 			brand: '',
-			price: ''
+			price: '',
+			newType: ''
+		});
+		form.resetFields();
+	};
+
+	const handleCancelUpdateModal = () => {
+		setOpenUpdateModal(false);
+		setProductDetail({
+			name: '',
+			image: '',
+			brand: '',
+			price: '',
+			newType: ''
 		});
 		form.resetFields();
 	};
@@ -47,13 +82,23 @@ const ProductAdmin = () => {
 		setProduct({ ...product, image: file.preview });
 	};
 
+	const handleOnChangeImageDetail = async ({ fileList }) => {
+		const file = fileList[0];
+		if (!file.url && !file.preview) {
+			file.preview = await getBase64(file.originFileObj);
+		}
+		setProductDetail({ ...productDetail, image: file.preview });
+	};
+
+	// create product
 	const createProductApi = async data => {
-		const { name, image, brand, price } = data;
+		const { name, image, brand, price, category } = data;
 		const res = await ProductService.createProduct({
 			name,
 			image,
 			brand,
-			price
+			price,
+			category
 		});
 		setDataCreateProduct(res);
 	};
@@ -62,8 +107,9 @@ const ProductAdmin = () => {
 		const params = {
 			name: product.name,
 			image: product.image,
-			brand: product.brand,
-			price: product.price
+			brand: isAddNewType ? product.newType : product.brand,
+			price: product.price,
+			category: product.category
 		};
 		createProductApi(params);
 	};
@@ -71,6 +117,7 @@ const ProductAdmin = () => {
 	useEffect(() => {
 		if (dataCreateProduct.status === 'OK') {
 			message.success('Thêm sản phẩm thành công');
+			getProductList();
 			handleCancelModal();
 		}
 		if (dataCreateProduct.status === 'ERR') {
@@ -105,6 +152,7 @@ const ProductAdmin = () => {
 			setDataUpdateProduct(res);
 			if (res.statusText === 'OK') {
 				message.success('Sửa sản phẩm thành công');
+				setRowSelected('');
 				handleCancelUpdateModal();
 				getProductList();
 			} else {
@@ -116,6 +164,28 @@ const ProductAdmin = () => {
 			setIsUpdating(false);
 		}
 	};
+
+	// delete product
+
+	const handleDeleteProduct = async id => {
+		setIsDeleting(true);
+		try {
+			const res = await ProductService.deleteProduct(id);
+			if (res.status == 'OK') {
+				message.success('Xóa sản phẩm thành công!');
+				setOpenDeleteModal(false);
+				getProductList();
+			} else {
+				message.error('Xóa sản phẩm thất bại');
+			}
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setIsDeleting(false);
+		}
+	};
+
+	// product handle
 
 	const getProductDetail = async id => {
 		const res = await ProductService.getDetailProduct(id);
@@ -145,6 +215,10 @@ const ProductAdmin = () => {
 
 	useEffect(() => {
 		getProductList();
+	}, [searchValue, dataUpdateProduct]);
+	useEffect(() => {
+		getAllType();
+		getAllCategory();
 	}, []);
 
 	const columns = [
@@ -156,23 +230,7 @@ const ProductAdmin = () => {
 		{
 			title: 'Giá',
 			dataIndex: 'price',
-			sorter: (a, b) => a.price - b.price,
-			filters: [
-				{
-					text: '>= 50',
-					value: '>='
-				},
-				{
-					text: '<= 50',
-					value: '<='
-				}
-			],
-
-			onFilter: (value, record) => {
-				if (value === '>=') {
-					return record.price >= 50;
-				} else return record.price <= 50;
-			}
+			sorter: (a, b) => a.price - b.price
 		},
 		{
 			title: 'Nhóm sản phẩm',
@@ -181,18 +239,13 @@ const ProductAdmin = () => {
 		{
 			title: 'Loại hàng',
 			dataIndex: 'category'
-		},
-		{
-			title: 'Action',
-			dataIndex: 'action',
-			render: renderAction
 		}
 	];
 
 	const dataTables =
 		allProduct?.length > 0 &&
 		allProduct?.map(item => {
-			return { ...item, key: item._id };
+			return { ...item, price: convertPrice(item.price), key: item._id };
 		});
 
 	const expandRowRender = () => {
@@ -279,20 +332,84 @@ const ProductAdmin = () => {
 			.saveAs('DSSanPham.xlsx');
 	};
 	return (
-		<div className='bg-[#f0f2f5] w-full h-screen'>
+		<div className='w-full h-screen'>
 			<div className='max-w-7xl mx-auto pt-5'>
-				<div className='flex justify-between items-center'>
-					<span className='text-xl'>Hàng hóa</span>
-					<div className='flex items-center gap-2'>
-						<button
-							onClick={() => setOpenModal(true)}
-							className='bg-green-600 text-white font-semibold text-base px-2 py-3 rounded-md flex items-center gap-1'
-						>
-							<Icon icon='ic:baseline-plus' />
-							Thêm mới
-						</button>
+				<div className='flex gap-4 '>
+					<div className='min-w-[284px] flex flex-col gap-3'>
+						<div className='w-full bg-white flex flex-col justify-start py-2 rounded-md'>
+							<h3 className='px-3 font-semibold'>Tìm kiếm</h3>
+							<div
+								className='w-full mb-2'
+								style={{ padding: '10px 12px 0' }}
+							>
+								<input
+									type='text'
+									placeholder='tìm kiếm sản phẩm'
+									className='w-full focus:outline-none border-b-2 border-b-[#bababa] pb-2'
+									value={searchValue}
+									onChange={e =>
+										setSearchValue(e.target.value)
+									}
+								/>
+							</div>
+						</div>
 
-								<button className='bg-green-600 text-white font-semibold text-base px-2 py-3 rounded-md flex items-center gap-1'>
+						<div className='w-full bg-white flex flex-col justify-start py-2 rounded-md'>
+							<h3 className='px-3 font-semibold'>
+								Nhóm sản phẩm
+							</h3>
+
+							{typeProduct?.data?.map((item, idx) => (
+								<div
+									className='w-full mb-2 flex items-center gap-3'
+									style={{ padding: '10px 12px 0' }}
+									key={idx}
+								>
+									<input
+										type='checkbox'
+										value={item}
+										className=''
+									/>
+									<label>{item}</label>
+								</div>
+							))}
+						</div>
+
+						<div className='w-full bg-white flex flex-col justify-start py-2 rounded-md'>
+							<h3 className='px-3 font-semibold'>Loại hàng</h3>
+
+							{category?.data?.map((item, idx) => (
+								<div
+									className='w-full mb-2 flex items-center gap-3'
+									style={{ padding: '10px 12px 0' }}
+									key={idx}
+								>
+									<input
+										type='checkbox'
+										value={item}
+										className=''
+									/>
+									<label>{item}</label>
+								</div>
+							))}
+						</div>
+					</div>
+					<div className='flex-1'>
+						<div className='flex justify-between items-center'>
+							<span className='text-2xl font-bold'>Hàng hóa</span>
+							<div className='flex items-center gap-2'>
+								<button
+									onClick={() => setOpenModal(true)}
+									className='bg-green-600 text-white font-semibold text-base px-2 py-3 rounded-md flex items-center gap-1'
+								>
+									<Icon icon='ic:baseline-plus' />
+									Thêm mới
+								</button>
+
+								<button
+									onClick={exportExcel}
+									className='bg-green-600 text-white font-semibold text-base px-2 py-3 rounded-md flex items-center gap-1'
+								>
 									<Icon
 										icon='clarity:export-solid'
 										height={19}
@@ -310,11 +427,17 @@ const ProductAdmin = () => {
 								<Table
 									columns={columns}
 									dataSource={dataTables}
+									expandable={{
+										expandedRowRender: expandRowRender,
+										expandRowByClick: true,
+										rowExpandable: () => true,
+										expandedRowKeys: [rowSelected],
+										expandIcon: () => <div />
+									}}
 									onRow={record => {
 										return {
 											onClick: () => {
 												setRowSelected(record._id);
-												setOpenUpdateModal(true);
 											}
 										};
 									}}
@@ -326,94 +449,141 @@ const ProductAdmin = () => {
 				</div>
 			</div>
 			<Modal
-				title='Tạo sản phẩm mới'
+				title='Thêm sản phẩm mới'
 				open={openModal}
 				footer={null}
+				className='max-w-[880px] min-w-[785px]'
 				onCancel={handleCancelModal}
 			>
 				<Form
 					form={form}
-					labelCol={{ span: 4 }}
-					wrapperCol={{ span: 20 }}
-					style={{ maxWidth: 550 }}
 					onFinish={handleCreateProduct}
+					labelCol={{ span: 4 }}
+					labelAlign='left'
+					wrapperCol={{ span: 20 }}
 				>
 					<Form.Item
-						label='Name'
+						label='Tên hàng'
 						name='name'
-						rules={[
-							{
-								required: true,
-								message: 'Please input your name product!'
-							}
-						]}
 					>
 						<input
 							value={product.name}
 							onChange={handleOnChange}
 							name='name'
-							className='border border-black w-full px-2 py-1 rounded-md focus:outline-none'
+							className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
 						/>
 					</Form.Item>
 
 					<Form.Item
-						label='Brand'
+						label='Loại thực đơn'
 						name='brand'
-						rules={[
-							{
-								required: true,
-								message: 'Please input your name brand!'
-							}
-						]}
 					>
-						<input
-							value={product.brand}
-							onChange={handleOnChange}
-							name='brand'
-							className='border border-black w-full px-2 py-1 rounded-md focus:outline-none'
-						/>
+						<div className='flex items-center gap-2 border-b-2 border-b-[#ccc] w-full px-2 py-1 '>
+							<ConfigProvider
+								theme={{
+									token: {
+										colorBorder: '#fff',
+										colorPrimaryHover: '#fff',
+										controlOutline: '#fff',
+										padding: '0 0'
+									}
+								}}
+							>
+								<Select
+									name='type'
+									value={product.brand}
+									onChange={value =>
+										setProduct({ ...product, brand: value })
+									}
+									options={renderOptions(typeProduct.data)}
+									className='focus:outline-none focus:border-b-[#4bac4d]'
+								/>
+							</ConfigProvider>
+							<Icon
+								icon='ic:baseline-plus'
+								height={19}
+								className='hover:bg-[#ccc] hover:rounded-full cursor-pointer'
+								onClick={() => setIsAddNewType(true)}
+							/>
+						</div>
+					</Form.Item>
+
+					{isAddNewType && (
+						<Form.Item
+							label='Loại thực đơn mới'
+							name='newType'
+						>
+							<input
+								value={product.newType}
+								onChange={handleOnChange}
+								name='newType'
+								className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
+							/>
+						</Form.Item>
+					)}
+
+					<Form.Item
+						label='Loại hàng'
+						name='category'
+					>
+						<div className='flex items-center gap-2 border-b-2 border-b-[#ccc] w-full px-2 py-1 '>
+							<ConfigProvider
+								theme={{
+									token: {
+										colorBorder: '#fff',
+										colorPrimaryHover: '#fff',
+										controlOutline: '#fff',
+										padding: '0 0'
+									}
+								}}
+							>
+								<Select
+									name='type'
+									value={product.category}
+									onChange={value =>
+										setProduct({
+											...product,
+											category: value
+										})
+									}
+									options={renderOptions(category.data)}
+									className='focus:outline-none focus:border-b-[#4bac4d]'
+								/>
+							</ConfigProvider>
+							<Icon
+								icon='ic:baseline-plus'
+								height={19}
+								className='hover:bg-[#ccc] hover:rounded-full cursor-pointer'
+							/>
+						</div>
 					</Form.Item>
 
 					<Form.Item
-						label='Price'
+						label='Giá bán'
 						name='price'
-						rules={[
-							{
-								required: true,
-								message: 'Please input your price!'
-							}
-						]}
 					>
 						<input
 							value={product.price}
 							onChange={handleOnChange}
 							name='price'
-							className='border border-black w-full px-2 py-1 rounded-md focus:outline-none'
+							className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
 						/>
 					</Form.Item>
 
 					<Form.Item
-						label='Image'
+						label='Ảnh sản phẩm'
 						name='image'
-						rules={[
-							{
-								required: true,
-								message: 'Please input your name product!'
-							}
-						]}
 					>
 						<div>
 							<Upload
+								listType='picture-card'
 								onChange={handleOnChangeImage}
 								maxCount={1}
 							>
-								<button className='flex items-center gap-2 border border-black p-2 rounded-md'>
-									<Icon
-										icon='material-symbols:upload'
-										height={20}
-									/>
-									Upload
-								</button>
+								<Icon
+									icon='material-symbols:upload'
+									height={20}
+								/>
 							</Upload>
 						</div>
 					</Form.Item>
@@ -609,15 +779,40 @@ const ProductAdmin = () => {
 				onCancel={() => setOpenDeleteModal(false)}
 				footer={null}
 			>
-				<div className='flex flex-col gap-2 '>
-					<span>
-						Sản phẩm sẽ bị xóa hoàn toàn trong hệ thống <br />
-						Bạn có chắc chắn muốn xóa
-					</span>
-					<button className='flex  p-3 bg-red-700 text-white items-center text-center'>
-						Xác nhận
-					</button>
-				</div>
+				<Spin
+					delay={400}
+					spinning={isDeleting}
+				>
+					<div className='flex flex-col'>
+						<span className='pt-2 pb-4 text-lg'>
+							Sản phẩm sẽ bị xóa hoàn toàn trong hệ thống <br />
+							Bạn có chắc chắn muốn xóa
+						</span>
+						<div className='flex text-right justify-end items-baseline gap-2'>
+							<button
+								onClick={() => handleDeleteProduct(rowSelected)}
+								className='p-3 bg-[#db4e65] text-white font-semibold rounded-md flex items-center gap-1'
+							>
+								<Icon
+									icon='material-symbols:check-box'
+									height={18}
+								/>
+								Xác nhận
+							</button>
+
+							<button
+								onClick={() => setOpenDeleteModal(false)}
+								className='p-3 bg-[#898c8d] text-white font-semibold rounded-md flex items-center gap-1'
+							>
+								<Icon
+									icon='ion:ban-outline'
+									height={18}
+								/>
+								Bỏ qua
+							</button>
+						</div>
+					</div>
+				</Spin>
 			</Modal>
 		</div>
 	);

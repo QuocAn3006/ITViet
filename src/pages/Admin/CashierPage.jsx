@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import { Icon } from '@iconify/react';
-import { Table, Tabs } from 'antd';
+import { Modal, Table, Tabs } from 'antd';
 import { tableOrder } from '../constants';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +26,15 @@ const CashierPage = () => {
 	const printref = useRef();
 	const dispatch = useDispatch();
 	const order = useSelector(state => state?.order);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const showModal = () => {
+		setIsModalOpen(true);
+	};
+	const handleOk = () => {
+		setIsModalOpen(false);
+	};
+
 	const handleTableClick = idx => {
 		setSelectedTable(idx);
 		setSelectedTabKey('2');
@@ -413,7 +422,26 @@ const CashierPage = () => {
 									{convertPrice(priceMemo)}
 									<sup>đ</sup>
 								</span>
-								<span>0</span>
+								<div>
+									<span
+										onClick={showModal}
+										className='flex items-center gap-1'
+									>
+										0
+										<Icon icon='mdi:edit-outline' />
+									</span>
+
+									<Modal
+										title='Basic Modal'
+										open={isModalOpen}
+										onOk={handleOk}
+										onCancel={handleOk}
+									>
+										<p>Some contents...</p>
+										<p>Some contents...</p>
+										<p>Some contents...</p>
+									</Modal>
+								</div>
 								<span>0</span>
 							</span>
 						</div>

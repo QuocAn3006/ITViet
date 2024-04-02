@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { mobileDropMenus, navItemTypes, navItems } from '../constants';
 import Banner from './Banner';
 import { useNavigate } from 'react-router-dom';
+import config from '../config';
 
 const Navbar = () => {
 	const [displayBgColor, setDisplayBgColor] = useState(false);
@@ -66,10 +67,11 @@ const Navbar = () => {
 						{navItems.map((item, idx) => (
 							<div key={idx}>
 								<div
-									className={`m-3 flex gap-2 items-center ${menuType === item.key
-										? 'text-primary'
-										: ''
-										}`}
+									className={`m-3 flex gap-2 items-center ${
+										menuType === item.key
+											? 'text-primary'
+											: ''
+									}`}
 									onClick={() => handleOpenSubMenu(item.key)}
 								>
 									<span className='hover:text-primary cursor-pointer flex flex-col py-2'>
@@ -80,10 +82,11 @@ const Navbar = () => {
 										<Icon
 											icon='icon-park-outline:right'
 											height={22}
-											className={`duration-300 mt-[6px] ${menuType === item.key
-												? 'rotate-90'
-												: ''
-												}`}
+											className={`duration-300 mt-[6px] ${
+												menuType === item.key
+													? 'rotate-90'
+													: ''
+											}`}
 										/>
 									)}
 								</div>
@@ -129,11 +132,15 @@ const Navbar = () => {
 	return (
 		<>
 			<header
-				className={`${displayBgColor ? 'bg-white' : 'bg-transparent'
-					} py-3 fixed inset-x-0 duration-300`}
+				className={`${
+					displayBgColor ? 'bg-white' : 'bg-transparent'
+				} py-3 fixed inset-x-0 duration-300`}
 			>
 				<nav className='max-w-7xl mx-auto flex justify-between items-center px-4'>
-					<div className='cursor-pointer flex items-center gap-1'>
+					<div
+						className='cursor-pointer flex items-center gap-1'
+						onClick={() => navigate('/')}
+					>
 						<img
 							src='../src/assets/images/logo.png'
 							alt='logo'
@@ -218,151 +225,25 @@ const Navbar = () => {
 												Ăn uống, giải trí
 											</h1>
 										</p>
-										<div className='flex-col flex w-full gap-2'>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='uil:restaurant'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Nhà hàng
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='maki:restaurant-noodle'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Quán ăn
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='ep:milk-tea'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Cà phê, Trà sữa
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='f7:music-mic'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Karaoke
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='mdi:billiards'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Bida
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='carbon:bar'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Bar, Pub & Club
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='ic:outline-fastfood'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Căng tin
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='icon-park-outline:resting'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Trạm dừng chân
-												</h4>
-											</div>
-											<div
-												onClick={() =>
-													navigate('/solution')
-												}
-												type='button'
-												className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'
-											>
-												<Icon
-													icon='fa-regular:plus-square'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Khác
-												</h4>
-											</div>
+										<div className='flex-col flex w-full'>
+											{navItemTypes.solutions.entertainment.map(
+												(item, idx) => (
+													<div
+														key={idx}
+														className='flex items-center py-2 px-2 border-t-2 hover:bg-primary/10 gap-2'
+														onClick={() => navigate('/solution')}
+													>
+														<Icon
+															icon={item.icon}
+															className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
+															height={20}
+														/>
+														<h4 className='text-lg text-left font-medium'>
+															{item.title}
+														</h4>
+													</div>
+												)
+											)}
 										</div>
 									</div>
 								</li>
@@ -484,7 +365,7 @@ const Navbar = () => {
 							Khách hàng
 						</span>
 						<div
-							onClick={() => navigate('/charge')}
+							onClick={() => navigate(config.routes.charge)}
 							type='button'
 							className='hover:text-primary cursor-pointer relative group'>
 							Phí dịch vụ
@@ -497,7 +378,7 @@ const Navbar = () => {
 						</span>
 						<button
 							className='bg-primary rounded-2xl px-[1.5rem] py-1 text-white font-bold'
-							onClick={() => navigate('/login')}
+							onClick={() => navigate(config.routes.login)}
 						>
 							Đăng nhập
 						</button>
