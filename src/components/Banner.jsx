@@ -1,33 +1,41 @@
 /* eslint-disable react/prop-types */
-import logo from '../assets/images/logo.png';
+import logo from '../assets/images/img_logo.png';
+import abc from '../assets/images/cc.png';
 const Banner = props => {
 	const { openMenu } = props;
 	return (
-		<div className='bg-gradient-to-r from-sky-300 to-lime-100'>
-			<div className='max-w-7xl flex flex-col lg:flex-row justify-between items-center mx-auto min-h-screen'>
-				<div className='flex flex-col lg:w-[45%]'>
-					<h2 className='text-4xl text-center lg:text-left lg:text-[4rem] lg:leading-[60px] mt-12 mb-3 font-bold overflow-hidden text-ellipsis '>
-						Phần mềm
-						<br />
-						quản lý bán hàng
-						<br />
-						phổ biến nhất
-					</h2>
-					<div className={`flex gap-4 mt-2`}>
-						<button className='p-5 text-white rounded-3xl bg-primary font-semibold'>
-							Dùng thử miễn phí
-						</button>
-						<button
-							className='p-5 text-primary rounded-3xl bg-[#cce2fd] font-bold animate-button'
-							style={{ zIndex: openMenu ? -1 : 0 }}
-						>
-							Khám phá
-						</button>
-					</div>
-				</div>
+		<>
+			{isHomeBanner && (
+				<div className='bg-gradient-to-r from-slate-200 to-primary/20 w-full min-h-[80vh]'>
+					<div className='max-w-7xl mx-auto'>
+						<div className='flex h-screen flex-nowrap flex-col lg:flex-row gap-10'>
+							<div className='flex flex-col items-center justify-center mt-36 lg:mt-0 gap-8 lg:w-[35%] w-full'>
+								<h1 className='font-bold text-5xl leading-tight text-center'>
+									{title}
+								</h1>
 
-							{/* <div className='flex flex-1 items-center justify-center lg:w-[65%]'>
-								<div className='relative'>
+								<div className='flex items-center gap-2 '>
+									<button className='px-5 py-3 text-base bg-primary text-white rounded-3xl font-semibold'>
+										Dùng thử miễn phí
+									</button>
+
+									<button className='px-5 py-3 text-base bg-[#cce2fd] text-primary rounded-3xl font-semibold '>
+										Khám phá
+									</button>
+								</div>
+							</div>
+
+							<div
+								className='hidden md:flex flex-1 items-center justify-center lg:w-[65%] relative z-10'
+								style={{
+									backgroundImage:
+										'url(https://cdn-kvweb.kiotviet.vn/kiotviet-website/wp-content/uploads/2023/11/21043602/banner-homemajor-2.webp)',
+									backgroundPosition: 'bottom',
+									backgroundSize: 'contain',
+									backgroundRepeat: 'no-repeat'
+								}}
+							>
+								<div className='absolute left-0 top-[18%] w-fit'>
 									<div
 										className='w-[560px] h-[560px]'
 										style={{
@@ -40,7 +48,29 @@ const Banner = props => {
 										
 									</div>
 								</div>
-							</div> */}
+
+								<div className='absolute left-[5%] bottom-[20%] w-fit'>
+									<div
+										className='flex items-center bg-white rounded-3xl px-4 py-2'
+										style={{
+											boxShadow:
+												' 0 8px 24px 0 rgba(0,48,104,.04)'
+										}}
+									>
+										<span className='w-14 h-14 flex items-center justify-center'>
+											<img
+												src={logo}
+												alt='logo'
+												width={45}
+												height={45}
+											/>
+										</span>
+										<span className='text-base font-semibold text-[#002249]'>
+											Giải pháp thanh toán và vay vốn
+										</span>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -51,9 +81,9 @@ const Banner = props => {
 					<div
 						className='bg-cover h-[432px]'
 						style={{
-							backgroundImage: `url(${banner})`,
-							height: '60vh',
-							zIndex: openMenu ? -1 : 0
+							backgroundImage:
+								'url(https://cdn-kvweb.kiotviet.vn/kiotviet-website/wp-content/uploads/2023/10/08101925/quan_bg-min.png)',
+							backgroundRepeat: 'no-repeat'
 						}}
 					>
 						<div className=' absolute left-[3%] lg:top-[18%] lg:left-0 top-0 w-fit'>
