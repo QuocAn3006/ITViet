@@ -134,7 +134,7 @@ const Navbar = () => {
 			<header
 				className={`${
 					displayBgColor ? 'bg-white' : 'bg-transparent'
-				} py-3 fixed inset-x-0 duration-300`}
+				} py-3 fixed inset-x-0 duration-300 z-40`}
 			>
 				<nav className='max-w-7xl mx-auto flex justify-between items-center px-4'>
 					<div
@@ -174,7 +174,7 @@ const Navbar = () => {
 
 						<span className='hover:text-primary cursor-pointer relative group'>
 							Giải pháp
-							<ul className='dropdown-menu grid-cols-3 ml-4 flex items-center flex-col justify-between lg:flex-row gap-2 '>
+							<ul className='dropdown-menu w-[1200px] grid-cols-3 ml-4 flex items-center flex-col justify-between lg:flex-row gap-2 '>
 								<li className='w-full'>
 									<div className='rounded-2xl flex items-center w-full flex-col gap-2'>
 										<p className='font-bold text-xl items-center flex gap-4 py-1'>

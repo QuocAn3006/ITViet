@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import banner from '../assets/images/banner-homemajor-2.webp';
+import logo from '../assets/images/logo.png';
 const Banner = props => {
 	const { openMenu } = props;
 	return (
@@ -26,9 +26,30 @@ const Banner = props => {
 					</div>
 				</div>
 
-				<div className='w-full lg:w-[55%] mt-12'>
+							{/* <div className='flex flex-1 items-center justify-center lg:w-[65%]'>
+								<div className='relative'>
+									<div
+										className='w-[560px] h-[560px]'
+										style={{
+											backgroundImage:
+												'url(https://i.pinimg.com/originals/6a/a9/a5/6aa9a58e2c210b4c8540b16f625160a0.jpg)',
+											backgroundSize: 'contain',
+											backgroundPosition: 'bottom'
+										}}
+									>
+										
+									</div>
+								</div>
+							</div> */}
+						</div>
+					</div>
+				</div>
+			)}
+
+			{isSolutionPage && (
+				<div className='pt-[65px]'>
 					<div
-						className='relative bg-contain bg-no-repeat bg-bottom'
+						className='bg-cover h-[432px]'
 						style={{
 							backgroundImage: `url(${banner})`,
 							height: '60vh',

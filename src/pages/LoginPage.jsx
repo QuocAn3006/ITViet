@@ -10,18 +10,21 @@ import config from '../config';
 const LoginPage = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [error, setError] = useState('');
 	const dispatch = useDispatch();
 
 	const buttomItems = [
 		{
 			key: 'admin',
 			title: 'Quản lý',
-			icon: 'ph:chart-line'
+			icon: 'ph:chart-line',
+			bgColor: 'primary'
 		},
 		{
 			key: 'cashier',
 			title: 'Cửa hàng',
-			icon: 'iconoir:cart'
+			icon: 'iconoir:cart',
+			bgColor: '[#28b44f]'
 		}
 	];
 
@@ -35,10 +38,12 @@ const LoginPage = () => {
 		);
 	};
 
-	// const {handleLogin} = useContext(userAuthContext)
-
 	const handleLogin = async (data, key) => {
 		const res = await UserService.login(data);
+
+		if (res?.status === 'ERR') {
+			setError(res?.message);
+		}
 
 		if (res?.status === 'OK') {
 			localStorage.setItem(
@@ -126,11 +131,11 @@ const LoginPage = () => {
 							/>
 						</div>
 
-						{/* {error && (
-							<aside className='mt-5 text-red-500 text-sm'>
+						{error && (
+							<aside className='mt-5 text-red-500 text-sm font-semibold ml-6'>
 								{error}
 							</aside>
-						)} */}
+						)}
 
 						<aside className='mt-5 text-right text-sm text-primary'>
 							<label htmlFor=''>Quên mật khẩu?</label>
@@ -144,7 +149,7 @@ const LoginPage = () => {
 								onClick={() =>
 									handleLogin({ email, password }, item.key)
 								}
-								className='flex items-center justify-center py-3 px-5 gap-2 rounded-3xl font-bold text-white bg-primary w-[50%]'
+								className={`flex items-center justify-center py-3 px-5 gap-2 rounded-3xl font-bold text-white bg-${item.bgColor} w-[50%]`}
 							>
 								<Icon
 									icon={item.icon}

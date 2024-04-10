@@ -141,6 +141,7 @@ const CashierPage = () => {
 									width={50}
 									height={50}
 									className='h-full max-w-full pt-2'
+									loading='lazy'
 								/>
 							</div>
 							<h2 className='overflow-hidden font-semibold'>
