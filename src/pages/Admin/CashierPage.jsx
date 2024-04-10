@@ -1,8 +1,9 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/display-name */
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import { Icon } from '@iconify/react';
-import { Modal, Table, Tabs } from 'antd';
+import { Modal, Table, Tabs, Switch, ConfigProvider, message } from 'antd';
 import { tableOrder } from '../../constants';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +23,8 @@ const CashierPage = () => {
 	const [selectedTable, setSelectedTable] = useState(null);
 	const [selectedTabKey, setSelectedTabKey] = useState('1');
 	const [allProduct, setAllProduct] = useState([]);
+	const [checked, setChecked] = useState(false);
+	const [discount, setDiscount] = useState('');
 	const navigate = useNavigate();
 	const user = useSelector(state => state?.user);
 	const printref = useRef();
@@ -32,7 +35,7 @@ const CashierPage = () => {
 	const showModal = () => {
 		setIsModalOpen(true);
 	};
-	const handleOk = () => {
+	const handleCancelModal = () => {
 		setIsModalOpen(false);
 	};
 
@@ -62,6 +65,20 @@ const CashierPage = () => {
 		return result;
 	}, [order]);
 
+	const priceTotalMemo = useMemo(() => {
+		let result = 0;
+		if (Number(discount) > priceMemo) {
+			message.warning('Số tiền giảm giá không hợp lệ');
+		}
+		if (!checked) {
+			result = priceMemo - Number(discount);
+		} else {
+			let dis = (priceMemo * Number(discount)) / 100;
+			result = priceMemo - dis;
+		}
+		return result;
+	}, [priceMemo, discount]);
+
 	const getProductList = async () => {
 		const res = await ProductService.getProductList();
 		setAllProduct(res.data);
@@ -77,6 +94,18 @@ const CashierPage = () => {
 				orderItem: data
 			})
 		);
+	};
+
+	const handleCheck = () => {
+		setChecked(!checked);
+		console.log(checked);
+	};
+
+	const handleOnChangeDiscountValue = e => {
+		let priceText = e.target.value;
+		const isNegative = priceText.indexOf('-') === 0;
+		priceText = priceText.substr(Number(isNegative)).replace(/\D/g, '');
+		setDiscount(`${isNegative ? '-' : ''}${priceText}`);
 	};
 
 	const items = [
@@ -414,37 +443,32 @@ const CashierPage = () => {
 
 					<div className='flex flex-col gap-2'>
 						<div className='flex w-full items-center justify-between border-t border-t-gray-600 pt-4 pb-3'>
-							<div className='text-lg font-semibold flex flex-col items-center'>
+							<div className='text-lg font-semibold flex flex-col items-center gap-2'>
 								<span>Tạm tính:</span>
 								<span>Giảm giá:</span>
 								<span>Tổng tiền</span>
 							</div>
-							<span className='text-lg font-semibold flex flex-col items-center'>
+							<span className='text-lg font-semibold flex flex-col items-center gap-2'>
 								<span>
 									{convertPrice(priceMemo)}
 									<sup>đ</sup>
 								</span>
-								<div>
-									<span
-										onClick={showModal}
-										className='flex items-center gap-1'
-									>
-										0
-										<Icon icon='mdi:edit-outline' />
+								<div
+									className=''
+									onClick={showModal}
+								>
+									<span className='flex items-center hover:boxShadow hover:cursor-pointer px-2 rounded-md'>
+										{discount
+											? `${convertPrice(
+													Number(discount)
+											  )} ${checked ? '%' : 'đ'}`
+											: '0'}
 									</span>
-
-									<Modal
-										title='Basic Modal'
-										open={isModalOpen}
-										onOk={handleOk}
-										onCancel={handleOk}
-									>
-										<p>Some contents...</p>
-										<p>Some contents...</p>
-										<p>Some contents...</p>
-									</Modal>
 								</div>
-								<span>0</span>
+								<span>
+									{convertPrice(priceTotalMemo)}
+									<sup>đ</sup>
+								</span>
 							</span>
 						</div>
 
@@ -460,12 +484,71 @@ const CashierPage = () => {
 							<PrintOrder
 								ref={printref}
 								allProduct={order?.orderItems}
-								priceTotal={10000}
+								priceTotal={convertPrice(priceTotalMemo)}
 							/>
 						</div>
 					</div>
 				</div>
 			</div>
+			<Modal
+				title='Bảng giảm giá'
+				open={isModalOpen}
+				footer={() => (
+					<div className='py-4 mb-3'>
+						<button
+							onClick={handleCancelModal}
+							className='float-right px-2 py-2 w-[120px] bg-[#28b44f] rounded-2xl font-semibold text-white'
+						>
+							<div className='w-full flex items-center justify-center gap-2'>
+								<Icon icon='solar:dollar-linear' />
+								Xác nhận
+							</div>
+						</button>
+					</div>
+				)}
+				onCancel={handleCancelModal}
+			>
+				<div className='flex flex-col gap-2'>
+					<div className='flex w-full items-center justify-between'>
+						<div className='font-semibold flex flex-col gap-2'>
+							<span>Loại giảm giá:</span>
+							<span>Số tiền / Phần trăm:</span>
+						</div>
+						<div className='font-semibold flex flex-col gap-2'>
+							<ConfigProvider
+								theme={{
+									components: {
+										Switch: {
+											colorPrimary: '#28b44f',
+											colorPrimaryHover: '#28b44f'
+										}
+									}
+								}}
+							>
+								<Switch
+									className='bg-primary'
+									checkedChildren='%'
+									unCheckedChildren='Tiền'
+									checked={checked}
+									onChange={handleCheck}
+								/>
+							</ConfigProvider>
+
+							<div className=' flex items-center gap-2'>
+								<input
+									type='text'
+									className='border border-[#ccc] rounded-lg focus:outline-none px-2 w-[120px] py-1'
+									value={Number(discount).toLocaleString()}
+									onChange={handleOnChangeDiscountValue}
+								/>
+								<span className=''>
+									{checked ? '%' : 'VND'}
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</Modal>
 		</>
 	);
 };
