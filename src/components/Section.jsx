@@ -3,7 +3,7 @@ const Section = props => {
 	const { title, sectionCardItems } = props;
 	return (
 		<section className='bg-[#f0f2f5] w-full'>
-			<div className='py-[6.4rem] max-w-7xl mx-auto px-4'>
+			<div className='py-[3.2rem] max-w-7xl mx-auto px-4'>
 				<h1 className='text-center font-bold text-2xl mb-10'>
 					{title}
 				</h1>

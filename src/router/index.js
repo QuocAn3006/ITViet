@@ -10,6 +10,7 @@ import ManageProductPage from '../pages/Admin/ManageProductPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import RegisterPage from '../pages/RegisterPage';
 import SolutionPage from '../pages/SolutionPage';
+import { ProtectedRoute } from './ProtectedRoute';
 
 export const privateRoutes = [
 	{
@@ -57,6 +58,11 @@ export const routes = [
 	{
 		path: '/charge',
 		page: ChargePage,
+		layout: DefaultLayout
+	},
+	{
+		path: config.routes.support,
+		page: SupportPage,
 		layout: DefaultLayout
 	}
 ];

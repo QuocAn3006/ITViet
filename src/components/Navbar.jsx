@@ -371,7 +371,12 @@ const Navbar = () => {
 							Phí dịch vụ
 						</div>
 						<span className='hover:text-primary cursor-pointer relative group'>
-							Hỗ trợ
+							<div
+								onClick={() =>
+									navigate(
+										'/support'
+									)
+								}>Hỗ trợ</div>
 						</span>
 						<span className='hover:text-primary cursor-pointer relative group'>
 							Tin tức
