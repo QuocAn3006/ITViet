@@ -11,6 +11,7 @@ import NotFoundPage from '../pages/NotFoundPage';
 import RegisterPage from '../pages/RegisterPage';
 import SolutionPage from '../pages/SolutionPage';
 import { ProtectedRoute } from './ProtectedRoute';
+import SupportPage from '../pages/SupportPage';
 
 export const privateRoutes = [
 	{
@@ -63,6 +64,11 @@ export const routes = [
 	{
 		path: config.routes.charge,
 		page: ChargePage,
+		layout: DefaultLayout
+	},
+	{
+		path: config.routes.support,
+		page: SupportPage,
 		layout: DefaultLayout
 	}
 ];

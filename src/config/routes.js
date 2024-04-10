@@ -5,6 +5,7 @@ export const routes = {
 	register: '/register',
 	solution: '/solution',
 	charge: '/charge',
+	support: '/support',
 	notfound: '*',
 
 	// private routes
