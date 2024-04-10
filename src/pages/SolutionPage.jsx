@@ -8,7 +8,8 @@ const SolutionPage = () => {
 				title={'Phần mềm quản lý Nhà hàng'}
 				isSolutionPage={true}
 			/>
-			<div className='max-w-7xl mx-auto px-4 py-[6.4rem]'>
+
+			<div className='max-w-6xl mx-auto px-4 py-[3.2rem]'>
 				<div className='items-center flex-col lg:flex-row justify-between '>
 					<div className='w-full h-auto rounded-2xl items-center flex bg-[#F2F8FE] mb-10 flex-col lg:flex-row'>
 						<img
@@ -17,7 +18,7 @@ const SolutionPage = () => {
 							alt=''
 							width={400}
 							height={400}
-							className='py-8 pl-12'
+							className='py-8 p-12'
 						/>
 						<div className='p-12'>
 							<h1 className='text-2xl font-bold mb-4'>
@@ -49,7 +50,7 @@ const SolutionPage = () => {
 							alt=''
 							width={400}
 							height={400}
-							className='py-8 pr-12'
+							className='py-8 p-12'
 						/>
 					</div>
 
@@ -60,7 +61,7 @@ const SolutionPage = () => {
 							alt=''
 							width={400}
 							height={400}
-							className='py-8 pl-12'
+							className='py-8 p-12'
 						/>
 						<div className='p-12'>
 							<h1 className='text-2xl font-bold mb-4'>
@@ -92,7 +93,7 @@ const SolutionPage = () => {
 							alt=''
 							width={400}
 							height={400}
-							className='py-8 pr-12'
+							className='py-8 p-12'
 						/>
 					</div>
 
@@ -103,7 +104,7 @@ const SolutionPage = () => {
 							alt=''
 							width={400}
 							height={400}
-							className='py-8 pl-12'
+							className='py-8 p-12'
 						/>
 						<div className='p-12'>
 							<h1 className='text-2xl font-bold mb-4'>
@@ -215,6 +216,111 @@ const SolutionPage = () => {
 					</div>
 				</div>
 			</div>
+
+			<section className='bg-[#f0f2f5] w-full '>
+				<div className='max-w-7xl mx-auto px-4 py-[3.2rem] '>
+					<h1 className='text-center font-bold text-2xl mb-10'>
+						Hãy để ITViet đồng hành kinh doanh cùng bạn
+					</h1>
+					<div className='flex items-center flex-col lg:flex-row justify-between gap-3'>
+						<div className='w-full h-44 p-6 rounded-2xl flex items-center flex-col gap-2 bg-white'>
+							<div className='flex-col flex'>
+								<div className='flex items-center gap-2'>
+									<Icon
+										icon='ic:baseline-phone'
+										className='text-primary'
+									/>
+									<h4 className='text-base text-left font-bold'>
+										Hotline
+									</h4>
+								</div>
+								<div className='flex items-center gap-2'>
+									<h4 className='text-base text-left'>
+										Tư vấn khách hàng:
+									</h4>
+									<h4 className='text-base text-primary'>
+										1800 1111
+									</h4>
+								</div>
+								<div className='flex items-center gap-2'>
+									<h4 className='text-base text-left'>
+										Chăm sóc khách hàng:
+									</h4>
+									<h4 className='text-base text-primary'>
+										1900 2222
+									</h4>
+								</div>
+								<div className='flex items-center gap-2'>
+									<h4 className='text-base text-left'>
+										Hoạt động 365 ngày/năm từ 7:00 đến 22:00
+										kể cả ngày nghỉ lễ, tết.
+									</h4>
+								</div>
+							</div>
+						</div>
+						<div className='w-full h-44 p-6 rounded-2xl flex items-center flex-col gap-2 bg-white'>
+							<div className='flex-col flex'>
+								<div className='flex items-center gap-2'>
+									<Icon
+										icon='bi:chat-text-fill'
+										className='text-primary'
+									/>
+									<h4 className='text-base font-bold'>
+										ITViet Fanpage
+									</h4>
+								</div>
+								<div className='flex items-center gap-2 mt-4'>
+									<h4 className='text-base text-left'>
+										Luôn trả lời các thông tin nhanh nhất
+										thông qua các phản hồi trên Facebook.
+									</h4>
+								</div>
+							</div>
+						</div>
+						<div className='w-full h-44 p-6 rounded-2xl flex items-center flex-col gap-2 bg-white'>
+							<div className='flex-col flex'>
+								<div className='flex items-center gap-2 *:'>
+									<Icon
+										icon='mingcute:youtube-fill'
+										className='text-primary'
+									/>
+									<h4 className='text-base text-left font-bold'>
+										Kênh hỗ trợ Youtube
+									</h4>
+								</div>
+								<div className='flex items-center gap-2'>
+									<h4 className='text-base text-left'>
+										Luôn cập nhật các kiến thức sử dụng phần
+										mềm tức thời, trực quan giúp người dùng
+										sử dụng được KiotViet dễ dàng và hiệu
+										quả nhất.
+									</h4>
+								</div>
+							</div>
+						</div>
+						<div className='w-full h-44 p-6 rounded-2xl flex items-center flex-col gap-2 bg-white'>
+							<div className='flex-col flex'>
+								<div className='flex items-center gap-2 *:'>
+									<Icon
+										icon='wpf:chat'
+										className='text-primary'
+									/>
+									<h4 className='text-base text-left font-bold'>
+										Chat trên web & mobile
+									</h4>
+								</div>
+								<div className='flex items-center gap-2'>
+									<h4 className='text-base text-left mt-4'>
+										Luôn có người trực chat để trả lời câu
+										hỏi của các bạn nhanh và hiệu quả nhất
+										suốt 365 ngày/năm.
+									</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
 		</>
 	);
 };
