@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import banner from '../assets/images/banner-homemajor-2.webp';
+import logo from '../assets/images/logo.png';
 const Banner = props => {
 	const { title, isHomeBanner = false, isSolutionPage = false } = props;
 	return (
@@ -24,21 +24,82 @@ const Banner = props => {
 								</div>
 							</div>
 
-							{/* <div className='flex flex-1 items-center justify-center lg:w-[65%]'>
-								<div className='relative'>
+							<div
+								className='hidden md:flex flex-1 items-center justify-center lg:w-[65%] relative z-10'
+								style={{
+									backgroundImage:
+										'url(https://cdn-kvweb.kiotviet.vn/kiotviet-website/wp-content/uploads/2023/11/21043602/banner-homemajor-2.webp)',
+									backgroundPosition: 'bottom',
+									backgroundSize: 'contain',
+									backgroundRepeat: 'no-repeat'
+								}}
+							>
+								<div className='absolute left-0 top-[18%] w-fit'>
 									<div
-										className='w-[560px] h-[560px]'
+										className='flex items-center bg-white rounded-3xl px-4 py-2'
 										style={{
-											backgroundImage:
-												'url(https://i.pinimg.com/originals/6a/a9/a5/6aa9a58e2c210b4c8540b16f625160a0.jpg)',
-											backgroundSize: 'contain',
-											backgroundPosition: 'bottom'
+											boxShadow:
+												' 0 8px 24px 0 rgba(0,48,104,.04)'
 										}}
 									>
-										
+										<span className='w-14 h-14 flex items-center justify-center'>
+											<img
+												src={logo}
+												alt='logo'
+												width={45}
+												height={45}
+											/>
+										</span>
+										<span className='text-base font-semibold text-[#002249]'>
+											Phần mềm quản lý bán hàng
+										</span>
 									</div>
 								</div>
-							</div> */}
+
+								<div className='absolute right-[-5%] top-[45%] w-fit'>
+									<div
+										className='flex items-center bg-white rounded-3xl px-4 py-2'
+										style={{
+											boxShadow:
+												' 0 8px 24px 0 rgba(0,48,104,.04)'
+										}}
+									>
+										<span className='w-14 h-14 flex items-center justify-center'>
+											<img
+												src={logo}
+												alt='logo'
+												width={45}
+												height={45}
+											/>
+										</span>
+										<span className='text-base font-semibold text-[#002249]'>
+											Sàn kết nối nguồn hàng giá tốt
+										</span>
+									</div>
+								</div>
+
+								<div className='absolute left-[5%] bottom-[20%] w-fit'>
+									<div
+										className='flex items-center bg-white rounded-3xl px-4 py-2'
+										style={{
+											boxShadow:
+												' 0 8px 24px 0 rgba(0,48,104,.04)'
+										}}
+									>
+										<span className='w-14 h-14 flex items-center justify-center'>
+											<img
+												src={logo}
+												alt='logo'
+												width={45}
+												height={45}
+											/>
+										</span>
+										<span className='text-base font-semibold text-[#002249]'>
+											Giải pháp thanh toán và vay vốn
+										</span>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

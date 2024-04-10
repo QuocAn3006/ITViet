@@ -80,7 +80,7 @@ const NavbarAdmin = () => {
 									className='my-3 items-center'
 									height={25}
 								></Icon>
-								<ul className='dropdown-menu grid-cols-1 right-20 z-20 w-56 group-hover:top-10'>
+								<ul className='dropdown-menu grid-cols-1 right-20 z-20 w-56 group-hover:top-10 text-[15px] '>
 									<li className='hover:bg-gray-200 p-3 rounded-md flex gap-3 items-center'>
 										<Icon
 											icon='codicon:account'
@@ -116,7 +116,10 @@ const NavbarAdmin = () => {
 			</nav>
 			<nav className='bg-[#4b6580] text-white h-10 items-center'>
 				<div className='max-w-7xl mx-auto flex item-center'>
-					<div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
+					<div
+						onClick={() => navigate(config.routes.admin)}
+						className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'
+					>
 						<Icon icon='ph:eye-bold'></Icon>
 						<h1>Tổng quan</h1>
 					</div>

@@ -1,5 +1,11 @@
+import ChartAdmin from '../../components/Admin/ChartAdmin';
+
 const AdminPage = () => {
-	return <>hi</>;
+	return (
+		<>
+			<ChartAdmin />
+		</>
+	);
 };
 
 export default AdminPage;
