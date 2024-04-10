@@ -4,7 +4,7 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				primary: '#0070f4',
+				primary: '#b61724',
 				bgColor: '#ffffff'
 			},
 			keyframes: {

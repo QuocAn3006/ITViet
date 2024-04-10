@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
-import logo from '../assets/images/logo.png';
+import logo from '../assets/images/img_logo.png';
+import abc from '../assets/images/cc.png';
 const Banner = props => {
 	const { title, isHomeBanner = false, isSolutionPage = false } = props;
 	return (
 		<>
 			{isHomeBanner && (
-				<div className='bg-gradient-to-r from-slate-200 to-primary/20 w-full min-h-[80vh]'>
+				<div className='bg-gradient-to-r from-white to-primary/65 w-full min-h-[80vh]'>
 					<div className='max-w-7xl mx-auto'>
 						<div className='flex h-screen flex-nowrap flex-col lg:flex-row gap-10'>
 							<div className='flex flex-col items-center justify-center mt-36 lg:mt-0 gap-8 lg:w-[35%] w-full'>
@@ -27,14 +28,16 @@ const Banner = props => {
 							<div
 								className='hidden md:flex flex-1 items-center justify-center lg:w-[65%] relative z-10'
 								style={{
-									backgroundImage:
-										'url(https://cdn-kvweb.kiotviet.vn/kiotviet-website/wp-content/uploads/2023/11/21043602/banner-homemajor-2.webp)',
-									backgroundPosition: 'bottom',
+									backgroundImage: `url(${abc})`,
+									backgroundPosition: 'center',
 									backgroundSize: 'contain',
-									backgroundRepeat: 'no-repeat'
+									backgroundRepeat: 'no-repeat',
+									height: '180px',
+									marginTop: '240px',
+									marginLeft: '40px'
 								}}
 							>
-								<div className='absolute left-0 top-[18%] w-fit'>
+								<div className='absolute left-0 top-[-18%] w-fit'>
 									<div
 										className='flex items-center bg-white rounded-3xl px-4 py-2'
 										style={{
@@ -78,7 +81,7 @@ const Banner = props => {
 									</div>
 								</div>
 
-								<div className='absolute left-[5%] bottom-[20%] w-fit'>
+								<div className='absolute left-[2%] bottom-[-50%] w-fit'>
 									<div
 										className='flex items-center bg-white rounded-3xl px-4 py-2'
 										style={{
@@ -111,7 +114,7 @@ const Banner = props => {
 						className='bg-cover h-[432px]'
 						style={{
 							backgroundImage:
-								'url(https://cdn-kvweb.kiotviet.vn/kiotviet-website/wp-content/uploads/2023/10/08101925/quan_bg-min.png)',
+								'url(../../src/assets/images/trangchủ)',
 							backgroundRepeat: 'no-repeat'
 						}}
 					>
