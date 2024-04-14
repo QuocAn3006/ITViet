@@ -130,9 +130,12 @@ const NavbarAdmin = () => {
 						<Icon icon='gravity-ui:box'></Icon>
 						<h1>Hàng hóa</h1>
 					</div>
-					<div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
+					<div
+						onClick={() => navigate(config.routes.manageBill)}
+						className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'
+					>
 						<Icon icon='tabler:table'></Icon>
-						<h1>Phòng/Bàn</h1>
+						<h1>Hóa đơn</h1>
 					</div>
 					<div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
 						<Icon icon='fluent:arrow-swap-16-filled'></Icon>

@@ -11,5 +11,6 @@ export const routes = {
 	// private routes
 	cashier: '/cashier',
 	admin: '/admin',
-	manageProduct: '/manage-product'
+	manageProduct: '/manage-product',
+	manageBill: '/manage-bill'
 };

@@ -1,11 +1,14 @@
 import { Icon } from '@iconify/react';
 import Banner from '../components/Banner';
+import { useParams } from 'react-router-dom';
 
 const SolutionPage = () => {
+	const { id } = useParams();
+	console.log(id);
 	return (
 		<>
 			<Banner
-				title={'Phần mềm quản lý Nhà hàng'}
+				title={`Phần mềm quản lý ${id}`}
 				isSolutionPage={true}
 			/>
 

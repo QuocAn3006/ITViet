@@ -11,10 +11,12 @@ import {
 	addOrderProduct,
 	decreaseAmount,
 	increaseAmount,
-	removeProduct
+	removeProduct,
+	resetOrder
 } from '../../redux/Slice/orderSlice';
 import { useReactToPrint } from 'react-to-print';
 import * as ProductService from '../../services/product';
+import * as OrderService from '../../services/order';
 import { convertPrice } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import config from '../../config';
@@ -25,6 +27,7 @@ const CashierPage = () => {
 	const [allProduct, setAllProduct] = useState([]);
 	const [checked, setChecked] = useState(false);
 	const [discount, setDiscount] = useState('');
+	const [dataCreateOrder, setDataCreateOrder] = useState({ data: null });
 	const navigate = useNavigate();
 	const user = useSelector(state => state?.user);
 	const printref = useRef();
@@ -98,7 +101,6 @@ const CashierPage = () => {
 
 	const handleCheck = () => {
 		setChecked(!checked);
-		console.log(checked);
 	};
 
 	const handleOnChangeDiscountValue = e => {
@@ -280,6 +282,46 @@ const CashierPage = () => {
 		content: () => printref.current
 	});
 
+	//create order
+
+	const createOrderApi = async data => {
+		const { orderItems, itemPrice, discountPrice, totalPrice } = data;
+		const res = await OrderService.createOrder({
+			orderItems,
+			itemPrice,
+			discountPrice,
+			totalPrice
+		});
+		setDataCreateOrder(res);
+	};
+
+	const handleCreateOrder = () => {
+		const params = {
+			orderItems: order?.orderItems,
+			itemPrice: priceMemo,
+			discountPrice: Number(discount),
+			totalPrice: priceTotalMemo
+		};
+
+		createOrderApi(params);
+	};
+
+	useEffect(() => {
+		if (dataCreateOrder.status === 'OK') {
+			try {
+				const arrayOrder = [];
+				dispatch(resetOrder({ listChecked: arrayOrder }));
+				setDiscount('');
+				handlePrint();
+			} catch (error) {
+				console.error(error);
+			}
+		}
+		if (dataCreateOrder.status === 'ERR') {
+			message.error('Thất bại');
+		}
+	}, [dataCreateOrder.status]);
+
 	return (
 		<>
 			<div className=' bg-[#2f3f50] pt-3 pr-8 w-full  text-white'>
@@ -345,100 +387,104 @@ const CashierPage = () => {
 								</div>
 							</div>
 						)}
-						{order?.orderItems?.map(item => (
-							<div
-								key={item._id}
-								className='my-[5px] pb-3 '
-								ref={printref}
-							>
+						{order?.orderItems.length > 0 &&
+							order?.orderItems?.map(item => (
 								<div
-									style={{
-										backgroundColor: 'unset',
-										boxShadow:
-											'0px 4px 10px rgba(0, 0, 0, 0.1)',
-										border: '1px solid transparent',
-										borderRadius: '10px',
-										padding: '14px 0'
-									}}
+									key={item._id}
+									className='my-[5px] pb-3 '
+									ref={printref}
 								>
-									<div className='flex w-full items-center'>
-										<span
-											className='px-2 hover:text-red-500 cursor-pointer'
-											onClick={() =>
-												handleDeleteProduct(item?.id)
-											}
-										>
-											<Icon
-												icon='ph:trash-light'
-												height={20}
-											/>
-										</span>
-										<div className='flex flex-1 gap-x-2 '>
-											<div
-												className=''
-												style={{
-													flex: '1 1 20%',
-													wordBreak: 'break-word'
-												}}
+									<div
+										style={{
+											backgroundColor: 'unset',
+											boxShadow:
+												'0px 4px 10px rgba(0, 0, 0, 0.1)',
+											border: '1px solid transparent',
+											borderRadius: '10px',
+											padding: '14px 0'
+										}}
+									>
+										<div className='flex w-full items-center'>
+											<span
+												className='px-2 hover:text-red-500 cursor-pointer'
+												onClick={() =>
+													handleDeleteProduct(
+														item?.id
+													)
+												}
 											>
-												<span className='font-semibold'>
-													{item.name}
-												</span>
-											</div>
-
-											<div className='w-[100px]'>
-												<div className='flex items-center'>
-													<button
-														className='w-7 h-7 min-w-7 rounded-full flex items-center justify-center'
-														style={{
-															border: '1px solid #4D5258'
-														}}
-														onClick={() =>
-															handleOnChangeCount(
-																'decrease',
-																item.id,
-																item?.amount ===
-																	1
-															)
-														}
-													>
-														-
-													</button>
-
-													<input
-														min={1}
-														value={item?.amount}
-														className='w-8 h-5 border-none text-center'
-														type='number'
-													/>
-
-													<button
-														className='w-7 h-7 min-w-7 rounded-full flex items-center justify-center'
-														style={{
-															border: '1px solid #4D5258'
-														}}
-														onClick={() =>
-															handleOnChangeCount(
-																'increase',
-																item.id
-															)
-														}
-													>
-														+
-													</button>
+												<Icon
+													icon='ph:trash-light'
+													height={20}
+												/>
+											</span>
+											<div className='flex flex-1 gap-x-2 '>
+												<div
+													className=''
+													style={{
+														flex: '1 1 20%',
+														wordBreak: 'break-word'
+													}}
+												>
+													<span className='font-semibold'>
+														{item.name}
+													</span>
 												</div>
-											</div>
-											<div className='font-semibold w-[100px]'>
-												{convertPrice(
-													item?.price * item?.amount
-												)}
-												<sup>đ</sup>
+
+												<div className='w-[100px]'>
+													<div className='flex items-center'>
+														<button
+															className='w-7 h-7 min-w-7 rounded-full flex items-center justify-center'
+															style={{
+																border: '1px solid #4D5258'
+															}}
+															onClick={() =>
+																handleOnChangeCount(
+																	'decrease',
+																	item.id,
+																	item?.amount ===
+																		1
+																)
+															}
+														>
+															-
+														</button>
+
+														<input
+															min={1}
+															value={item?.amount}
+															className='w-8 h-5 border-none text-center'
+															type='number'
+														/>
+
+														<button
+															className='w-7 h-7 min-w-7 rounded-full flex items-center justify-center'
+															style={{
+																border: '1px solid #4D5258'
+															}}
+															onClick={() =>
+																handleOnChangeCount(
+																	'increase',
+																	item.id
+																)
+															}
+														>
+															+
+														</button>
+													</div>
+												</div>
+												<div className='font-semibold w-[100px]'>
+													{convertPrice(
+														item?.price *
+															item?.amount
+													)}
+													<sup>đ</sup>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						))}
+							))}
 					</div>
 
 					<div className='flex flex-col gap-2'>
@@ -473,7 +519,7 @@ const CashierPage = () => {
 						</div>
 
 						<button
-							onClick={handlePrint}
+							onClick={handleCreateOrder}
 							className='flex items-center py-4 px-6 w-full bg-[#28b44f] rounded-2xl justify-center font-semibold text-white'
 						>
 							<Icon icon='solar:dollar-linear' />
@@ -491,6 +537,7 @@ const CashierPage = () => {
 				</div>
 			</div>
 			<Modal
+				forceRender
 				title='Bảng giảm giá'
 				open={isModalOpen}
 				footer={() => (

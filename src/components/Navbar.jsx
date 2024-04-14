@@ -19,6 +19,10 @@ const Navbar = () => {
 		return () => window.removeEventListener('scroll', checkPositionHandler);
 	}, []);
 
+	const handleNavigate = id => {
+		navigate(`${config.routes.solution}/${id}`);
+	};
+
 	const MobileMenu = () => {
 		const [menuType, setMenuType] = useState(null);
 
@@ -141,7 +145,7 @@ const Navbar = () => {
 						onClick={() => navigate(config.routes.home)}
 					>
 						<img
-							src='../src/assets/images/img_logo.png'
+							src='../src/assets/images/logo.png'
 							alt='logo'
 							width={45}
 							height={45}
@@ -194,6 +198,11 @@ const Navbar = () => {
 													<div
 														key={idx}
 														className='flex items-center py-2 px-2 border-t-2 hover:bg-primary/10 gap-2'
+														onClick={() =>
+															handleNavigate(
+																item.title
+															)
+														}
 													>
 														<Icon
 															icon={item.icon}
@@ -231,8 +240,8 @@ const Navbar = () => {
 														key={idx}
 														className='flex items-center py-2 px-2 border-t-2 hover:bg-primary/10 gap-2'
 														onClick={() =>
-															navigate(
-																'/solution'
+															handleNavigate(
+																item.title
 															)
 														}
 													>
@@ -271,6 +280,11 @@ const Navbar = () => {
 													<div
 														key={idx}
 														className='flex items-center py-2 px-2 border-t-2 hover:bg-primary/10 gap-2'
+														onClick={() =>
+															handleNavigate(
+																item.title
+															)
+														}
 													>
 														<Icon
 															icon={item.icon}

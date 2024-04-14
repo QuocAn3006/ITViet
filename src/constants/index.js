@@ -205,7 +205,7 @@ export const navItemTypes = {
 			{
 				title: 'Khác',
 				icon: 'fa-regular:plus-square'
-			},
+			}
 		],
 
 		beauty: [
@@ -252,10 +252,109 @@ export const navItemTypes = {
 			{
 				title: 'Khác',
 				icon: 'fa-regular:plus-square'
-			},
+			}
 		]
 	}
 };
+
+export const optionStoreType = [
+	{
+		title: 'Chọn loại cửa hàng'
+	},
+	{
+		title: 'Thời trang'
+	},
+
+	{
+		title: 'Nhà hàng'
+	},
+
+	{
+		title: 'Quán ăn'
+	},
+
+	{
+		title: 'Cafe, Trà sữa'
+	},
+
+	{
+		title: 'Karaoke'
+	},
+
+	{
+		title: 'Bida'
+	},
+
+	{
+		title: 'Bar, Pub & Club'
+	},
+
+	{
+		title: 'Căng tin'
+	},
+
+	{
+		title: 'Trạm dừng chân'
+	},
+
+	{
+		title: 'Beauty Spa'
+	},
+
+	{
+		title: 'Massage'
+	},
+
+	{
+		title: 'Hair Salon & Nail'
+	},
+
+	{
+		title: 'Khách sạn & Nhà nghỉ'
+	},
+
+	{
+		title: 'Homestay'
+	},
+
+	{
+		title: 'Villa, Resort'
+	},
+
+	{
+		title: 'Fitness & Yoga'
+	},
+
+	{
+		title: 'Phòng khám'
+	},
+
+	{
+		title: 'Tạp hóa & Siêu thị mini'
+	},
+	{
+		title: 'Nội thất & gia dụng'
+	},
+	{
+		title: 'Mẹ và bé'
+	},
+
+	{
+		title: 'Sách và văn phòng phẩm'
+	},
+
+	{
+		title: 'Mỹ phẩm'
+	},
+
+	{
+		title: 'Sản xuất'
+	},
+
+	{
+		title: 'Nông sản & Thực phẩm'
+	}
+];
 
 export const sectionCardItems = [
 	{
@@ -455,7 +554,7 @@ export const menuSupport = [
 	{
 		icon: 'svg-spinners:3-dots-move',
 		title: 'Khác'
-	},
+	}
 ];
 
 export const sectionSupport = {
@@ -477,7 +576,7 @@ export const sectionSupport = {
 					sub: 'Quản lý Voucher'
 				}
 			]
-		},
+		}
 	],
 
 	second: [
@@ -498,7 +597,7 @@ export const sectionSupport = {
 					sub: 'Cài đặt Két đựng tiền'
 				}
 			]
-		},
+		}
 	],
 
 	third: [
@@ -514,10 +613,10 @@ export const sectionSupport = {
 				},
 				{
 					sub: 'Kết nối ITViet - Shopee'
-				},
+				}
 			]
-		},
-	],
+		}
+	]
 };
 
 export const sectionSupport2 = {
@@ -533,9 +632,9 @@ export const sectionSupport2 = {
 				},
 				{
 					sub: 'Định mức tồn'
-				},
-			],
-		},
+				}
+			]
+		}
 	],
 
 	second: [
@@ -550,9 +649,9 @@ export const sectionSupport2 = {
 				},
 				{
 					sub: 'Nhân viên thu ngân'
-				},
-			],
-		},
+				}
+			]
+		}
 	],
 
 	third: [
@@ -567,9 +666,9 @@ export const sectionSupport2 = {
 				},
 				{
 					sub: 'Báo cáo sổ quỹ'
-				},
-			],
-		},
+				}
+			]
+		}
 	],
 
 	fourth: [
@@ -584,8 +683,8 @@ export const sectionSupport2 = {
 				},
 				{
 					sub: 'Quản lý công nợ'
-				},
-			],
-		},
-	],
+				}
+			]
+		}
+	]
 };

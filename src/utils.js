@@ -16,6 +16,12 @@ export const convertPrice = price => {
 	}
 };
 
+export const formatDate = date => {
+	const dateObject = new Date(date);
+	const formatDate = dateObject.toLocaleString();
+	return formatDate;
+};
+
 export const getBase64 = file =>
 	new Promise((resolve, reject) => {
 		const reader = new FileReader();

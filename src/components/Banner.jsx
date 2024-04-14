@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
-import logo from '../assets/images/img_logo.png';
-import abc from '../assets/images/cc.png';
+import logo from '../assets/images/logo.png';
+import logoNoBg from '../assets/images/logo_nobg.png';
 const Banner = props => {
 	const { title, isHomeBanner = false, isSolutionPage = false } = props;
 	return (
 		<>
 			{isHomeBanner && (
-				<div className='bg-gradient-to-r from-white to-primary/65 w-full min-h-[80vh]'>
+				<div className='bg-gradient-to-r from-zinc-300 to-primary/55 w-full min-h-[80vh]'>
 					<div className='max-w-7xl mx-auto'>
 						<div className='flex h-screen flex-nowrap flex-col lg:flex-row gap-10'>
 							<div className='flex flex-col items-center justify-center mt-36 lg:mt-0 gap-8 lg:w-[35%] w-full'>
@@ -28,13 +28,13 @@ const Banner = props => {
 							<div
 								className='hidden md:flex flex-1 items-center justify-center lg:w-[65%] relative z-10'
 								style={{
-									backgroundImage: `url(${abc})`,
+									backgroundImage: `url(${logoNoBg})`,
 									backgroundPosition: 'center',
 									backgroundSize: 'contain',
 									backgroundRepeat: 'no-repeat',
-									height: '180px',
-									marginTop: '240px',
-									marginLeft: '40px'
+									height: '210px',
+									marginTop: '240px'
+									// marginLeft: '40px'
 								}}
 							>
 								<div className='absolute left-0 top-[-18%] w-fit'>
@@ -114,7 +114,7 @@ const Banner = props => {
 						className='bg-cover h-[432px]'
 						style={{
 							backgroundImage:
-								'url(../../src/assets/images/trangchủ)',
+								'url(https://cdn-kvweb.kiotviet.vn/kiotviet-website/wp-content/uploads/2023/10/08114624/nha_bg.png)',
 							backgroundRepeat: 'no-repeat'
 						}}
 					>

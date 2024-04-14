@@ -44,6 +44,11 @@ export const orderSlice = createSlice({
 				item => item.id !== idProduct
 			);
 			state.orderItems = itemOrder;
+		},
+		resetOrder: (state, action) => {
+			const { listChecked } = action.payload;
+
+			state.orderItems = listChecked;
 		}
 	}
 });
@@ -52,6 +57,7 @@ export const {
 	addOrderProduct,
 	increaseAmount,
 	decreaseAmount,
-	removeProduct
+	removeProduct,
+	resetOrder
 } = orderSlice.actions;
 export default orderSlice.reducer;

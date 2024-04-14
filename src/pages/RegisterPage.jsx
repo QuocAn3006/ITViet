@@ -1,5 +1,6 @@
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
+import { optionStoreType } from '../constants';
 
 const RegisterPage = () => {
 	const [isShowPassword, setIsShowPassword] = useState(false);
@@ -59,6 +60,28 @@ const RegisterPage = () => {
 										height={20}
 									/>
 								</span>
+							</div>
+						</div>
+
+						<div className='w-full'>
+							<div className='w-full flex items-center border rounded-lg min-h-[48px] py-[5px] relative'>
+								<select
+									name='storeType'
+									id=''
+									className='mx-3 focus:outline-none w-full cursor-pointer'
+								>
+									{optionStoreType.map((item, idx) => (
+										<>
+											<option
+												value={item.title}
+												key={idx}
+												className='px-3'
+											>
+												{item.title}
+											</option>
+										</>
+									))}
+								</select>
 							</div>
 						</div>
 
