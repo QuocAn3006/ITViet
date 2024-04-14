@@ -45,7 +45,7 @@ const Banner = props => {
 											backgroundPosition: 'bottom'
 										}}
 									>
-										
+
 									</div>
 								</div>
 
@@ -126,8 +126,8 @@ const Banner = props => {
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
+			)}
+		</>
 	);
 };
 
