@@ -126,9 +126,12 @@ const NavbarAdmin = () => {
 						<Icon icon='tabler:table'></Icon>
 						<h1>Phòng/Bàn</h1>
 					</div>
-					<div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
+					<div 
+						onClick={() => navigate(config.routes.ieManage)}
+						className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'
+					>
 						<Icon icon='fluent:arrow-swap-16-filled'></Icon>
-						<h1>Giao dịch</h1>
+						<h1>Kho</h1>
 					</div>
 					<div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
 						<Icon icon='mdi:partnership-outline'></Icon>
