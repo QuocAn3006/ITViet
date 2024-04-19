@@ -13,6 +13,7 @@ import SolutionPage from '../pages/SolutionPage';
 import { ProtectedRoute } from './ProtectedRoute';
 import SupportPage from '../pages/SupportPage';
 import ManageBillPage from '../pages/Admin/ManageBillPage';
+import IEManage from '../pages/Admin/IEManage';
 
 export const privateRoutes = [
 	{
@@ -38,6 +39,13 @@ export const privateRoutes = [
 	{
 		path: config.routes.manageBill,
 		page: ManageBillPage,
+		layout: AdminLayout,
+		protected: ProtectedRoute
+	},
+
+	{
+		path: config.routes.ieManage,
+		page: IEManage,
 		layout: AdminLayout,
 		protected: ProtectedRoute
 	}

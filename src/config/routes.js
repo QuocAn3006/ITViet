@@ -12,5 +12,7 @@ export const routes = {
 	cashier: '/cashier',
 	admin: '/admin',
 	manageProduct: '/manage-product',
+	ieManage: '/ie-manage',
 	manageBill: '/manage-bill'
+	
 };
