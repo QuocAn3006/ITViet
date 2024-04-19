@@ -8,17 +8,19 @@ export const createProduct = async data => {
 	return res.data;
 };
 
-export const getProductList = async (limit, search) => {
+export const getProductList = async (type, search) => {
 	let res = {};
 	if (search?.length > 0) {
 		res = await axios.get(
 			`${
 				import.meta.env.VITE_DATABASE_URL
-			}/product/get-all-product?limit=${limit}&filter=name&filter=${search}`
+			}/product/get-store-product/${type}?search=${search}`
 		);
 	} else {
 		res = await axios.get(
-			`${import.meta.env.VITE_DATABASE_URL}/product/get-all-product`
+			`${
+				import.meta.env.VITE_DATABASE_URL
+			}/product/get-store-product/${type}`
 		);
 	}
 	return res.data;

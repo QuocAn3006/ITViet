@@ -1,21 +1,29 @@
 /* eslint-disable react/prop-types */
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo.png';
 import logoNoBg from '../assets/images/logo_nobg.png';
+import config from '../config';
 const Banner = props => {
 	const { title, isHomeBanner = false, isSolutionPage = false } = props;
+	const navigate = useNavigate();
 	return (
 		<>
 			{isHomeBanner && (
 				<div className='bg-gradient-to-r from-zinc-300 to-primary/55 w-full min-h-[80vh]'>
 					<div className='max-w-7xl mx-auto'>
-						<div className='flex h-screen flex-nowrap flex-col lg:flex-row gap-10'>
+						<div className='flex h-screen flex-nowrap flex-col lg:flex-row gap-10 items-center'>
 							<div className='flex flex-col items-center justify-center mt-36 lg:mt-0 gap-8 lg:w-[35%] w-full'>
 								<h1 className='font-bold text-5xl leading-tight text-center'>
 									{title}
 								</h1>
 
 								<div className='flex items-center gap-2 '>
-									<button className='px-5 py-3 text-base bg-primary text-white rounded-3xl font-semibold'>
+									<button
+										onClick={() =>
+											navigate(config.routes.register)
+										}
+										className='px-5 py-3 text-base bg-primary text-white rounded-3xl font-semibold'
+									>
 										Dùng thử miễn phí
 									</button>
 
@@ -26,15 +34,14 @@ const Banner = props => {
 							</div>
 
 							<div
-								className='hidden md:flex flex-1 items-center justify-center lg:w-[65%] relative z-10'
+								className='hidden lg:flex flex-1 items-center justify-center relative z-10'
 								style={{
 									backgroundImage: `url(${logoNoBg})`,
 									backgroundPosition: 'center',
 									backgroundSize: 'contain',
 									backgroundRepeat: 'no-repeat',
-									height: '210px',
-									marginTop: '240px'
-									// marginLeft: '40px'
+									height: '280px',
+									marginBottom: '40px'
 								}}
 							>
 								<div className='absolute left-0 top-[-18%] w-fit'>

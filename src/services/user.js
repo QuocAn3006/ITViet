@@ -7,7 +7,6 @@ export const login = async user => {
 		`${import.meta.env.VITE_DATABASE_URL}/user/login`,
 		user
 	);
-
 	return res.data;
 };
 

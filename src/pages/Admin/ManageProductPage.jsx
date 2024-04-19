@@ -14,6 +14,8 @@ import { useEffect, useState } from 'react';
 import { convertPrice, getBase64, renderOptions } from '../../utils';
 import * as ProductService from '../../services/product';
 import { Excel } from 'antd-table-saveas-excel';
+import { useSelector } from 'react-redux';
+import { useDebounce } from '../../hook/useDebounce';
 
 const ManageProductPage = () => {
 	const initial = () => ({
@@ -23,7 +25,8 @@ const ManageProductPage = () => {
 		category: '',
 		price: '',
 		newType: '',
-		newCategory: ''
+		newCategory: '',
+		storeType: ''
 	});
 	const [openModal, setOpenModal] = useState(false);
 	const [openUpdateModal, setOpenUpdateModal] = useState(false);
@@ -39,11 +42,13 @@ const ManageProductPage = () => {
 	const [category, setCategory] = useState([]);
 	const [rowSelected, setRowSelected] = useState('');
 	const [searchValue, setSearchValue] = useState('');
+	const searchDebounce = useDebounce(searchValue);
 	const [loading, setLoading] = useState(false);
 	const [isUpdating, setIsUpdating] = useState(false);
+	const [isCreating, setIsCreating] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [form] = useForm();
-
+	const user = useSelector(state => state?.user);
 	const handleOnChange = e => {
 		setProduct({ ...product, [e.target.name]: e.target.value });
 	};
@@ -60,7 +65,8 @@ const ManageProductPage = () => {
 			brand: '',
 			price: '',
 			newType: '',
-			newCategory: ''
+			newCategory: '',
+			storeType: ''
 		});
 		form.resetFields();
 	};
@@ -73,7 +79,8 @@ const ManageProductPage = () => {
 			brand: '',
 			price: '',
 			newType: '',
-			newCategory: ''
+			newCategory: '',
+			storeType: ''
 		});
 		form.resetFields();
 	};
@@ -95,48 +102,44 @@ const ManageProductPage = () => {
 	};
 
 	// create product
-	const createProductApi = async data => {
-		const { name, image, brand, price, category } = data;
-		const res = await ProductService.createProduct({
-			name,
-			image,
-			brand,
-			price,
-			category
-		});
-		setDataCreateProduct(res);
-	};
+	const handleCreateProduct = async () => {
+		setIsCreating(true);
 
-	const handleCreateProduct = () => {
-		const params = {
-			name: product.name,
-			image: product.image,
-			brand: isAddNewType ? product.newType : product.brand,
-			price: product.price,
-			category: isAddnewCategory ? product.newCategory : product.category
-		};
-		createProductApi(params);
+		try {
+			const res = await ProductService.createProduct({
+				...product,
+				brand: isAddNewType ? product.newType : product.brand,
+				category: isAddnewCategory
+					? product.newCategory
+					: product.category,
+				storeType: user?.storeType
+			});
+			setDataCreateProduct(res);
+			if (res?.status === 'OK') {
+				message.success('Thêm sản phẩm thành công');
+				getProductList(user?.storeType);
+				handleCancelModal();
+			} else {
+				message.error('Thêm sản phẩm không thành công');
+			}
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setIsCreating(false);
+		}
 	};
-
-	useEffect(() => {
-		if (dataCreateProduct.status === 'OK') {
-			message.success('Thêm sản phẩm thành công');
-			getProductList();
-			handleCancelModal();
-		}
-		if (dataCreateProduct.status === 'ERR') {
-			message.error('Thêm sản phẩm không thành công');
-		}
-	}, [dataCreateProduct.status]);
 
 	const getProductList = async () => {
 		let res = {};
 		setLoading(true);
 		try {
-			if (searchValue.length > 0) {
-				res = await ProductService.getProductList(4, searchValue);
+			if (searchDebounce.length > 0) {
+				res = await ProductService.getProductList(
+					user?.storeType,
+					searchDebounce
+				);
 			} else {
-				res = await ProductService.getProductList();
+				res = await ProductService.getProductList(user?.storeType);
 			}
 			setAllProduct(res.data);
 		} catch (error) {
@@ -158,7 +161,7 @@ const ManageProductPage = () => {
 				message.success('Sửa sản phẩm thành công');
 				setRowSelected('');
 				handleCancelUpdateModal();
-				getProductList();
+				getProductList(user?.storeType);
 			} else {
 				message.error('Sửa sản phẩm thất bại');
 			}
@@ -178,7 +181,7 @@ const ManageProductPage = () => {
 			if (res.status == 'OK') {
 				message.success('Xóa sản phẩm thành công!');
 				setOpenDeleteModal(false);
-				getProductList();
+				getProductList(user?.storeType);
 			} else {
 				message.error('Xóa sản phẩm thất bại');
 			}
@@ -218,8 +221,8 @@ const ManageProductPage = () => {
 	}, [openModal, productDetail, form]);
 
 	useEffect(() => {
-		getProductList();
-	}, [searchValue, dataUpdateProduct]);
+		getProductList(user?.storeType);
+	}, [searchDebounce, dataUpdateProduct, dataCreateProduct]);
 	useEffect(() => {
 		getAllType();
 		getAllCategory();
@@ -447,7 +450,6 @@ const ManageProductPage = () => {
 									}}
 								/>
 							</Spin>
-							{rowSelected && <span>{rowSelected}</span>}
 						</div>
 					</div>
 				</div>
@@ -460,170 +462,184 @@ const ManageProductPage = () => {
 				className='max-w-[880px] min-w-[785px]'
 				onCancel={handleCancelModal}
 			>
-				<Form
-					form={form}
-					onFinish={handleCreateProduct}
-					labelCol={{ span: 4 }}
-					labelAlign='left'
-					wrapperCol={{ span: 20 }}
+				<Spin
+					spinning={isCreating}
+					delay={500}
 				>
-					<Form.Item
-						label='Tên hàng'
-						name='name'
+					<Form
+						name='basic'
+						form={form}
+						// onFinish={handleCreateProduct}
+						labelCol={{ span: 4 }}
+						labelAlign='left'
+						wrapperCol={{ span: 20 }}
 					>
-						<input
-							value={product.name}
-							onChange={handleOnChange}
+						<Form.Item
+							label='Tên hàng'
 							name='name'
-							className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
-						/>
-					</Form.Item>
-
-					<Form.Item
-						label='Loại thực đơn'
-						name='brand'
-					>
-						<div className='flex items-center gap-2 border-b-2 border-b-[#ccc] w-full px-2 py-1'>
-							<ConfigProvider
-								theme={{
-									token: {
-										colorBorder: '#fff',
-										colorPrimaryHover: '#fff',
-										controlOutline: '#fff',
-										padding: '0 0'
-									}
-								}}
-							>
-								<Select
-									name='type'
-									value={product.brand}
-									onChange={value =>
-										setProduct({ ...product, brand: value })
-									}
-									options={renderOptions(typeProduct.data)}
-									className='focus:outline-none focus:border-b-[#4bac4d]'
-								/>
-							</ConfigProvider>
-							<Icon
-								icon='ic:baseline-plus'
-								height={19}
-								className='hover:bg-[#ccc] hover:rounded-full cursor-pointer'
-								onClick={() => setIsAddNewType(!isAddNewType)}
-							/>
-						</div>
-					</Form.Item>
-
-					{isAddNewType && (
-						<Form.Item
-							label='Loại thực đơn mới'
-							name='newType'
 						>
 							<input
-								value={product.newType}
+								value={product.name}
 								onChange={handleOnChange}
-								name='newType'
+								name='name'
 								className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
 							/>
 						</Form.Item>
-					)}
 
-					<Form.Item
-						label='Loại hàng'
-						name='category'
-					>
-						<div className='flex items-center gap-2 border-b-2 border-b-[#ccc] w-full px-2 py-1 '>
-							<ConfigProvider
-								theme={{
-									token: {
-										colorBorder: '#fff',
-										colorPrimaryHover: '#fff',
-										controlOutline: '#fff',
-										padding: '0 0'
-									}
-								}}
-							>
-								<Select
-									name='type'
-									value={product.category}
-									onChange={value =>
-										setProduct({
-											...product,
-											category: value
-										})
-									}
-									options={renderOptions(category.data)}
-									className='focus:outline-none focus:border-b-[#4bac4d]'
-								/>
-							</ConfigProvider>
-							<Icon
-								icon='ic:baseline-plus'
-								height={19}
-								className='hover:bg-[#ccc] hover:rounded-full cursor-pointer'
-								onClick={() =>
-									setIsAddnewCategory(!isAddnewCategory)
-								}
-							/>
-						</div>
-					</Form.Item>
-
-					{isAddnewCategory && (
 						<Form.Item
-							label='Loại hàng mới'
-							name='newCategory'
+							label='Loại thực đơn'
+							name='brand'
 						>
-							<input
-								value={product.category}
-								onChange={handleOnChange}
-								name='newCategory'
-								className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
-							/>
-						</Form.Item>
-					)}
-
-					<Form.Item
-						label='Giá bán'
-						name='price'
-					>
-						<input
-							value={product.price}
-							onChange={handleOnChange}
-							name='price'
-							className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
-						/>
-					</Form.Item>
-
-					<Form.Item
-						label='Ảnh sản phẩm'
-						name='image'
-					>
-						<div>
-							<Upload
-								listType='picture-card'
-								onChange={handleOnChangeImage}
-								maxCount={1}
-							>
+							<div className='flex items-center gap-2 border-b-2 border-b-[#ccc] w-full px-2 py-1'>
+								<ConfigProvider
+									theme={{
+										token: {
+											colorBorder: '#fff',
+											colorPrimaryHover: '#fff',
+											controlOutline: '#fff',
+											padding: '0 0'
+										}
+									}}
+								>
+									<Select
+										name='type'
+										value={product.brand}
+										onChange={value =>
+											setProduct({
+												...product,
+												brand: value
+											})
+										}
+										options={renderOptions(
+											typeProduct.data
+										)}
+										className='focus:outline-none focus:border-b-[#4bac4d]'
+									/>
+								</ConfigProvider>
 								<Icon
-									icon='material-symbols:upload'
-									height={20}
+									icon='ic:baseline-plus'
+									height={19}
+									className='hover:bg-[#ccc] hover:rounded-full cursor-pointer'
+									onClick={() =>
+										setIsAddNewType(!isAddNewType)
+									}
 								/>
-							</Upload>
-						</div>
-					</Form.Item>
+							</div>
+						</Form.Item>
 
-					<Form.Item
-						wrapperCol={{
-							offset: 16,
-							span: 16
-						}}
-					>
-						<button
-							className='bg-primary p-2 font-semibold w-full rounded-md text-white'
-							type='primary'
+						{isAddNewType && (
+							<Form.Item
+								label='Loại thực đơn mới'
+								name='newType'
+							>
+								<input
+									value={product.newType}
+									onChange={handleOnChange}
+									name='newType'
+									className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
+								/>
+							</Form.Item>
+						)}
+
+						<Form.Item
+							label='Loại hàng'
+							name='category'
 						>
-							Submit
-						</button>
-					</Form.Item>
-				</Form>
+							<div className='flex items-center gap-2 border-b-2 border-b-[#ccc] w-full px-2 py-1 '>
+								<ConfigProvider
+									theme={{
+										token: {
+											colorBorder: '#fff',
+											colorPrimaryHover: '#fff',
+											controlOutline: '#fff',
+											padding: '0 0'
+										}
+									}}
+								>
+									<Select
+										name='type'
+										value={product.category}
+										onChange={value =>
+											setProduct({
+												...product,
+												category: value
+											})
+										}
+										options={renderOptions(category.data)}
+										className='focus:outline-none focus:border-b-[#4bac4d]'
+									/>
+								</ConfigProvider>
+								<Icon
+									icon='ic:baseline-plus'
+									height={19}
+									className='hover:bg-[#ccc] hover:rounded-full cursor-pointer'
+									onClick={() =>
+										setIsAddnewCategory(!isAddnewCategory)
+									}
+								/>
+							</div>
+						</Form.Item>
+
+						{isAddnewCategory && (
+							<Form.Item
+								label='Loại hàng mới'
+								name='newCategory'
+							>
+								<input
+									value={product.category}
+									onChange={handleOnChange}
+									name='newCategory'
+									className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
+								/>
+							</Form.Item>
+						)}
+
+						<Form.Item
+							label='Giá bán'
+							name='price'
+						>
+							<input
+								value={product.price}
+								onChange={handleOnChange}
+								name='price'
+								className='border-b-2 border-b-[#ccc] w-full px-2 py-1 focus:outline-none focus:border-b-[#4bac4d]'
+							/>
+						</Form.Item>
+
+						<Form.Item
+							label='Ảnh sản phẩm'
+							name='image'
+						>
+							<div>
+								<Upload
+									listType='picture-card'
+									onChange={handleOnChangeImage}
+									maxCount={1}
+								>
+									<Icon
+										icon='material-symbols:upload'
+										height={20}
+									/>
+								</Upload>
+							</div>
+						</Form.Item>
+
+						<Form.Item
+							wrapperCol={{
+								offset: 16,
+								span: 16
+							}}
+						>
+							<button
+								className='bg-primary p-2 font-semibold w-full rounded-md text-white'
+								type='primary'
+								onClick={handleCreateProduct}
+							>
+								Tạo sản phẩm mới
+							</button>
+						</Form.Item>
+					</Form>
+				</Spin>
 			</Modal>
 
 			<Modal
@@ -639,6 +655,7 @@ const ManageProductPage = () => {
 					delay={500}
 				>
 					<Form
+						name='basic2'
 						form={form}
 						onFinish={handleUpdateProduct}
 						labelCol={{ span: 5 }}

@@ -83,12 +83,12 @@ const CashierPage = () => {
 	}, [priceMemo, discount]);
 
 	const getProductList = async () => {
-		const res = await ProductService.getProductList();
+		const res = await ProductService.getProductList(user?.storeType);
 		setAllProduct(res.data);
 	};
 
 	useEffect(() => {
-		getProductList();
+		getProductList(user?.storeType);
 	}, []);
 
 	const handleAddOrder = data => {
@@ -324,14 +324,16 @@ const CashierPage = () => {
 
 	return (
 		<>
-			<div className=' bg-[#2f3f50] pt-3 pr-8 w-full  text-white'>
-				<span className='flex items-center gap-2 justify-end cursor-pointer relative group text-base'>
-					<Icon
-						icon='ph:user-light'
-						height={20}
-					/>
-					{user.name}
-					<ul className='dropdown-menu grid-cols-1 group-hover:top-5 right-20 z-20'>
+			<div className=' bg-[#2f3f50] pt-3 pr-8 w-full  text-white relative'>
+				<div className='absolute top-1 right-10 my-2 group'>
+					<span className='flex gap-1 items-center cursor-pointer text-base'>
+						<Icon
+							icon='ph:user-light'
+							height={20}
+						/>
+						{user.name}
+					</span>
+					<ul className='dropdown-menu w-[210px] grid-cols-1 group-hover:top-5 right-20 z-20'>
 						<li className='hover:text-primary text-base flex items-center gap-1'>
 							<Icon
 								icon='ph:user-light'
@@ -357,9 +359,9 @@ const CashierPage = () => {
 							Đăng xuất
 						</li>
 					</ul>
-				</span>
+				</div>
 			</div>
-			<div className='p-3 w-full h-full min-h-screen flex bg-[#2f3f50] gap-4'>
+			<div className='pt-10 px-3 w-full h-full min-h-screen flex bg-[#2f3f50] gap-4'>
 				<div className='w-[65%] bg-white rounded-2xl p-4'>
 					<Tabs
 						items={items}
