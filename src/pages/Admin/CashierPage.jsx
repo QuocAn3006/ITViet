@@ -79,12 +79,12 @@ const CashierPage = () => {
 	}, [priceMemo, discount]);
 
 	const getProductList = async () => {
-		const res = await ProductService.getProductList();
+		const res = await ProductService.getProductList(user?.storeType);
 		setAllProduct(res.data);
 	};
 
 	useEffect(() => {
-		getProductList();
+		getProductList(user?.storeType);
 	}, []);
 
 	const handleAddOrder = data => {
@@ -288,7 +288,7 @@ const CashierPage = () => {
 						height={20}
 					/>
 					{user.name}
-					<ul className='dropdown-menu grid-cols-1 right-20 z-20'>
+					<ul className='dropdown-menu grid-cols-1 group-hover:top-5 right-20 z-20'>
 						<li className='hover:text-primary text-base flex items-center gap-1'>
 							<Icon
 								icon='ph:user-light'
@@ -314,9 +314,9 @@ const CashierPage = () => {
 							Đăng xuất
 						</li>
 					</ul>
-				</span>
+				</div>
 			</div>
-			<div className='p-3 w-full h-full min-h-screen flex bg-[#2f3f50] gap-4'>
+			<div className='pt-10 px-3 w-full h-full min-h-screen flex bg-[#2f3f50] gap-4'>
 				<div className='w-[65%] bg-white rounded-2xl p-4'>
 					<Tabs
 						items={items}

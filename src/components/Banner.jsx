@@ -1,21 +1,26 @@
 /* eslint-disable react/prop-types */
-import logo from '../assets/images/img_logo.png';
-import abc from '../assets/images/cc.png';
+import logo from '../assets/images/logo.png';
+import logoNoBg from '../assets/images/logo_nobg.png';
 const Banner = props => {
-	const { openMenu } = props;
+	const { title, isHomeBanner = false, isSolutionPage = false } = props;
 	return (
 		<>
 			{isHomeBanner && (
 				<div className='bg-gradient-to-r from-slate-200 to-primary/20 w-full min-h-[80vh]'>
 					<div className='max-w-7xl mx-auto'>
-						<div className='flex h-screen flex-nowrap flex-col lg:flex-row gap-10'>
+						<div className='flex h-screen flex-nowrap flex-col lg:flex-row gap-10 items-center'>
 							<div className='flex flex-col items-center justify-center mt-36 lg:mt-0 gap-8 lg:w-[35%] w-full'>
 								<h1 className='font-bold text-5xl leading-tight text-center'>
 									{title}
 								</h1>
 
 								<div className='flex items-center gap-2 '>
-									<button className='px-5 py-3 text-base bg-primary text-white rounded-3xl font-semibold'>
+									<button
+										onClick={() =>
+											navigate(config.routes.register)
+										}
+										className='px-5 py-3 text-base bg-primary text-white rounded-3xl font-semibold'
+									>
 										Dùng thử miễn phí
 									</button>
 
@@ -26,13 +31,16 @@ const Banner = props => {
 							</div>
 
 							<div
-								className='hidden md:flex flex-1 items-center justify-center lg:w-[65%] relative z-10'
+								className='hidden lg:flex flex-1 items-center justify-center relative z-10'
 								style={{
 									backgroundImage:
 										'url(https://cdn-kvweb.kiotviet.vn/kiotviet-website/wp-content/uploads/2023/11/21043602/banner-homemajor-2.webp)',
 									backgroundPosition: 'bottom',
 									backgroundSize: 'contain',
-									backgroundRepeat: 'no-repeat'
+									backgroundRepeat: 'no-repeat',
+									height: '210px',
+									marginTop: '240px'
+									// marginLeft: '40px'
 								}}
 							>
 								<div className='absolute left-0 top-[18%] w-fit'>
