@@ -65,7 +65,7 @@ const NavbarAdmin = () => {
 								height={15}
 							></Icon>
 						</div>
-						<div className=''>
+						<div>
 							<button className='flex group hover:bg-gray-200 text-black gap-1 px-2 rounded-md relative'>
 								<h1 className='py-3 font-semibold'>
 									{user?.name}

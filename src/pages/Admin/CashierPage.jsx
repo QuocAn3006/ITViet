@@ -80,11 +80,12 @@ const CashierPage = () => {
 
 	const getProductList = async () => {
 		const res = await ProductService.getProductList(user?.storeType);
+		console.log(res);
 		setAllProduct(res.data);
 	};
 
 	useEffect(() => {
-		getProductList(user?.storeType);
+		getProductList();
 	}, []);
 
 	const handleAddOrder = data => {
@@ -317,7 +318,20 @@ const CashierPage = () => {
 				</div>
 			</div>
 			<div className='pt-10 px-3 w-full h-full min-h-screen flex bg-[#2f3f50] gap-4'>
-				<div className='w-[65%] bg-white rounded-2xl p-4'>
+				<div className='w-[65%] bg-white rounded-2xl p-4 relative'>
+					<div class="flex h-10 overflow-hidden absolute right-2 top-4 z-10 w-[50%] mr-10">
+						<div class="grid place-items-center h-full w-12 text-gray-500">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+							</svg>
+						</div>
+
+						<input
+							class="peer h-full w-full outline-none text-sm text-gray-800 pr-2 focus-within:border-b-2 focus-within:border-b-primary"
+							type="text"
+							id="search"
+							placeholder="Tên sản phẩm" />
+					</div>
 					<Tabs
 						items={items}
 						activeKey={selectedTabKey}
@@ -327,6 +341,9 @@ const CashierPage = () => {
 
 				<div className='w-[35%] flex flex-col bg-white rounded-2xl p-4'>
 					<div className='h-full '>
+						<div className='border-b-2 pb-2'>
+							<h1>Label</h1>
+						</div>
 						{order?.orderItems.length === 0 && (
 							<div className='flex items-center flex-col justify-center mt-10'>
 								<i
@@ -385,24 +402,24 @@ const CashierPage = () => {
 												</span>
 											</div>
 
-											<div className='w-[100px]'>
-												<div className='flex items-center'>
-													<button
-														className='w-7 h-7 min-w-7 rounded-full flex items-center justify-center'
-														style={{
-															border: '1px solid #4D5258'
-														}}
-														onClick={() =>
-															handleOnChangeCount(
-																'decrease',
-																item.id,
-																item?.amount ===
-																	1
-															)
-														}
-													>
-														-
-													</button>
+												<div className='w-[100px]'>
+													<div className='flex items-center'>
+														<button
+															className='w-7 h-7 min-w-7 rounded-full flex items-center justify-center'
+															style={{
+																border: '1px solid #4D5258'
+															}}
+															onClick={() =>
+																handleOnChangeCount(
+																	'decrease',
+																	item.id,
+																	item?.amount ===
+																		1
+																)
+															}
+														>
+															-
+														</button>
 
 													<input
 														min={1}
@@ -411,33 +428,34 @@ const CashierPage = () => {
 														type='number'
 													/>
 
-													<button
-														className='w-7 h-7 min-w-7 rounded-full flex items-center justify-center'
-														style={{
-															border: '1px solid #4D5258'
-														}}
-														onClick={() =>
-															handleOnChangeCount(
-																'increase',
-																item.id
-															)
-														}
-													>
-														+
-													</button>
+														<button
+															className='w-7 h-7 min-w-7 rounded-full flex items-center justify-center'
+															style={{
+																border: '1px solid #4D5258'
+															}}
+															onClick={() =>
+																handleOnChangeCount(
+																	'increase',
+																	item.id
+																)
+															}
+														>
+															+
+														</button>
+													</div>
 												</div>
-											</div>
-											<div className='font-semibold w-[100px]'>
-												{convertPrice(
-													item?.price * item?.amount
-												)}
-												<sup>đ</sup>
+												<div className='font-semibold w-[100px]'>
+													{convertPrice(
+														item?.price *
+															item?.amount
+													)}
+													<sup>đ</sup>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						))}
+							))}
 					</div>
 
 					<div className='flex flex-col gap-2'>
@@ -459,8 +477,8 @@ const CashierPage = () => {
 									<span className='flex items-center hover:boxShadow hover:cursor-pointer px-2 rounded-md'>
 										{discount
 											? `${convertPrice(
-													Number(discount)
-											  )} ${checked ? '%' : 'đ'}`
+												Number(discount)
+											)} ${checked ? '%' : 'đ'}`
 											: '0'}
 									</span>
 								</div>
