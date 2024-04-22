@@ -63,7 +63,6 @@ const ieManagePage = () => {
 		},
 	];
 
-
 	const dataTables = [
 		{
 			key: 1,
@@ -496,7 +495,6 @@ const ieManagePage = () => {
 						<div className='flex-1'>
 							<div className='flex justify-between items-center'>
 								<span className='text-2xl font-bold'>Nhập</span>
-
 							</div>
 
 							<div className='mt-3'>
@@ -510,7 +508,6 @@ const ieManagePage = () => {
 						<div className='flex-1'>
 							<div className='flex justify-between items-center'>
 								<span className='text-2xl font-bold'>Xuất</span>
-
 							</div>
 
 							<div className='mt-3'>
@@ -521,7 +518,6 @@ const ieManagePage = () => {
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div >
