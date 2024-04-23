@@ -1,10 +1,24 @@
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { optionStoreType } from '../constants';
+import * as UserService from '../services/user';
 
 const RegisterPage = () => {
 	const [isShowPassword, setIsShowPassword] = useState(false);
 	const [isConfirmPassword, setIsConfirmPassword] = useState(false);
+	const [fullName, setFullName] = useState('');
+	const [phone, setPhone] = useState('');
+	const [storeType, setStoreType] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
+
+	const handleSubmit = async data => {
+		const res = await UserService.register(data);
+
+		console.log(res);
+		console.log(data);
+	};
 	return (
 		<div className='w-full'>
 			<div className='flex justify-center'>
@@ -43,6 +57,8 @@ const RegisterPage = () => {
 									type='text'
 									placeholder='Nhập họ tên'
 									className='px-3 focus:outline-none w-full'
+									value={fullName}
+									onChange={e => setFullName(e.target.value)}
 								/>
 							</div>
 						</div>
@@ -53,6 +69,8 @@ const RegisterPage = () => {
 									type='text'
 									placeholder='Số điện thoại'
 									className='pl-14 focus:outline-none w-full'
+									value={phone}
+									onChange={e => setPhone(e.target.value)}
 								/>
 								<span className='absolute top-[12px] left-[14px] cursor-pointer'>
 									<Icon
@@ -69,11 +87,13 @@ const RegisterPage = () => {
 									name='storeType'
 									id=''
 									className='mx-3 focus:outline-none w-full cursor-pointer'
+									value={storeType}
+									onChange={e => setStoreType(e.target.value)}
 								>
 									{optionStoreType.map((item, idx) => (
 										<>
 											<option
-												value={item.title}
+												value={item.value}
 												key={idx}
 												className='px-3'
 											>
@@ -91,6 +111,8 @@ const RegisterPage = () => {
 									type='text'
 									placeholder='Email'
 									className='px-3 focus:outline-none w-full'
+									value={email}
+									onChange={e => setEmail(e.target.value)}
 								/>
 							</div>
 						</div>
@@ -101,6 +123,8 @@ const RegisterPage = () => {
 									type={isShowPassword ? 'text' : 'password'}
 									placeholder='Mật khẩu'
 									className='px-3 focus:outline-none w-full'
+									value={password}
+									onChange={e => setPassword(e.target.value)}
 								/>
 								<span
 									className='absolute top-[12px] right-[14px] cursor-pointer'
@@ -131,6 +155,10 @@ const RegisterPage = () => {
 									}
 									placeholder='Nhập lại mật khẩu'
 									className='px-3 focus:outline-none w-full'
+									value={confirmPassword}
+									onChange={e =>
+										setConfirmPassword(e.target.value)
+									}
 								/>
 
 								<span
@@ -154,7 +182,19 @@ const RegisterPage = () => {
 							</div>
 						</div>
 
-						<button className='py-[11px] px-[23px] bg-primary hover:bg-[#005ac3] font-bold text-white cursor-pointer text-base rounded-3xl'>
+						<button
+							type='button'
+							onClick={() =>
+								handleSubmit({
+									name: fullName,
+
+									storeType,
+									email,
+									password
+								})
+							}
+							className='py-[11px] px-[23px] bg-primary hover:bg-[#005ac3] font-bold text-white cursor-pointer text-base rounded-3xl'
+						>
 							Đăng ký
 						</button>
 					</form>

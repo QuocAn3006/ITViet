@@ -262,97 +262,121 @@ export const optionStoreType = [
 		title: 'Chọn loại cửa hàng'
 	},
 	{
-		title: 'Thời trang'
+		title: 'Thời trang',
+		value: 'shop'
 	},
 
 	{
-		title: 'Nhà hàng'
+		title: 'Nhà hàng',
+		value: 'restaurant'
 	},
 
 	{
-		title: 'Quán ăn'
+		title: 'Quán ăn',
+		value: 'restaurant'
 	},
 
 	{
-		title: 'Cafe, Trà sữa'
+		title: 'Cafe, Trà sữa',
+		value: 'cafe'
 	},
 
 	{
-		title: 'Karaoke'
+		title: 'Karaoke',
+		value: 'karaoke'
 	},
 
 	{
-		title: 'Bida'
+		title: 'Bida',
+		value: 'bida'
 	},
 
 	{
-		title: 'Bar, Pub & Club'
+		title: 'Bar, Pub & Club',
+		value: 'bar'
 	},
 
 	{
-		title: 'Căng tin'
+		title: 'Căng tin',
+		value: 'can-tin'
 	},
 
 	{
-		title: 'Trạm dừng chân'
+		title: 'Trạm dừng chân',
+		value: 'station'
 	},
 
 	{
-		title: 'Beauty Spa'
+		title: 'Beauty Spa',
+		value: 'spa'
 	},
 
 	{
-		title: 'Massage'
+		title: 'Massage',
+		value: 'massage'
 	},
 
 	{
-		title: 'Hair Salon & Nail'
+		title: 'Hair Salon & Nail',
+		value: 'hair'
 	},
 
 	{
-		title: 'Khách sạn & Nhà nghỉ'
+		title: 'Khách sạn & Nhà nghỉ',
+		value: 'hotel'
 	},
 
 	{
-		title: 'Homestay'
+		title: 'Homestay',
+		value: 'homestay'
 	},
 
 	{
-		title: 'Villa, Resort'
+		title: 'Villa, Resort',
+		value: 'villa'
 	},
 
 	{
-		title: 'Fitness & Yoga'
+		title: 'Fitness & Yoga',
+		value: 'fitness'
 	},
 
 	{
-		title: 'Phòng khám'
+		title: 'Phòng khám',
+		value: 'clinic'
 	},
 
 	{
-		title: 'Tạp hóa & Siêu thị mini'
+		title: 'Tạp hóa & Siêu thị mini',
+		value: 'grocery'
 	},
 	{
-		title: 'Nội thất & gia dụng'
+		title: 'Nội thất & gia dụng',
+		value: 'interior'
 	},
 	{
-		title: 'Mẹ và bé'
-	},
-
-	{
-		title: 'Sách và văn phòng phẩm'
-	},
-
-	{
-		title: 'Mỹ phẩm'
+		title: 'Mẹ và bé',
+		value: 'mom-baby'
 	},
 
 	{
-		title: 'Sản xuất'
+		title: 'Sách và văn phòng phẩm',
+		value: 'stationery'
 	},
 
 	{
-		title: 'Nông sản & Thực phẩm'
+		title: 'Mỹ phẩm',
+		value: 'cosmetics'
+	},
+
+	{
+		title: 'Sản xuất',
+		value: 'manufacture'
+	},
+
+	{
+		title: 'Nông sản & Thực phẩm',
+		value: 'food'
 	}
 ];
 

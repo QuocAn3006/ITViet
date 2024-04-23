@@ -17,9 +17,11 @@ import {
 import { useReactToPrint } from 'react-to-print';
 import * as ProductService from '../../services/product';
 import * as OrderService from '../../services/order';
+import * as UserService from '../../services/user';
 import { convertPrice } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import config from '../../config';
+import { resetUser } from '../../redux/Slice/userSlice';
 
 const CashierPage = () => {
 	const [selectedTable, setSelectedTable] = useState(null);
@@ -30,6 +32,7 @@ const CashierPage = () => {
 	const [dataCreateOrder, setDataCreateOrder] = useState({ data: null });
 	const navigate = useNavigate();
 	const user = useSelector(state => state?.user);
+
 	const printref = useRef();
 	const dispatch = useDispatch();
 	const order = useSelector(state => state?.order);
@@ -88,8 +91,8 @@ const CashierPage = () => {
 	};
 
 	useEffect(() => {
-		getProductList(user?.storeType);
-	}, []);
+		getProductList();
+	}, [user?.storeType]);
 
 	const handleAddOrder = data => {
 		dispatch(
@@ -282,15 +285,26 @@ const CashierPage = () => {
 		content: () => printref.current
 	});
 
+	const handleLogout = async () => {
+		const res = await UserService.logout();
+		if (res?.status === 'OK') {
+			dispatch(resetUser());
+			localStorage.removeItem('accessToken');
+			localStorage.removeItem('refreshToken');
+			navigate(config.routes.login);
+		}
+	};
 	//create order
 
 	const createOrderApi = async data => {
-		const { orderItems, itemPrice, discountPrice, totalPrice } = data;
+		const { orderItems, itemPrice, discountPrice, totalPrice, userId } =
+			data;
 		const res = await OrderService.createOrder({
 			orderItems,
 			itemPrice,
 			discountPrice,
-			totalPrice
+			totalPrice,
+			userId
 		});
 		setDataCreateOrder(res);
 	};
@@ -300,7 +314,8 @@ const CashierPage = () => {
 			orderItems: order?.orderItems,
 			itemPrice: priceMemo,
 			discountPrice: Number(discount),
-			totalPrice: priceTotalMemo
+			totalPrice: priceTotalMemo,
+			userId: user.id
 		};
 
 		createOrderApi(params);
@@ -324,280 +339,287 @@ const CashierPage = () => {
 
 	return (
 		<>
-			<div className=' bg-[#2f3f50] pt-3 pr-8 w-full  text-white relative'>
-				<div className='absolute top-1 right-10 my-2 group'>
-					<span className='flex gap-1 items-center cursor-pointer text-base'>
-						<Icon
-							icon='ph:user-light'
-							height={20}
-						/>
-						{user.name}
-					</span>
-					<ul className='dropdown-menu w-[210px] grid-cols-1 group-hover:top-5 right-20 z-20'>
-						<li className='hover:text-primary text-base flex items-center gap-1'>
+			<div>
+				<div className=' bg-[#2f3f50] pt-3 pr-8 w-full  text-white relative'>
+					<div className='absolute top-1 right-10 my-2 group'>
+						<span className='flex gap-1 items-center cursor-pointer text-base'>
 							<Icon
 								icon='ph:user-light'
 								height={20}
 							/>
-							Thông tin tài khoản
-						</li>
-						<li className='hover:text-primary text-base flex items-center gap-1'>
-							<Icon
-								icon='ant-design:setting-outlined'
-								height={20}
-							/>
-							Cài đặt
-						</li>
-						<li
-							className='hover:text-primary text-base flex items-center gap-1'
-							onClick={() => navigate(config.routes.login)}
-						>
-							<Icon
-								icon='ic:twotone-logout'
-								height={20}
-							/>
-							Đăng xuất
-						</li>
-					</ul>
+							{user.name}
+						</span>
+						<ul className='dropdown-menu w-[210px] grid-cols-1 group-hover:top-5 right-20 z-20'>
+							<li className='hover:text-primary text-base flex items-center gap-1'>
+								<Icon
+									icon='ph:user-light'
+									height={20}
+								/>
+								Thông tin tài khoản
+							</li>
+							<li className='hover:text-primary text-base flex items-center gap-1'>
+								<Icon
+									icon='ant-design:setting-outlined'
+									height={20}
+								/>
+								Cài đặt
+							</li>
+							<li
+								className='hover:text-primary text-base flex items-center gap-1'
+								onClick={handleLogout}
+							>
+								<Icon
+									icon='ic:twotone-logout'
+									height={20}
+								/>
+								Đăng xuất
+							</li>
+						</ul>
+					</div>
 				</div>
-			</div>
-			<div className='pt-10 px-3 w-full h-full min-h-screen flex bg-[#2f3f50] gap-4'>
-				<div className='w-[65%] bg-white rounded-2xl p-4'>
-					<Tabs
-						items={items}
-						activeKey={selectedTabKey}
-						onChange={setSelectedTabKey}
-					/>
-				</div>
+				<div className='pt-10 px-3 w-full h-full min-h-screen flex bg-[#2f3f50] gap-4'>
+					<div className='w-[65%] bg-white rounded-2xl p-4'>
+						<Tabs
+							items={items}
+							activeKey={selectedTabKey}
+							onChange={setSelectedTabKey}
+						/>
+					</div>
 
-				<div className='w-[35%] flex flex-col bg-white rounded-2xl p-4'>
-					<div className='h-full '>
-						{order?.orderItems.length === 0 && (
-							<div className='flex items-center flex-col justify-center mt-10'>
-								<i
-									className='w-[96px] h-[96px] min-w-[96px]'
-									style={{
-										background:
-											'url(https://static-kvfnb.kiotviet.vn/Content/WebPos/food-icon.svg) no-repeat'
-									}}
-								></i>
-								<div className='text-center'>
-									<p className='font-medium text-xl'>
-										Chưa có món nào
-									</p>
-									<span>Vui lòng chọn thực đơn</span>
-								</div>
-							</div>
-						)}
-						{order?.orderItems.length > 0 &&
-							order?.orderItems?.map(item => (
-								<div
-									key={item._id}
-									className='my-[5px] pb-3 '
-									ref={printref}
-								>
-									<div
+					<div className='w-[35%] flex flex-col bg-white rounded-2xl p-4'>
+						<div className='h-full '>
+							{order?.orderItems.length === 0 && (
+								<div className='flex items-center flex-col justify-center mt-10'>
+									<i
+										className='w-[96px] h-[96px] min-w-[96px]'
 										style={{
-											backgroundColor: 'unset',
-											boxShadow:
-												'0px 4px 10px rgba(0, 0, 0, 0.1)',
-											border: '1px solid transparent',
-											borderRadius: '10px',
-											padding: '14px 0'
+											background:
+												'url(https://static-kvfnb.kiotviet.vn/Content/WebPos/food-icon.svg) no-repeat'
 										}}
+									></i>
+									<div className='text-center'>
+										<p className='font-medium text-xl'>
+											Chưa có món nào
+										</p>
+										<span>Vui lòng chọn thực đơn</span>
+									</div>
+								</div>
+							)}
+							{order?.orderItems.length > 0 &&
+								order?.orderItems?.map(item => (
+									<div
+										key={item._id}
+										className='my-[5px] pb-3 '
+										ref={printref}
 									>
-										<div className='flex w-full items-center'>
-											<span
-												className='px-2 hover:text-red-500 cursor-pointer'
-												onClick={() =>
-													handleDeleteProduct(
-														item?.id
-													)
-												}
-											>
-												<Icon
-													icon='ph:trash-light'
-													height={20}
-												/>
-											</span>
-											<div className='flex flex-1 gap-x-2 '>
-												<div
-													className=''
-													style={{
-														flex: '1 1 20%',
-														wordBreak: 'break-word'
-													}}
+										<div
+											style={{
+												backgroundColor: 'unset',
+												boxShadow:
+													'0px 4px 10px rgba(0, 0, 0, 0.1)',
+												border: '1px solid transparent',
+												borderRadius: '10px',
+												padding: '14px 0'
+											}}
+										>
+											<div className='flex w-full items-center'>
+												<span
+													className='px-2 hover:text-red-500 cursor-pointer'
+													onClick={() =>
+														handleDeleteProduct(
+															item?.id
+														)
+													}
 												>
-													<span className='font-semibold'>
-														{item.name}
-													</span>
-												</div>
-
-												<div className='w-[100px]'>
-													<div className='flex items-center'>
-														<button
-															className='w-7 h-7 min-w-7 rounded-full flex items-center justify-center'
-															style={{
-																border: '1px solid #4D5258'
-															}}
-															onClick={() =>
-																handleOnChangeCount(
-																	'decrease',
-																	item.id,
-																	item?.amount ===
-																		1
-																)
-															}
-														>
-															-
-														</button>
-
-														<input
-															min={1}
-															value={item?.amount}
-															className='w-8 h-5 border-none text-center'
-															type='number'
-														/>
-
-														<button
-															className='w-7 h-7 min-w-7 rounded-full flex items-center justify-center'
-															style={{
-																border: '1px solid #4D5258'
-															}}
-															onClick={() =>
-																handleOnChangeCount(
-																	'increase',
-																	item.id
-																)
-															}
-														>
-															+
-														</button>
+													<Icon
+														icon='ph:trash-light'
+														height={20}
+													/>
+												</span>
+												<div className='flex flex-1 gap-x-2 '>
+													<div
+														className=''
+														style={{
+															flex: '1 1 20%',
+															wordBreak:
+																'break-word'
+														}}
+													>
+														<span className='font-semibold'>
+															{item.name}
+														</span>
 													</div>
-												</div>
-												<div className='font-semibold w-[100px]'>
-													{convertPrice(
-														item?.price *
-															item?.amount
-													)}
-													<sup>đ</sup>
+
+													<div className='w-[100px]'>
+														<div className='flex items-center'>
+															<button
+																className='w-7 h-7 min-w-7 rounded-full flex items-center justify-center'
+																style={{
+																	border: '1px solid #4D5258'
+																}}
+																onClick={() =>
+																	handleOnChangeCount(
+																		'decrease',
+																		item.id,
+																		item?.amount ===
+																			1
+																	)
+																}
+															>
+																-
+															</button>
+
+															<input
+																min={1}
+																value={
+																	item?.amount
+																}
+																className='w-8 h-5 border-none text-center'
+																type='number'
+															/>
+
+															<button
+																className='w-7 h-7 min-w-7 rounded-full flex items-center justify-center'
+																style={{
+																	border: '1px solid #4D5258'
+																}}
+																onClick={() =>
+																	handleOnChangeCount(
+																		'increase',
+																		item.id
+																	)
+																}
+															>
+																+
+															</button>
+														</div>
+													</div>
+													<div className='font-semibold w-[100px]'>
+														{convertPrice(
+															item?.price *
+																item?.amount
+														)}
+														<sup>đ</sup>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-							))}
-					</div>
+								))}
+						</div>
 
-					<div className='flex flex-col gap-2'>
-						<div className='flex w-full items-center justify-between border-t border-t-gray-600 pt-4 pb-3'>
-							<div className='text-lg font-semibold flex flex-col items-center gap-2'>
-								<span>Tạm tính:</span>
-								<span>Giảm giá:</span>
-								<span>Tổng tiền</span>
-							</div>
-							<span className='text-lg font-semibold flex flex-col items-center gap-2'>
-								<span>
-									{convertPrice(priceMemo)}
-									<sup>đ</sup>
+						<div className='flex flex-col gap-2'>
+							<div className='flex w-full items-center justify-between border-t border-t-gray-600 pt-4 pb-3'>
+								<div className='text-lg font-semibold flex flex-col items-center gap-2'>
+									<span>Tạm tính:</span>
+									<span>Giảm giá:</span>
+									<span>Tổng tiền</span>
+								</div>
+								<span className='text-lg font-semibold flex flex-col items-center gap-2'>
+									<span>
+										{convertPrice(priceMemo)}
+										<sup>đ</sup>
+									</span>
+									<div
+										className=''
+										onClick={showModal}
+									>
+										<span className='flex items-center hover:boxShadow hover:cursor-pointer px-2 rounded-md'>
+											{discount
+												? `${convertPrice(
+														Number(discount)
+												  )} ${checked ? '%' : 'đ'}`
+												: '0'}
+										</span>
+									</div>
+									<span>
+										{convertPrice(priceTotalMemo)}
+										<sup>đ</sup>
+									</span>
 								</span>
-								<div
-									className=''
-									onClick={showModal}
+							</div>
+
+							<button
+								onClick={handleCreateOrder}
+								className='flex items-center py-4 px-6 w-full bg-[#28b44f] rounded-2xl justify-center font-semibold text-white'
+							>
+								<Icon icon='solar:dollar-linear' />
+								Thanh toán (F9)
+							</button>
+
+							<div className='hidden'>
+								<PrintOrder
+									ref={printref}
+									allProduct={order?.orderItems}
+									priceTotal={convertPrice(priceTotalMemo)}
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<Modal
+					forceRender
+					title='Bảng giảm giá'
+					open={isModalOpen}
+					footer={() => (
+						<div className='py-4 mb-3'>
+							<button
+								onClick={handleCancelModal}
+								className='float-right px-2 py-2 w-[120px] bg-[#28b44f] rounded-2xl font-semibold text-white'
+							>
+								<div className='w-full flex items-center justify-center gap-2'>
+									<Icon icon='solar:dollar-linear' />
+									Xác nhận
+								</div>
+							</button>
+						</div>
+					)}
+					onCancel={handleCancelModal}
+				>
+					<div className='flex flex-col gap-2'>
+						<div className='flex w-full items-center justify-between'>
+							<div className='font-semibold flex flex-col gap-2'>
+								<span>Loại giảm giá:</span>
+								<span>Số tiền / Phần trăm:</span>
+							</div>
+							<div className='font-semibold flex flex-col gap-2'>
+								<ConfigProvider
+									theme={{
+										components: {
+											Switch: {
+												colorPrimary: '#28b44f',
+												colorPrimaryHover: '#28b44f'
+											}
+										}
+									}}
 								>
-									<span className='flex items-center hover:boxShadow hover:cursor-pointer px-2 rounded-md'>
-										{discount
-											? `${convertPrice(
-													Number(discount)
-											  )} ${checked ? '%' : 'đ'}`
-											: '0'}
+									<Switch
+										className='bg-primary'
+										checkedChildren='%'
+										unCheckedChildren='Tiền'
+										checked={checked}
+										onChange={handleCheck}
+									/>
+								</ConfigProvider>
+
+								<div className=' flex items-center gap-2'>
+									<input
+										type='text'
+										className='border border-[#ccc] rounded-lg focus:outline-none px-2 w-[120px] py-1'
+										value={Number(
+											discount
+										).toLocaleString()}
+										onChange={handleOnChangeDiscountValue}
+									/>
+									<span className=''>
+										{checked ? '%' : 'VND'}
 									</span>
 								</div>
-								<span>
-									{convertPrice(priceTotalMemo)}
-									<sup>đ</sup>
-								</span>
-							</span>
-						</div>
-
-						<button
-							onClick={handleCreateOrder}
-							className='flex items-center py-4 px-6 w-full bg-[#28b44f] rounded-2xl justify-center font-semibold text-white'
-						>
-							<Icon icon='solar:dollar-linear' />
-							Thanh toán (F9)
-						</button>
-
-						<div className='hidden'>
-							<PrintOrder
-								ref={printref}
-								allProduct={order?.orderItems}
-								priceTotal={convertPrice(priceTotalMemo)}
-							/>
+							</div>
 						</div>
 					</div>
-				</div>
+				</Modal>
 			</div>
-			<Modal
-				forceRender
-				title='Bảng giảm giá'
-				open={isModalOpen}
-				footer={() => (
-					<div className='py-4 mb-3'>
-						<button
-							onClick={handleCancelModal}
-							className='float-right px-2 py-2 w-[120px] bg-[#28b44f] rounded-2xl font-semibold text-white'
-						>
-							<div className='w-full flex items-center justify-center gap-2'>
-								<Icon icon='solar:dollar-linear' />
-								Xác nhận
-							</div>
-						</button>
-					</div>
-				)}
-				onCancel={handleCancelModal}
-			>
-				<div className='flex flex-col gap-2'>
-					<div className='flex w-full items-center justify-between'>
-						<div className='font-semibold flex flex-col gap-2'>
-							<span>Loại giảm giá:</span>
-							<span>Số tiền / Phần trăm:</span>
-						</div>
-						<div className='font-semibold flex flex-col gap-2'>
-							<ConfigProvider
-								theme={{
-									components: {
-										Switch: {
-											colorPrimary: '#28b44f',
-											colorPrimaryHover: '#28b44f'
-										}
-									}
-								}}
-							>
-								<Switch
-									className='bg-primary'
-									checkedChildren='%'
-									unCheckedChildren='Tiền'
-									checked={checked}
-									onChange={handleCheck}
-								/>
-							</ConfigProvider>
-
-							<div className=' flex items-center gap-2'>
-								<input
-									type='text'
-									className='border border-[#ccc] rounded-lg focus:outline-none px-2 w-[120px] py-1'
-									value={Number(discount).toLocaleString()}
-									onChange={handleOnChangeDiscountValue}
-								/>
-								<span className=''>
-									{checked ? '%' : 'VND'}
-								</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</Modal>
 		</>
 	);
 };

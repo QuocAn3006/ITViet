@@ -1,12 +1,31 @@
 import axios from 'axios';
 
-export const axiosJWT = axios.create();
+export const axiosJWT = axios.create({
+	baseURL: import.meta.env.VITE_DATABASE_URL
+});
 
 export const login = async user => {
 	const res = await axios.post(
 		`${import.meta.env.VITE_DATABASE_URL}/user/login`,
 		user
 	);
+	return res.data;
+};
+
+export const register = async data => {
+	const res = await axios.post(
+		`${import.meta.env.VITE_DATABASE_URL}/user/register`,
+		data
+	);
+
+	return res.data;
+};
+
+export const logout = async () => {
+	const res = await axios.post(
+		`${import.meta.env.VITE_DATABASE_URL}/user/logout`
+	);
+
 	return res.data;
 };
 

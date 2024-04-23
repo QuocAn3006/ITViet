@@ -10,7 +10,6 @@ import ManageProductPage from '../pages/Admin/ManageProductPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import RegisterPage from '../pages/RegisterPage';
 import SolutionPage from '../pages/SolutionPage';
-import { ProtectedRoute } from './ProtectedRoute';
 import SupportPage from '../pages/SupportPage';
 import ManageBillPage from '../pages/Admin/ManageBillPage';
 import IEManage from '../pages/Admin/IEManage';
@@ -19,35 +18,35 @@ export const privateRoutes = [
 	{
 		path: config.routes.cashier,
 		page: CashierPage,
-		layout: null,
-		protected: ProtectedRoute
+		layout: null
+		// protected: ProtectedRoute
 	},
 	{
 		path: config.routes.admin,
 		page: AdminPage,
-		layout: AdminLayout,
-		protected: ProtectedRoute
+		layout: AdminLayout
+		// protected: ProtectedRoute
 	},
 
 	{
 		path: config.routes.manageProduct,
 		page: ManageProductPage,
-		layout: AdminLayout,
-		protected: ProtectedRoute
+		layout: AdminLayout
+		// protected: ProtectedRoute
 	},
 
 	{
 		path: config.routes.manageBill,
 		page: ManageBillPage,
-		layout: AdminLayout,
-		protected: ProtectedRoute
+		layout: AdminLayout
+		// protected: ProtectedRoute
 	},
 
 	{
 		path: config.routes.ieManage,
 		page: IEManage,
-		layout: AdminLayout,
-		protected: ProtectedRoute
+		layout: AdminLayout
+		// protected: ProtectedRoute
 	}
 ];
 

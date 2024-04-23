@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-
 const initialState = {
 	name: '',
 	email: '',
@@ -41,7 +40,9 @@ export const userSlice = createSlice({
 				(state.email = ''),
 				(state.isAdmin = ''),
 				(state.id = '');
-			(state.accessToken = ''), (state.refreshToken = '');
+			(state.storeType = ''),
+				(state.accessToken = ''),
+				(state.refreshToken = '');
 		}
 	}
 });

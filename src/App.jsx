@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { jwtDecode } from 'jwt-decode';
 import { resetUser, updatedUser } from './redux/Slice/userSlice';
 import AdminLayout from './Layouts/AdminLayout';
-import { ProtectedRoute } from './router/ProtectedRoute';
 
 function App() {
 	const user = useSelector(state => state?.user);
@@ -22,17 +21,20 @@ function App() {
 	};
 
 	const handleDecode = () => {
-		const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+		let storage =
+			user?.accessToken ||
+			JSON.parse(localStorage.getItem('accessToken'));
+
 		let decoded = {};
-		if (accessToken && !user?.accessToken) {
-			decoded = jwtDecode(accessToken);
+		if (storage && !user?.accessToken) {
+			decoded = jwtDecode(storage);
 		}
-		return { decoded, accessToken };
+		return { decoded, storage };
 	};
 	useEffect(() => {
-		const { decoded, accessToken } = handleDecode();
+		const { decoded, storage } = handleDecode();
 		if (decoded?.userId) {
-			handleGetDetailUser(decoded?.userId, accessToken);
+			handleGetDetailUser(decoded?.userId, storage);
 		}
 	}, []);
 
@@ -40,14 +42,17 @@ function App() {
 		async config => {
 			const { decoded } = handleDecode();
 			const currentTime = new Date();
-			const refreshToken = JSON.parse(
-				localStorage.getItem('refreshToken')
-			);
+			let refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
 			const decodedRefreshToken = jwtDecode(refreshToken);
 			if (decoded?.exp < currentTime.getTime() / 1000) {
-				if (decodedRefreshToken?.exp > currentTime.getTime() / 1000) {
-					const res = await UserService.refreshToken(refreshToken);
-					config.headers['token'] = `Bearer ${res?.accessToken}`;
+				if (decodedRefreshToken?.exp > currentTime.getTime / 1000) {
+					const data = await UserService.refreshToken(refreshToken);
+					config.headers['token'] = `Bearer ${data?.accessToken}`;
+					refreshToken = data?.accessToken;
+					localStorage.setItem(
+						'refreshToken',
+						JSON.stringify(refreshToken)
+					);
 				} else {
 					dispatch(resetUser());
 				}
@@ -98,9 +103,7 @@ function App() {
 								path={route.path}
 								element={
 									<Layout>
-										<ProtectedRoute>
-											<Page />
-										</ProtectedRoute>
+										<Page />
 									</Layout>
 								}
 							/>

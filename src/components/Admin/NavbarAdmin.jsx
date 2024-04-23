@@ -1,11 +1,25 @@
 import { Icon } from '@iconify/react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import config from '../../config';
+import * as UserService from '../../services/user';
+import { resetUser } from '../../redux/Slice/userSlice';
 
 const NavbarAdmin = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const user = useSelector(state => state?.user);
+
+	const handleLogout = async () => {
+		const res = await UserService.logout();
+		if (res?.status === 'OK') {
+			dispatch(resetUser());
+			localStorage.removeItem('accessToken');
+			localStorage.removeItem('refreshToken');
+			navigate(config.routes.login);
+		}
+	};
+
 	return (
 		<header className='flex flex-col'>
 			<nav className='gap-2 h-12  w-full'>
@@ -96,9 +110,7 @@ const NavbarAdmin = () => {
 										<h1>Thông tin gian hàng</h1>
 									</li>
 									<li
-										onClick={() =>
-											navigate(config.routes.login)
-										}
+										onClick={handleLogout}
 										type='button'
 										className='hover:bg-gray-200 p-3 rounded-md flex gap-3 items-center'
 									>
@@ -137,7 +149,7 @@ const NavbarAdmin = () => {
 						<Icon icon='tabler:table'></Icon>
 						<h1>Hóa đơn</h1>
 					</div>
-					<div 
+					<div
 						onClick={() => navigate(config.routes.ieManage)}
 						className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'
 					>
