@@ -13,6 +13,6 @@ export const routes = {
 	admin: '/admin',
 	manageProduct: '/manage-product',
 	ieManage: '/ie-manage',
-	manageBill: '/manage-bill'
-	
+	manageBill: '/manage-bill',
+	adminOwnerPage: '/admin-owner'
 };
