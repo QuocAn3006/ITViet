@@ -1,141 +1,61 @@
 /* eslint-disable react/prop-types */
-import logo from '../assets/images/logo.png';
-import logoNoBg from '../assets/images/logo_nobg.png';
+import banner from '../assets/images/banner-homemajor-2.webp';
 const Banner = props => {
-	const { title, isHomeBanner = false, isSolutionPage = false } = props;
+	const { openMenu } = props;
 	return (
-		<>
-			{isHomeBanner && (
-				<div className='bg-gradient-to-r from-slate-200 to-primary/20 w-full min-h-[80vh]'>
-					<div className='max-w-7xl mx-auto'>
-						<div className='flex h-screen flex-nowrap flex-col lg:flex-row gap-10 items-center'>
-							<div className='flex flex-col items-center justify-center mt-36 lg:mt-0 gap-8 lg:w-[35%] w-full'>
-								<h1 className='font-bold text-5xl leading-tight text-center'>
-									{title}
-								</h1>
-
-								<div className='flex items-center gap-2 '>
-									<button
-										onClick={() =>
-											navigate(config.routes.register)
-										}
-										className='px-5 py-3 text-base bg-primary text-white rounded-3xl font-semibold'
-									>
-										Dùng thử miễn phí
-									</button>
-
-									<button className='px-5 py-3 text-base bg-[#cce2fd] text-primary rounded-3xl font-semibold '>
-										Khám phá
-									</button>
-								</div>
-							</div>
-
-							<div
-								className='hidden lg:flex flex-1 items-center justify-center relative z-10'
-								style={{
-									backgroundImage:
-										'url(https://cdn-kvweb.kiotviet.vn/kiotviet-website/wp-content/uploads/2023/11/21043602/banner-homemajor-2.webp)',
-									backgroundPosition: 'bottom',
-									backgroundSize: 'contain',
-									backgroundRepeat: 'no-repeat',
-									height: '210px',
-									marginTop: '240px'
-									// marginLeft: '40px'
-								}}
-							>
-								<div className='absolute left-0 top-[18%] w-fit'>
-									<div
-										className='w-[560px] h-[560px]'
-										style={{
-											backgroundImage:
-												'url(https://i.pinimg.com/originals/6a/a9/a5/6aa9a58e2c210b4c8540b16f625160a0.jpg)',
-											backgroundSize: 'contain',
-											backgroundPosition: 'bottom'
-										}}
-									>
-
-									</div>
-								</div>
-
-								<div className='absolute left-[5%] bottom-[20%] w-fit'>
-									<div
-										className='flex items-center bg-white rounded-3xl px-4 py-2'
-										style={{
-											boxShadow:
-												' 0 8px 24px 0 rgba(0,48,104,.04)'
-										}}
-									>
-										<span className='w-14 h-14 flex items-center justify-center'>
-											<img
-												src={logo}
-												alt='logo'
-												width={45}
-												height={45}
-											/>
-										</span>
-										<span className='text-base font-semibold text-[#002249]'>
-											Giải pháp thanh toán và vay vốn
-										</span>
-									</div>
-								</div>
-							</div>
-						</div>
+		<div className='bg-gradient-to-r from-sky-300 to-lime-100'>
+			<div className='max-w-7xl flex flex-col lg:flex-row justify-between items-center mx-auto min-h-screen'>
+				<div className='flex flex-col lg:w-[45%]'>
+					<h2 className='text-4xl text-center lg:text-left lg:text-[4rem] lg:leading-[60px] mt-12 mb-3 font-bold overflow-hidden text-ellipsis '>
+						Phần mềm
+						<br />
+						quản lý bán hàng
+						<br />
+						phổ biến nhất
+					</h2>
+					<div className={`flex gap-4 mt-2`}>
+						<button className='p-5 text-white rounded-3xl bg-primary font-semibold'>
+							Dùng thử miễn phí
+						</button>
+						<button
+							className='p-5 text-primary rounded-3xl bg-[#cce2fd] font-bold animate-button'
+							style={{ zIndex: openMenu ? -1 : 0 }}
+						>
+							Khám phá
+						</button>
 					</div>
 				</div>
-			)}
 
-			{isSolutionPage && (
-				<div className='pt-[65px]'>
+				<div className='w-full lg:w-[55%] mt-12'>
 					<div
-						className='bg-cover h-[432px]'
+						className='relative bg-contain bg-no-repeat bg-bottom'
 						style={{
-							backgroundImage:
-								'url(https://cdn-kvweb.kiotviet.vn/kiotviet-website/wp-content/uploads/2023/10/08101925/quan_bg-min.png)',
-							backgroundRepeat: 'no-repeat'
+							backgroundImage: `url(${banner})`,
+							height: '60vh',
+							zIndex: openMenu ? -1 : 0
 						}}
 					>
 						<div className=' absolute left-[3%] lg:top-[18%] lg:left-0 top-0 w-fit'>
-							<div className='bg-white px-6 py-4 rounded-3xl font-semibold lg:w-fit flex items-center gap-2'>
-								<img
-									src='../src/assets/images/logo.png'
-									alt='logo'
-									width={22}
-									height={22}
-									loading='lazy'
-								/>
+							<span className='bg-white px-6 py-4 rounded-3xl font-semibold lg:w-fit'>
 								Phần mềm quản lý bán hàng
-							</div>
+							</span>
 						</div>
 
 						<div className='absolute bottom-0 lg:bottom-[20%] left-[5%] w-fit '>
-							<div className='bg-white px-6 py-4 rounded-3xl font-semibold lg:w-fit flex items-center gap-2'>
-								<img
-									src='../src/assets/images/logo.png'
-									alt='logo'
-									width={22}
-									height={22}
-									loading='lazy'
-								/>
+							<span className='bg-white px-6 py-4 rounded-3xl font-semibold'>
 								Giải pháp thanh toán
-							</div>
+							</span>
 						</div>
 
 						<div className='absolute top-[45%] right-[1%] w-fit '>
-							<div className='bg-white px-6 py-4 rounded-3xl font-semibold lg:w-fit flex items-center gap-2'>
-								<img
-									src='../src/assets/images/logo.png'
-									alt='logo'
-									width={22}
-									height={22}
-									loading='lazy'
-								/>
+							<span className='bg-white px-6 py-4 rounded-3xl font-semibold'>
 								Dịch vụ với chi phí hợp lý
-							</div>
+							</span>
 						</div>
 					</div>
 				</div>
-			)}
-		</>
+			</div>
+		</div>
 	);
 };
 

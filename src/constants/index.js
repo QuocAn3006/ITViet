@@ -203,59 +203,111 @@ export const navItemTypes = {
 			},
 
 			{
-				title: 'Khác',
-				icon: 'fa-regular:plus-square'
-			},
-		],
-
-		beauty: [
-			{
-				title: 'Beauty Spa',
-				icon: 'solar:star-fall-outline'
-			},
-
-			{
-				title: 'Massage',
-				icon: 'tabler:massage'
-			},
-
-			{
-				title: 'Hair Salon & Nail',
-				icon: 'mingcute:hair-2-line'
-			},
-
-			{
-				title: 'Khách sạn & Nhà nghỉ',
-				icon: 'icon-park-outline:hotel'
-			},
-
-			{
-				title: 'Homestay',
-				icon: 'icon-park-outline:homestay'
-			},
-
-			{
-				title: 'Villa, Resort',
-				icon: 'material-symbols:holiday-village-outline'
-			},
-
-			{
-				title: 'Fitness & Yoga',
-				icon: 'ion:fitness-outline'
-			},
-
-			{
-				title: 'Phòng khám',
-				icon: 'mingcute:hospital-line'
-			},
-
-			{
-				title: 'Khác',
-				icon: 'fa-regular:plus-square'
-			},
+				title: 'Karaoke, Bida',
+				icon: 'maki:karaoke'
+			}
 		]
 	}
 };
+
+export const optionStoreType = [
+	{
+		title: 'Chọn loại cửa hàng'
+	},
+	{
+		title: 'Thời trang'
+	},
+
+	{
+		title: 'Nhà hàng'
+	},
+
+	{
+		title: 'Quán ăn'
+	},
+
+	{
+		title: 'Cafe, Trà sữa'
+	},
+
+	{
+		title: 'Karaoke'
+	},
+
+	{
+		title: 'Bida'
+	},
+
+	{
+		title: 'Bar, Pub & Club'
+	},
+
+	{
+		title: 'Căng tin'
+	},
+
+	{
+		title: 'Trạm dừng chân'
+	},
+
+	{
+		title: 'Beauty Spa'
+	},
+
+	{
+		title: 'Massage'
+	},
+
+	{
+		title: 'Hair Salon & Nail'
+	},
+
+	{
+		title: 'Khách sạn & Nhà nghỉ'
+	},
+
+	{
+		title: 'Homestay'
+	},
+
+	{
+		title: 'Villa, Resort'
+	},
+
+	{
+		title: 'Fitness & Yoga'
+	},
+
+	{
+		title: 'Phòng khám'
+	},
+
+	{
+		title: 'Tạp hóa & Siêu thị mini'
+	},
+	{
+		title: 'Nội thất & gia dụng'
+	},
+	{
+		title: 'Mẹ và bé'
+	},
+
+	{
+		title: 'Sách và văn phòng phẩm'
+	},
+
+	{
+		title: 'Mỹ phẩm'
+	},
+
+	{
+		title: 'Sản xuất'
+	},
+
+	{
+		title: 'Nông sản & Thực phẩm'
+	}
+];
 
 export const sectionCardItems = [
 	{
@@ -370,6 +422,225 @@ export const tableOrder = [
 		title: 'Bàn 18'
 	}
 ];
+
+export const menuSupport = [
+	{
+		icon: 'clarity:note-edit-line',
+		title: 'Khởi tạo gian hàng'
+	},
+	{
+		icon: 'uil:setting',
+		title: 'Thiết lập cửa hàng'
+	},
+	{
+		icon: 'ph:users-three-bold',
+		title: 'Quản lí người dùng'
+	},
+	{
+		icon: 'lucide:store',
+		title: 'Quản lí chi nhánh'
+	},
+	{
+		icon: 'ic:outline-print',
+		title: 'Quản lí mẫu in'
+	},
+	{
+		icon: 'flowbite:chart-outline',
+		title: 'Tổng quan'
+	},
+	{
+		icon: 'solar:box-outline',
+		title: 'Hàng hóa'
+	},
+	{
+		icon: 'mdi:cart-outline',
+		title: 'Màn hình bán hàng'
+	},
+	{
+		icon: 'ri:user-line',
+		title: 'Khách hàng'
+	},
+	{
+		icon: 'uil:user-arrows',
+		title: 'Nhà cung cấp'
+	},
+	{
+		icon: 'tabler:truck',
+		title: 'Dịch vụ vận chuyển'
+	},
+	{
+		icon: 'icon-park-outline:funds',
+		title: 'Sổ quỹ'
+	},
+	{
+		icon: 'tabler:report',
+		title: 'Báo cáo'
+	},
+	{
+		icon: 'tabler:router',
+		title: 'Tích hợp hệ thống'
+	},
+	{
+		icon: 'icon-park-twotone:web-page',
+		title: 'Website bán hàng'
+	},
+	{
+		icon: 'gridicons:phone',
+		title: 'App Quản lí'
+	},
+	{
+		icon: 'uiw:laptop',
+		title: 'App Bán hàng'
+	},
+	{
+		icon: 'vaadin:facebook',
+		title: 'Quản lí Fanpage'
+	},
+	{
+		icon: 'bi:instagram',
+		title: 'Quản lí Instagram'
+	},
+	{
+		icon: 'mingcute:user-edit-line',
+		title: 'Quản lí nhân viên'
+	},
+	{
+		icon: 'svg-spinners:3-dots-move',
+		title: 'Khác'
+	}
+];
+
+export const sectionSupport = {
+	first: [
+		{
+			icon: 'mage:stars-c',
+			title: 'Các chủ đề phổ biến',
+			subtitle: [
+				{
+					sub: 'Tích hợp giao vận'
+				},
+				{
+					sub: 'Quản lý bán hàng qua Facebook'
+				},
+				{
+					sub: 'Quản lý khuyến mại'
+				},
+				{
+					sub: 'Quản lý Voucher'
+				}
+			]
+		}
+	],
+
+	second: [
+		{
+			icon: 'uil:setting',
+			title: 'Thiết lập cài đặt thiết bị',
+			subtitle: [
+				{
+					sub: 'Cài đặt máy in Hóa đơn'
+				},
+				{
+					sub: 'Cài đặt máy in Mã vạch'
+				},
+				{
+					sub: 'Cài đặt Cây hiển thị giá'
+				},
+				{
+					sub: 'Cài đặt Két đựng tiền'
+				}
+			]
+		}
+	],
+
+	third: [
+		{
+			icon: 'fluent:person-support-16-filled',
+			title: 'Thiết lập hỗ trợ tích hợp',
+			subtitle: [
+				{
+					sub: 'Quản lý bán hàng qua Facebook'
+				},
+				{
+					sub: 'Kết nối ITViet - Lazada'
+				},
+				{
+					sub: 'Kết nối ITViet - Shopee'
+				}
+			]
+		}
+	]
+};
+
+export const sectionSupport2 = {
+	first: [
+		{
+			title: 'Hàng hóa',
+			subtitle: [
+				{
+					sub: 'Kiểm kho'
+				},
+				{
+					sub: 'Thẻ kho'
+				},
+				{
+					sub: 'Định mức tồn'
+				}
+			]
+		}
+	],
+
+	second: [
+		{
+			title: 'Người dùng',
+			subtitle: [
+				{
+					sub: 'Quản lý phân quyền'
+				},
+				{
+					sub: 'Nhóm người dùng'
+				},
+				{
+					sub: 'Nhân viên thu ngân'
+				}
+			]
+		}
+	],
+
+	third: [
+		{
+			title: 'Báo cáo',
+			subtitle: [
+				{
+					sub: 'Báo cáo công nợ'
+				},
+				{
+					sub: 'Báo cáo lợi nhuận'
+				},
+				{
+					sub: 'Báo cáo sổ quỹ'
+				}
+			]
+		}
+	],
+
+	fourth: [
+		{
+			title: 'Bán hàng',
+			subtitle: [
+				{
+					sub: 'Khái niệm hóa đơn'
+				},
+				{
+					sub: 'Phương thức thanh toán'
+				},
+				{
+					sub: 'Quản lý công nợ'
+				}
+			]
+		}
+	]
+};
 
 export const menuSupport = [
 	{

@@ -32,26 +32,12 @@ export const orderSlice = createSlice({
 		decreaseAmount: (state, action) => {
 			const { idProduct } = action.payload;
 			const itemOrder = state?.orderItems.find(
-				item => item.id === idProduct
+				item => item.productId === productId
 			);
-			if (itemOrder) {
-				itemOrder.amount = itemOrder.amount - 1;
-			}
-		},
-		removeProduct: (state, action) => {
-			const { idProduct } = action.payload;
-			const itemOrder = state?.orderItems.filter(
-				item => item.id !== idProduct
-			);
-			state.orderItems = itemOrder;
+			itemOrder.amount++;
 		}
 	}
 });
 
-export const {
-	addOrderProduct,
-	increaseAmount,
-	decreaseAmount,
-	removeProduct
-} = orderSlice.actions;
+export const { addOrderProduct } = orderSlice.actions;
 export default orderSlice.reducer;

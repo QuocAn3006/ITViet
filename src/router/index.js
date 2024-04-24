@@ -8,39 +8,6 @@ import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 import ManageProductPage from '../pages/Admin/ManageProductPage';
 import NotFoundPage from '../pages/NotFoundPage';
-import RegisterPage from '../pages/RegisterPage';
-import SolutionPage from '../pages/SolutionPage';
-import { ProtectedRoute } from './ProtectedRoute';
-import SupportPage from '../pages/SupportPage';
-import ManageBillPage from '../pages/Admin/ManageBillPage';
-
-export const privateRoutes = [
-	{
-		path: '/cashier',
-		page: CashierPage,
-		layout: null
-	},
-	{
-		path: '/admin',
-		page: AdminPage,
-		layout: AdminLayout,
-		protected: ProtectedRoute
-	},
-
-	{
-		path: config.routes.manageProduct,
-		page: ManageProductPage,
-		layout: AdminLayout,
-		protected: ProtectedRoute
-	},
-
-	{
-		path: config.routes.manageBill,
-		page: ManageBillPage,
-		layout: AdminLayout,
-		protected: ProtectedRoute
-	}
-];
 
 export const routes = [
 	{
@@ -54,32 +21,22 @@ export const routes = [
 	},
 
 	{
-		path: '/register',
-		page: RegisterPage,
+		path: '/cashier',
+		page: CashierPage,
 		layout: null
 	},
-	{
-		path: '/admin',
-		page: AdminPage,
-		layout: AdminLayout
-	},
+
 	{
 		path: config.routes.notfound,
 		page: NotFoundPage
 	},
 	{
-		path: '/solution',
+		path: `${config.routes.solution}/:id`,
 		page: SolutionPage,
 		layout: DefaultLayout
 	},
 	{
-		path: '/charge',
-		page: ChargePage,
-		layout: DefaultLayout
-	},
-	{
-		path: config.routes.support,
-		page: SupportPage,
-		layout: DefaultLayout
+		path: '*',
+		page: NotFoundPage
 	}
 ];

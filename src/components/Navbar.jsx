@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { mobileDropMenus, navItemTypes, navItems } from '../constants';
+import { navItemTypes, navItems } from '../constants';
 import Banner from './Banner';
 import { useNavigate } from 'react-router-dom';
 import config from '../config';
@@ -19,6 +19,10 @@ const Navbar = () => {
 		window.addEventListener('scroll', checkPositionHandler);
 		return () => window.removeEventListener('scroll', checkPositionHandler);
 	}, []);
+
+	const handleNavigate = id => {
+		navigate(`${config.routes.solution}/${id}`);
+	};
 
 	const MobileMenu = () => {
 		const [menuType, setMenuType] = useState(null);
@@ -137,10 +141,7 @@ const Navbar = () => {
 				} py-3 fixed inset-x-0 duration-300 z-40`}
 			>
 				<nav className='max-w-7xl mx-auto flex justify-between items-center px-4'>
-					<div
-						className='cursor-pointer flex items-center gap-1'
-						onClick={() => navigate('/')}
-					>
+					<div className='cursor-pointer flex items-center gap-1'>
 						<img
 							src='../src/assets/images/img_logo.png'
 							alt='logo'
@@ -174,200 +175,40 @@ const Navbar = () => {
 
 						<span className='hover:text-primary cursor-pointer relative group'>
 							Giải pháp
-							<ul className='dropdown-menu w-[1200px] grid-cols-3 ml-4 flex items-center flex-col justify-between lg:flex-row gap-2 '>
-								<li className='w-full'>
-									<div className='rounded-2xl flex items-center w-full flex-col gap-2'>
-										<p className='font-bold text-xl items-center flex gap-4 py-1'>
-											<div className='flex justify-center items-center rounded-xl'>
-												<Icon
-													icon='fa6-solid:store'
-													className='text-primary bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												></Icon>
-											</div>
-											<h1 className='text-black'>
-												Bán buôn, bán lẻ
-											</h1>
-										</p>
-										<div className='flex-col flex w-full'>
-											{navItemTypes.solutions.trade.map(
-												(item, idx) => (
-													<div
-														key={idx}
-														className='flex items-center py-2 px-2 border-t-2  hover:bg-primary/10 gap-2'
-													>
-														<Icon
-															icon={item.icon}
-															className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-															height={20}
-														/>
-														<h4 className='text-lg text-left font-medium'>
-															{item.title}
-														</h4>
-													</div>
-												)
-											)}
-										</div>
-									</div>
-								</li>
+							<ul className='dropdown-menu grid-cols-3'>
+								{navItemTypes.solutions.trade.map(item => (
+									<li
+										key={item.title}
+										className='hover:text-primary text-base duration-100 flex items-center gap-2'
+									>
+										<Icon
+											icon={item.icon}
+											height={20}
+										/>
+										{item.title}
+									</li>
+								))}
 
-								<li className='w-56'>
-									<div className='rounded-2xl flex items-center flex-col gap-2'>
-										<p className='font-extrabold items-center flex gap-2 py-1'>
-											<div className='flex justify-center items-center rounded-xl'>
-												<Icon
-													icon='fluent-emoji-high-contrast:cup-with-straw'
-													className='text-primary bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												></Icon>
-											</div>
-											<h1 className='text-black'>
-												Ăn uống, giải trí
-											</h1>
-										</p>
-										<div className='flex-col flex w-full'>
-											{navItemTypes.solutions.entertainment.map(
-												(item, idx) => (
-													<div
-														key={idx}
-														className='flex items-center py-2 px-2 border-t-2 hover:bg-primary/10 gap-2'
-														onClick={() => navigate('/solution')}
-													>
-														<Icon
-															icon={item.icon}
-															className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-															height={20}
-														/>
-														<h4 className='text-lg text-left font-medium'>
-															{item.title}
-														</h4>
-													</div>
-												)
-											)}
-										</div>
-									</div>
-								</li>
-
-								<li className='w-56'>
-									<div className='rounded-2xl flex items-center flex-col gap-2'>
-										<p className='font-extrabold items-center flex gap-2 py-1'>
-											<div className='flex justify-center items-center rounded-xl'>
-												<Icon
-													icon='mdi:human-male-male'
-													className='text-primary bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												></Icon>
-											</div>
-											<h1 className='text-black'>
-												Lưu trú,làm đẹp
-											</h1>
-										</p>
-										<div className='flex-col flex w-full '>
-											<div className='flex items-center py-3 px-2 hover:bg-primary/10'>
-												<div className='flex items-center gap-1 '>
-													<Icon
-														icon='solar:star-fall-outline'
-														className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-														height={20}
-													/>
-													<h4 className='text-lg text-left font-medium'>
-														Beauty Spa
-													</h4>
-												</div>
-											</div>
-											<div className='flex items-center py-3 px-2 border-t-2 p-1 hover:bg-primary/10'>
-												<div className='flex items-center gap-1 '>
-													<Icon
-														icon='solar:star-fall-outline'
-														className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-														height={20}
-													/>
-													<h4 className='text-lg text-left font-medium'>
-														Massage
-													</h4>
-												</div>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='mingcute:hair-2-line'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-												/>
-												<h4 className='text-base text-left'>
-													Hair Salon & Nail
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='icon-park-outline:hotel'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Khách sạn & Nhà nghỉ
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='icon-park-outline:homestay'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Homestay
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='material-symbols:holiday-village-outline'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Villa, Resort
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='ion:fitness-outline'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Fitness & Yoga
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='mingcute:hospital-line'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Phòng khám
-												</h4>
-											</div>
-											<div className='flex items-center gap-2 border-t-2 p-1 hover:bg-primary/10'>
-												<Icon
-													icon='fa-regular:plus-square'
-													className='text-gray-600 bg-gray-400/20 p-0.5 rounded-md'
-													height={20}
-												/>
-												<h4 className='text-base text-left'>
-													Khác
-												</h4>
-											</div>
-										</div>
-									</div>
-								</li>
+								{navItemTypes.solutions.entertainment.map(
+									item => (
+										<li
+											key={item.title}
+											className='hover:text-primary text-base duration-100 flex items-center gap-2'
+										>
+											<Icon
+												icon={item.icon}
+												height={20}
+											/>
+											{item.title}
+										</li>
+									)
+								)}
 							</ul>
 						</span>
 						<span className='hover:text-primary cursor-pointer relative group'>
 							Khách hàng
 						</span>
-						<div
-							onClick={() => navigate(config.routes.charge)}
-							type='button'
-							className='hover:text-primary cursor-pointer relative group'>
+						<span className='hover:text-primary cursor-pointer relative group'>
 							Phí dịch vụ
 						</div>
 						<span className='hover:text-primary cursor-pointer relative group'>
@@ -390,8 +231,6 @@ const Navbar = () => {
 					<MobileMenu />
 				</nav>
 			</header>
-
-			<Banner openMenu={openMenu} />
 		</>
 	);
 };

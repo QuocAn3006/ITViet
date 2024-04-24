@@ -1,11 +1,8 @@
+import NavbarAdmin from '../components/Admin/NavbarAdmin';
+
 /* eslint-disable react/prop-types */
 const AdminLayout = ({ children }) => {
-	return (
-		<>
-			<NavbarAdmin />
-			<div className='bg-[#eee] h-screen'>{children}</div>
-		</>
-	);
+	return <>{children}</>;
 };
 
 export default AdminLayout;

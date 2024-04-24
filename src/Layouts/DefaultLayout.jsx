@@ -6,7 +6,6 @@ const DefaultLayout = ({ children }) => {
 		<>
 			<Navbar />
 			{children}
-			<Footer/>
 		</>
 	);
 };
