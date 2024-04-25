@@ -13,6 +13,7 @@ import SolutionPage from '../pages/SolutionPage';
 import SupportPage from '../pages/SupportPage';
 import ManageBillPage from '../pages/Admin/ManageBillPage';
 import IEManage from '../pages/Admin/IEManage';
+import AdminOwnerPage from '../pages/AdminOwner/AdminOwnerPage';
 
 export const privateRoutes = [
 	{
@@ -46,6 +47,12 @@ export const privateRoutes = [
 		path: config.routes.ieManage,
 		page: IEManage,
 		layout: AdminLayout
+		// protected: ProtectedRoute
+	},
+	{
+		path: config.routes.adminOwnerPage,
+		page: AdminOwnerPage,
+		layout: null
 		// protected: ProtectedRoute
 	}
 ];

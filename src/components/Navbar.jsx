@@ -45,20 +45,18 @@ const Navbar = () => {
 				</button>
 
 				<div
-					className={`fixed inset-0 duration-300 ${
-						openMenu
-							? 'pointer-events-auto bg-black/60 overflow-y-auto overflow-x-hidden'
-							: 'pointer-events-none'
-					}`}
+					className={`fixed inset-0 duration-300 ${openMenu
+						? 'pointer-events-auto bg-black/60 overflow-y-auto overflow-x-hidden'
+						: 'pointer-events-none'
+						}`}
 					onClick={e => {
 						if (e.target !== e.currentTarget) return;
 						setOpenMenu(false);
 					}}
 				>
 					<div
-						className={`absolute min-h-screen right-0 w-full bg-white font-bold text-xl duration-300 overflow-auto z-10  ${
-							openMenu ? 'translate-x-0' : 'translate-x-full '
-						}`}
+						className={`absolute min-h-screen right-0 w-full bg-white font-bold text-xl duration-300 overflow-auto z-10  ${openMenu ? 'translate-x-0' : 'translate-x-full '
+							}`}
 					>
 						<Icon
 							icon='ic:round-close'
@@ -70,11 +68,10 @@ const Navbar = () => {
 						{navItems.map((item, idx) => (
 							<div key={idx}>
 								<div
-									className={`m-3 flex gap-2 items-center ${
-										menuType === item.key
-											? 'text-primary'
-											: ''
-									}`}
+									className={`m-3 flex gap-2 items-center ${menuType === item.key
+										? 'text-primary'
+										: ''
+										}`}
 									onClick={() => handleOpenSubMenu(item.key)}
 								>
 									<span className='hover:text-primary cursor-pointer flex flex-col py-2'>
@@ -85,11 +82,10 @@ const Navbar = () => {
 										<Icon
 											icon='icon-park-outline:right'
 											height={22}
-											className={`duration-300 mt-[6px] ${
-												menuType === item.key
-													? 'rotate-90'
-													: ''
-											}`}
+											className={`duration-300 mt-[6px] ${menuType === item.key
+												? 'rotate-90'
+												: ''
+												}`}
 										/>
 									)}
 								</div>
@@ -135,9 +131,8 @@ const Navbar = () => {
 	return (
 		<>
 			<header
-				className={`${
-					displayBgColor ? 'bg-white' : 'bg-transparent'
-				} py-3 fixed inset-x-0 duration-300 z-40`}
+				className={`${displayBgColor ? 'bg-white' : 'bg-transparent'
+					} py-3 fixed inset-x-0 duration-300 z-40`}
 			>
 				<nav className='max-w-7xl mx-auto flex justify-between items-center px-4'>
 					<div
@@ -156,7 +151,7 @@ const Navbar = () => {
 						</span>
 					</div>
 
-					<div className='font-bold text-lg lg:flex items-center gap-12 hidden'>
+					<div className='font-bold text-lg lg:flex items-center gap-10 hidden'>
 						<span className='hover:text-primary cursor-pointer relative group'>
 							Sản phẩm
 							<ul className='dropdown-menu w-72 grid-cols-1'>
@@ -177,7 +172,7 @@ const Navbar = () => {
 
 						<span className='hover:text-primary cursor-pointer relative group'>
 							Giải pháp
-							<ul className='dropdown-menu w-[1200px] z-30 grid-cols-3 ml-4 flex items-center flex-col justify-between lg:flex-row gap-2 '>
+							<ul className='dropdown-menu w-[1100px] z-30 grid-cols-3 ml-4 flex items-center flex-col justify-between lg:flex-row gap-2 '>
 								<li className='w-full'>
 									<div className='rounded-2xl flex items-center w-full flex-col gap-2'>
 										<p className='font-bold text-xl items-center flex gap-4 py-1'>
@@ -320,12 +315,20 @@ const Navbar = () => {
 						<span className='hover:text-primary cursor-pointer relative group'>
 							Tin tức
 						</span>
-						<button
-							className='bg-primary rounded-2xl px-[1.5rem] py-1 text-white font-bold'
-							onClick={() => navigate(config.routes.login)}
-						>
-							Đăng nhập
-						</button>
+						<div className='flex gap-4'>
+							<button
+								className='bg-white rounded-3xl px-[1.5rem] py-1 text-primary font-semibold border-2 border-primary'
+								onClick={() => navigate(config.routes.login)}
+							>
+								Đăng nhập
+							</button>
+							<button
+								className='bg-primary rounded-3xl px-[1.5rem] py-1 text-white font-semibold'
+								onClick={() => navigate(config.routes.register)}
+							>
+								Đăng ký
+							</button>
+						</div>
 					</div>
 
 					{/* mobile */}

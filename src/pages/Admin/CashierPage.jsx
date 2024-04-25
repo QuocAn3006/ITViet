@@ -353,48 +353,77 @@ const CashierPage = () => {
 		}
 	}, [dataCreateOrder.status]);
 
+	const [open, setOpen] = useState(false)
+
+	const handleOpen = () => {
+		setOpen(!open)
+	}
+
 	return (
 		<>
 			<div>
 				<div className=' bg-[#2f3f50] pt-3 pr-8 w-full  text-white relative'>
 					<div className='absolute top-1 right-10 my-2 group'>
-						<span className='flex gap-1 items-center cursor-pointer text-base'>
+						<span
+							onClick={handleOpen}
+							className='flex gap-1 items-center cursor-pointer text-base'>
 							<Icon
 								icon='ph:user-light'
 								height={20}
 							/>
 							{user.name}
 						</span>
-						<ul className='dropdown-menu w-[210px] grid-cols-1 group-hover:top-5 right-20 z-20'>
-							<li className='hover:text-primary text-base flex items-center gap-1'>
-								<Icon
-									icon='ph:user-light'
-									height={20}
-								/>
-								Thông tin tài khoản
-							</li>
-							<li className='hover:text-primary text-base flex items-center gap-1'>
-								<Icon
-									icon='ant-design:setting-outlined'
-									height={20}
-								/>
-								Cài đặt
-							</li>
-							<li
-								className='hover:text-primary text-base flex items-center gap-1'
-								onClick={handleLogout}
-							>
-								<Icon
-									icon='ic:twotone-logout'
-									height={20}
-								/>
-								Đăng xuất
-							</li>
-						</ul>
+
+						{
+							open && (
+								<ul className='text-black shadow-2xl absolute bg-gray-200 w-[210px] grid-cols-1 -right-7 top-10 z-20 p-5 rounded-lg '>
+									<li className='hover:text-primary text-base flex items-center gap-1 pb-2'>
+										<Icon
+											icon='ph:user-light'
+											height={20}
+										/>
+										Thông tin tài khoản
+									</li>
+									<li className='hover:text-primary text-base flex items-center gap-1 py-2'>
+										<Icon
+											icon='ant-design:setting-outlined'
+											height={20}
+										/>
+										Cài đặt
+									</li>
+									<li
+										className='hover:text-primary text-base flex items-center gap-1 pt-2'
+										onClick={handleLogout}
+									>
+										<Icon
+											icon='ic:twotone-logout'
+											height={20}
+										/>
+										Đăng xuất
+									</li>
+								</ul>
+							)
+						}
+
 					</div>
 				</div>
 				<div className='pt-10 px-3 w-full h-full min-h-screen flex bg-[#2f3f50] gap-4'>
 					<div className='w-[65%] bg-white rounded-2xl p-4'>
+						<div className='relative'>
+							<div class="absolute z-10 flex items-center w-[50%] bg-white overflow-hidden right-0 top-4 ">
+								<div class="grid place-items-center h-full w-12 text-gray-500">
+									<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+									</svg>
+								</div>
+
+								<input
+									class="peer h-full w-full outline-none text-sm text-gray-700 focus-within:border-b-2 focus-within:border-primary mr-4 pb-1"
+									type="text"
+									id="search"
+									placeholder="Tìm kiếm sản phẩm" />
+							</div>
+						</div>
 						<Tabs
 							items={items}
 							activeKey={selectedTabKey}
@@ -404,6 +433,9 @@ const CashierPage = () => {
 
 					<div className='w-[35%] flex flex-col bg-white rounded-2xl p-4'>
 						<div className='h-full '>
+							<div className='w-full border-b-2 p-3'>
+								<h1>Lable</h1>
+							</div>
 							{order?.orderItems.length === 0 && (
 								<div className='flex items-center flex-col justify-center mt-10'>
 									<i
@@ -478,7 +510,7 @@ const CashierPage = () => {
 																		'decrease',
 																		item.id,
 																		item?.amount ===
-																			1
+																		1
 																	)
 																}
 															>
@@ -513,7 +545,7 @@ const CashierPage = () => {
 													<div className='font-semibold w-[100px]'>
 														{convertPrice(
 															item?.price *
-																item?.amount
+															item?.amount
 														)}
 														<sup>đ</sup>
 													</div>
@@ -543,8 +575,8 @@ const CashierPage = () => {
 										<span className='flex items-center hover:boxShadow hover:cursor-pointer px-2 rounded-md'>
 											{discount
 												? `${convertPrice(
-														Number(discount)
-												  )} ${checked ? '%' : 'đ'}`
+													Number(discount)
+												)} ${checked ? '%' : 'đ'}`
 												: '0'}
 										</span>
 									</div>
