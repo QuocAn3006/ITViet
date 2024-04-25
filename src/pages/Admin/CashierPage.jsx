@@ -3,7 +3,15 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import { Icon } from '@iconify/react';
-import { Modal, Table, Tabs, Switch, ConfigProvider, message } from 'antd';
+import {
+	Modal,
+	Table,
+	Tabs,
+	Switch,
+	ConfigProvider,
+	message,
+	Spin
+} from 'antd';
 import { tableOrder } from '../../constants';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +23,7 @@ import {
 	resetOrder
 } from '../../redux/Slice/orderSlice';
 import { useReactToPrint } from 'react-to-print';
-import * as ProductService from '../../services/product';
+import * as StoreService from '../../services/store';
 import * as OrderService from '../../services/order';
 import * as UserService from '../../services/user';
 import { convertPrice } from '../../utils';
@@ -30,6 +38,7 @@ const CashierPage = () => {
 	const [checked, setChecked] = useState(false);
 	const [discount, setDiscount] = useState('');
 	const [dataCreateOrder, setDataCreateOrder] = useState({ data: null });
+	const [loadingProduct, setLoadingProduct] = useState(false);
 	const navigate = useNavigate();
 	const user = useSelector(state => state?.user);
 
@@ -37,7 +46,6 @@ const CashierPage = () => {
 	const dispatch = useDispatch();
 	const order = useSelector(state => state?.order);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-
 	const showModal = () => {
 		setIsModalOpen(true);
 	};
@@ -85,14 +93,16 @@ const CashierPage = () => {
 		return result;
 	}, [priceMemo, discount]);
 
-	const getProductList = async () => {
-		const res = await ProductService.getProductList(user?.storeType);
+	const getProductStore = async () => {
+		setLoadingProduct(true);
+		const res = await StoreService.getProductStore(user?.storeId);
 		setAllProduct(res.data);
+		setLoadingProduct(false);
 	};
 
 	useEffect(() => {
-		getProductList();
-	}, [user?.storeType]);
+		getProductStore();
+	}, [user?.storeId]);
 
 	const handleAddOrder = data => {
 		dispatch(
@@ -154,41 +164,47 @@ const CashierPage = () => {
 			key: '2',
 			label: 'Thực đơn',
 			children: (
-				<ul className='flex flex-wrap gap-y-6 h-full'>
-					{allProduct?.map(item => (
-						<li
-							key={item._id}
-							onClick={() =>
-								handleAddOrder({
-									name: item.name,
-									amount: 1,
-									image: item.image,
-									price: item.price,
-									id: item._id
-								})
-							}
-							className='cursor-pointer w-[20%] h-[25%] hover:bg-[#d5d5d5d5] rounded-2xl gap-1 flex flex-col items-center justify-center'
-						>
-							<div className='p-0 overflow-hidden text-center h-[100px]'>
-								<img
-									src={item?.image}
-									alt='anh-cf'
-									width={50}
-									height={50}
-									className='h-full max-w-full pt-2'
-									loading='lazy'
-								/>
-							</div>
-							<h2 className='overflow-hidden font-semibold'>
-								{item?.name}
-							</h2>
-							<span className='text-primary font-semibold'>
-								{convertPrice(item?.price)}
-								<sup>đ</sup>
-							</span>
-						</li>
-					))}
-				</ul>
+				<Spin
+					delay={500}
+					spinning={loadingProduct}
+					className='flex items-center justify-center'
+				>
+					<ul className='flex flex-wrap gap-y-6 h-full'>
+						{allProduct?.map(item => (
+							<li
+								key={item._id}
+								onClick={() =>
+									handleAddOrder({
+										name: item.name,
+										amount: 1,
+										image: item.image,
+										price: item.price,
+										id: item._id
+									})
+								}
+								className='cursor-pointer w-[20%] h-[25%] hover:bg-[#d5d5d5d5] rounded-2xl gap-1 flex flex-col items-center justify-center'
+							>
+								<div className='p-0 overflow-hidden text-center h-[100px]'>
+									<img
+										src={item?.image}
+										alt='anh-cf'
+										width={50}
+										height={50}
+										className='h-full max-w-full pt-2'
+										loading='lazy'
+									/>
+								</div>
+								<h2 className='overflow-hidden font-semibold'>
+									{item?.name}
+								</h2>
+								<span className='text-primary font-semibold'>
+									{convertPrice(item?.price)}
+									<sup>đ</sup>
+								</span>
+							</li>
+						))}
+					</ul>
+				</Spin>
 			)
 		},
 		{

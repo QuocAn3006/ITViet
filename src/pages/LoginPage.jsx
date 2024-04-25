@@ -4,14 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { useDispatch } from 'react-redux';
 import { updatedUser } from '../redux/Slice/userSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import config from '../config';
 import { Spin } from 'antd';
+import * as StoreService from '../services/store';
 
 const LoginPage = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
+	const [allStore, setAllStore] = useState([]);
 	const dispatch = useDispatch();
 
 	const [isPending, setIsPending] = useState(false);
@@ -32,14 +34,27 @@ const LoginPage = () => {
 
 	const navigate = useNavigate();
 
+	const fetchAllStore = async () => {
+		const res = await StoreService.getAllStore();
+		setAllStore(res?.data);
+	};
 	const handleGetDetailUser = async (id, token) => {
 		try {
 			const storage = localStorage.getItem('refreshToken');
 			const refreshToken = JSON.parse(storage);
 			const res = await UserService.getDetailUser(id, token);
-			dispatch(
-				updatedUser({ ...res?.data, accessToken: token, refreshToken })
-			);
+			allStore?.forEach(item => {
+				if (item.user === id) {
+					dispatch(
+						updatedUser({
+							...res?.data,
+							accessToken: token,
+							refreshToken,
+							storeId: item._id
+						})
+					);
+				}
+			});
 		} catch (error) {
 			console.error(error);
 		}
@@ -79,6 +94,10 @@ const LoginPage = () => {
 			setIsPending(false);
 		}
 	};
+
+	useEffect(() => {
+		fetchAllStore();
+	}, []);
 
 	return (
 		<Spin

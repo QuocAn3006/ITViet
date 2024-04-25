@@ -4,15 +4,17 @@ import { convertPrice, formatDate } from '../../utils';
 import { Spin, Table } from 'antd';
 import { Icon } from '@iconify/react';
 import { useDebounce } from '../../hook/useDebounce';
+import { useSelector } from 'react-redux';
 
 const ManageBillPage = () => {
 	const [loading, setLoading] = useState(false);
 	const [allOrder, setAllOrder] = useState([]);
 	const [value, setValue] = useState('');
+	const user = useSelector(state => state?.user);
 	const getAllOrder = async () => {
 		try {
 			setLoading(true);
-			const res = await OrderService.getAllOrder();
+			const res = await OrderService.getAllOrder(user?.id);
 			setAllOrder(res.data);
 		} catch (error) {
 			console.error(error);

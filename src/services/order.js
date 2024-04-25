@@ -8,9 +8,9 @@ export const createOrder = async data => {
 	return res.data;
 };
 
-export const getAllOrder = async id => {
+export const getAllOrder = async userId => {
 	const res = await axios.get(
-		`${import.meta.env.VITE_DATABASE_URL}/order/get-all-order/${id}`
+		`${import.meta.env.VITE_DATABASE_URL}/order/get-all-order/${userId}`
 	);
 	return res.data;
 };

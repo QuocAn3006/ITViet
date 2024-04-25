@@ -13,6 +13,7 @@ import { useForm } from 'antd/es/form/Form';
 import { useEffect, useState } from 'react';
 import { convertPrice, getBase64, renderOptions } from '../../utils';
 import * as ProductService from '../../services/product';
+import * as StoreService from '../../services/store';
 import { Excel } from 'antd-table-saveas-excel';
 import { useSelector } from 'react-redux';
 import { useDebounce } from '../../hook/useDebounce';
@@ -66,7 +67,7 @@ const ManageProductPage = () => {
 			price: '',
 			newType: '',
 			newCategory: '',
-			storeType: ''
+			storeId: ''
 		});
 		form.resetFields();
 	};
@@ -80,7 +81,7 @@ const ManageProductPage = () => {
 			price: '',
 			newType: '',
 			newCategory: '',
-			storeType: ''
+			storeId: ''
 		});
 		form.resetFields();
 	};
@@ -130,17 +131,17 @@ const ManageProductPage = () => {
 	};
 
 	const getProductList = async () => {
-		let res = {};
+		// let res = {};
 		setLoading(true);
 		try {
-			if (searchDebounce.length > 0) {
-				res = await ProductService.getProductList(
-					user?.storeType,
-					searchDebounce
-				);
-			} else {
-				res = await ProductService.getProductList(user?.storeType);
-			}
+			// if (searchDebounce.length > 0) {
+			// 	res = await ProductService.getProductList(
+			// 		user?.storeType,
+			// 		searchDebounce
+			// 	);
+			// } else {
+			const res = await StoreService.getProductStore(user?.storeId);
+			// }
 			setAllProduct(res.data);
 		} catch (error) {
 			console.error(error);

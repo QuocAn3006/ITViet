@@ -7,12 +7,12 @@ const AdminPage = () => {
 	const [allOrder, setAllOrder] = useState([]);
 	const user = useSelector(state => state?.user);
 	const getAllOrder = async () => {
-		const res = await OrderService.getAllOrder(user.id);
+		const res = await OrderService.getAllOrder(user?.id);
 		setAllOrder(res.data);
 	};
 	useEffect(() => {
 		getAllOrder();
-	}, []);
+	}, [user?.id]);
 	return (
 		<>
 			<ChartAdmin allOrder={allOrder} />
