@@ -4,11 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import config from '../../config';
 import * as UserService from '../../services/user';
 import { resetUser } from '../../redux/Slice/userSlice';
+import React, { useState } from 'react';
+import ChartOwner from "../../components/Admin/AdminOwner/ChartOwner";
+import ManageUserOwner from "../../components/Admin/AdminOwner/ManageUserOwner";
+import StatisticOwner from "../../components/Admin/AdminOwner/StatisticOwner";
 
 const AdminOwnerPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const user = useSelector(state => state?.user);
 
     const handleLogout = async () => {
         const res = await UserService.logout();
@@ -20,28 +23,56 @@ const AdminOwnerPage = () => {
         }
     };
 
+    const items = [
+        {
+            key: 'product',
+            title: 'Doanh thu',
+            icon: 'streamline:decent-work-and-economic-growth'
+        },
+        {
+            key: 'user',
+            title: 'Quản lý tài khoản',
+            icon: 'mdi:account-file-outline'
+        }, {
+            key: 'order',
+            title: 'Thống kê chi tiết',
+            icon: 'bx:detail'
+        }
+
+    ];
+
+    const [keySelected, setKeySelected] = useState('product');
+
+    const renderPage = key => {
+        switch (key) {
+            case 'product':
+                return <ChartOwner />;
+            case 'user':
+                return <ManageUserOwner />;
+            case 'order':
+                return <StatisticOwner />;
+            default:
+                return <></>;
+        }
+    };
+
+    const handleOnClick = (key) => {
+        setKeySelected(key);
+    };
+
     return (
         <div className="flex">
             <nav className='bg-[#4b6580] min-h-screen text-white w-[20%] rounded-r-lg'>
                 <div className='flex item-center flex-col p-4'>
-                    <div
-                        className='flex gap-2 items-center h-12 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md text-lg'
-                    >
-                        <Icon icon='streamline:decent-work-and-economic-growth'></Icon>
-                        <h1>Doanh thu</h1>
-                    </div>
-                    <div
-                        className='flex gap-2 items-center h-12 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md text-lg'
-                    >
-                        <Icon icon='mdi:account-file-outline'></Icon>
-                        <h1>Quản lý tài khoản</h1>
-                    </div>
-                    <div
-                        className='flex gap-2 items-center h-12 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md text-lg'
-                    >
-                        <Icon icon='bx:detail'></Icon>
-                        <h1>Thống kê chi tiết</h1>
-                    </div>
+                    {items.map((item, idx) => (
+                        <div
+                            onClick={() => handleOnClick(item.key)}
+                            key={item.key}
+                            className='flex gap-2 items-center h-12 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md text-lg'>
+                            <Icon icon={item.icon} />
+                            <h1>{item.title}</h1>
+                        </div>
+                    ))}
                     <div
                         onClick={handleLogout}
                         className='flex gap-2 items-center h-12 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md text-lg'
@@ -54,11 +85,10 @@ const AdminOwnerPage = () => {
                     </div>
                 </div>
             </nav>
-            <div className="flex-1 ">
-
+            <div className="flex-1">
+                {renderPage(keySelected)}
             </div>
         </div>
-
     );
 }
 
