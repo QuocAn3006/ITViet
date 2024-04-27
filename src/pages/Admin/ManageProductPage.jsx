@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Icon } from '@iconify/react';
 import {
 	ConfigProvider,
@@ -130,18 +131,17 @@ const ManageProductPage = () => {
 		}
 	};
 
-	const getProductList = async () => {
-		// let res = {};
+	const getProductList = async (storeId, search) => {
+		let res = {};
 		setLoading(true);
 		try {
-			// if (searchDebounce.length > 0) {
-			// 	res = await ProductService.getProductList(
-			// 		user?.storeType,
-			// 		searchDebounce
-			// 	);
-			// } else {
-			const res = await StoreService.getProductStore(user?.storeId);
-			// }
+			if (storeId) {
+				if (search?.length > 0) {
+					res = await StoreService.getProductStore(storeId, search);
+				} else {
+					res = await StoreService.getProductStore(storeId);
+				}
+			}
 			setAllProduct(res.data);
 		} catch (error) {
 			console.error(error);
@@ -200,7 +200,7 @@ const ManageProductPage = () => {
 		setProductDetail(res.data);
 	};
 	const getAllType = async () => {
-		const res = await ProductService.getAllType();
+		const res = await StoreService.getAllType();
 		setTypeProduct(res);
 	};
 
@@ -222,8 +222,9 @@ const ManageProductPage = () => {
 	}, [openModal, productDetail, form]);
 
 	useEffect(() => {
-		getProductList(user?.storeType);
-	}, [searchDebounce, dataUpdateProduct, dataCreateProduct]);
+		getProductList(user?.storeId, searchDebounce);
+	}, [searchDebounce, dataUpdateProduct, dataCreateProduct, user?.storeId]);
+
 	useEffect(() => {
 		getAllType();
 		getAllCategory();

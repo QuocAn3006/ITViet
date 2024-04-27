@@ -14,11 +14,29 @@ export const getAllStore = async () => {
 	return res.data;
 };
 
-export const getProductStore = async idStore => {
+export const getProductStore = async (idStore, search) => {
+	let res = {};
+	if (search?.length > 0) {
+		res = await axios.get(
+			`${
+				import.meta.env.VITE_DATABASE_URL
+			}/store/get-products-store/${idStore}/products?search=${search}`
+		);
+	} else {
+		res = await axios.get(
+			`${
+				import.meta.env.VITE_DATABASE_URL
+			}/store/get-products-store/${idStore}/products`
+		);
+	}
+	return res.data;
+};
+
+export const getAllType = async idStore => {
 	const res = await axios.get(
 		`${
 			import.meta.env.VITE_DATABASE_URL
-		}/store/get-products-store/${idStore}/products`
+		}/store/get-all-type/${idStore}/allTypeProduct`
 	);
 	return res.data;
 };

@@ -45,10 +45,8 @@ export const orderSlice = createSlice({
 			);
 			state.orderItems = itemOrder;
 		},
-		resetOrder: (state, action) => {
-			const { listChecked } = action.payload;
-
-			state.orderItems = listChecked;
+		resetOrder: state => {
+			state.orderItems = [];
 		}
 	}
 });

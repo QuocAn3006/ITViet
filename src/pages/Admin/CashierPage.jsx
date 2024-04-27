@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/display-name */
 /* eslint-disable no-undef */
@@ -30,17 +31,22 @@ import { convertPrice } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import config from '../../config';
 import { resetUser } from '../../redux/Slice/userSlice';
+import { useDebounce } from '../../hook/useDebounce';
 
 const CashierPage = () => {
 	const [selectedTable, setSelectedTable] = useState(null);
 	const [selectedTabKey, setSelectedTabKey] = useState('1');
+	const [label, setLabel] = useState('');
 	const [allProduct, setAllProduct] = useState([]);
 	const [checked, setChecked] = useState(false);
 	const [discount, setDiscount] = useState('');
-	const [dataCreateOrder, setDataCreateOrder] = useState({ data: null });
+	const [dataCreateOrder, setDataCreateOrder] = useState({});
 	const [loadingProduct, setLoadingProduct] = useState(false);
+	const [searchValue, setSearchValue] = useState('');
 	const navigate = useNavigate();
 	const user = useSelector(state => state?.user);
+
+	const searchDebounce = useDebounce(searchValue);
 
 	const printref = useRef();
 	const dispatch = useDispatch();
@@ -53,9 +59,10 @@ const CashierPage = () => {
 		setIsModalOpen(false);
 	};
 
-	const handleTableClick = idx => {
+	const handleTableClick = (idx, item) => {
 		setSelectedTable(idx);
 		setSelectedTabKey('2');
+		setLabel(item.title);
 	};
 
 	const handleOnChangeCount = (type, idProduct, limited) => {
@@ -93,16 +100,31 @@ const CashierPage = () => {
 		return result;
 	}, [priceMemo, discount]);
 
-	const getProductStore = async () => {
+	const getProductStore = async storeId => {
 		setLoadingProduct(true);
-		const res = await StoreService.getProductStore(user?.storeId);
-		setAllProduct(res.data);
-		setLoadingProduct(false);
+		try {
+			let res = {};
+			if (storeId) {
+				if (searchDebounce.length > 0) {
+					res = await StoreService.getProductStore(
+						storeId,
+						searchDebounce
+					);
+				} else {
+					res = await StoreService.getProductStore(storeId);
+				}
+			}
+			setAllProduct(res?.data);
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setLoadingProduct(false);
+		}
 	};
 
 	useEffect(() => {
-		getProductStore();
-	}, [user?.storeId]);
+		getProductStore(user?.storeId, searchDebounce);
+	}, [user, user?.storeId, searchDebounce]);
 
 	const handleAddOrder = data => {
 		dispatch(
@@ -131,7 +153,7 @@ const CashierPage = () => {
 				<ul className='h-full flex flex-wrap gap-y-6'>
 					{tableOrder.map((item, idx) => (
 						<li
-							onClick={() => handleTableClick(idx)}
+							onClick={() => handleTableClick(idx, item)}
 							key={idx}
 							className={`cursor-pointer text-center w-[12.5%] h-[25%] hover:bg-[#d5d5d5d5] rounded-2xl flex flex-col items-center gap-1 
 							${selectedTable === idx ? 'bg-[#4b6580] ' : ''}`}
@@ -194,7 +216,7 @@ const CashierPage = () => {
 										loading='lazy'
 									/>
 								</div>
-								<h2 className='overflow-hidden font-semibold'>
+								<h2 className='overflow-hidden font-semibold text-center w-[120px] truncate'>
 									{item?.name}
 								</h2>
 								<span className='text-primary font-semibold'>
@@ -340,8 +362,7 @@ const CashierPage = () => {
 	useEffect(() => {
 		if (dataCreateOrder.status === 'OK') {
 			try {
-				const arrayOrder = [];
-				dispatch(resetOrder({ listChecked: arrayOrder }));
+				dispatch(resetOrder());
 				setDiscount('');
 				handlePrint();
 			} catch (error) {
@@ -351,13 +372,13 @@ const CashierPage = () => {
 		if (dataCreateOrder.status === 'ERR') {
 			message.error('Thất bại');
 		}
-	}, [dataCreateOrder.status]);
+	}, [dataCreateOrder]);
 
-	const [open, setOpen] = useState(false)
+	const [open, setOpen] = useState(false);
 
 	const handleOpen = () => {
-		setOpen(!open)
-	}
+		setOpen(!open);
+	};
 
 	return (
 		<>
@@ -366,7 +387,8 @@ const CashierPage = () => {
 					<div className='absolute top-1 right-10 my-2 group'>
 						<span
 							onClick={handleOpen}
-							className='flex gap-1 items-center cursor-pointer text-base'>
+							className='flex gap-1 items-center cursor-pointer text-base'
+						>
 							<Icon
 								icon='ph:user-light'
 								height={20}
@@ -374,54 +396,62 @@ const CashierPage = () => {
 							{user.name}
 						</span>
 
-						{
-							open && (
-								<ul className='text-black shadow-2xl absolute bg-gray-200 w-[210px] grid-cols-1 -right-7 top-10 z-20 p-5 rounded-lg '>
-									<li className='hover:text-primary text-base flex items-center gap-1 pb-2'>
-										<Icon
-											icon='ph:user-light'
-											height={20}
-										/>
-										Thông tin tài khoản
-									</li>
-									<li className='hover:text-primary text-base flex items-center gap-1 py-2'>
-										<Icon
-											icon='ant-design:setting-outlined'
-											height={20}
-										/>
-										Cài đặt
-									</li>
-									<li
-										className='hover:text-primary text-base flex items-center gap-1 pt-2'
-										onClick={handleLogout}
-									>
-										<Icon
-											icon='ic:twotone-logout'
-											height={20}
-										/>
-										Đăng xuất
-									</li>
-								</ul>
-							)
-						}
-
+						{open && (
+							<ul className='text-black shadow-2xl absolute bg-gray-200 w-[210px] grid-cols-1 -right-7 top-10 z-20 p-5 rounded-lg cursor-pointer'>
+								<li className='hover:text-primary text-base flex items-center gap-1 pb-2'>
+									<Icon
+										icon='ph:user-light'
+										height={20}
+									/>
+									Thông tin tài khoản
+								</li>
+								<li className='hover:text-primary text-base flex items-center gap-1 py-2'>
+									<Icon
+										icon='ant-design:setting-outlined'
+										height={20}
+									/>
+									Cài đặt
+								</li>
+								<li
+									className='hover:text-primary text-base flex items-center gap-1 pt-2'
+									onClick={handleLogout}
+								>
+									<Icon
+										icon='ic:twotone-logout'
+										height={20}
+									/>
+									Đăng xuất
+								</li>
+							</ul>
+						)}
 					</div>
 				</div>
 				<div className='pt-10 px-3 w-full h-full min-h-screen flex bg-[#2f3f50] gap-4'>
 					<div className='w-[65%] bg-white rounded-2xl p-4'>
 						<div className='relative'>
-							<div class="absolute z-10 flex items-center w-[50%] bg-white overflow-hidden right-0 top-4 ">
-								<div class="grid place-items-center h-full w-12 text-gray-500">
-									<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+							<div className='absolute z-10 flex items-center w-[50%] bg-white overflow-hidden right-0 top-4 '>
+								<div className='grid place-items-center h-full w-12 text-gray-500'>
+									<svg
+										xmlns='http://www.w3.org/2000/svg'
+										className='h-6 w-6'
+										fill='none'
+										viewBox='0 0 24 24'
+										stroke='currentColor'
+									>
+										<path d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
 									</svg>
 								</div>
 
 								<input
-									class="peer h-full w-full outline-none text-sm text-gray-700 focus-within:border-b-2 focus-within:border-primary mr-4 pb-1"
-									type="text"
-									id="search"
-									placeholder="Tìm kiếm sản phẩm" />
+									className='peer h-full w-full outline-none text-sm text-gray-700 focus-within:border-b-2 focus-within:border-primary mr-4 pb-1'
+									type='text'
+									id='search'
+									placeholder='Tìm kiếm sản phẩm'
+									value={searchValue}
+									onChange={e =>
+										setSearchValue(e.target.value)
+									}
+								/>
 							</div>
 						</div>
 						<Tabs
@@ -434,7 +464,7 @@ const CashierPage = () => {
 					<div className='w-[35%] flex flex-col bg-white rounded-2xl p-4'>
 						<div className='h-full '>
 							<div className='w-full border-b-2 p-3'>
-								<h1>Lable</h1>
+								<h1>{label || 'Số bàn'}</h1>
 							</div>
 							{order?.orderItems.length === 0 && (
 								<div className='flex items-center flex-col justify-center mt-10'>
@@ -510,7 +540,7 @@ const CashierPage = () => {
 																		'decrease',
 																		item.id,
 																		item?.amount ===
-																		1
+																			1
 																	)
 																}
 															>
@@ -545,7 +575,7 @@ const CashierPage = () => {
 													<div className='font-semibold w-[100px]'>
 														{convertPrice(
 															item?.price *
-															item?.amount
+																item?.amount
 														)}
 														<sup>đ</sup>
 													</div>
@@ -575,8 +605,8 @@ const CashierPage = () => {
 										<span className='flex items-center hover:boxShadow hover:cursor-pointer px-2 rounded-md'>
 											{discount
 												? `${convertPrice(
-													Number(discount)
-												)} ${checked ? '%' : 'đ'}`
+														Number(discount)
+												  )} ${checked ? '%' : 'đ'}`
 												: '0'}
 										</span>
 									</div>
