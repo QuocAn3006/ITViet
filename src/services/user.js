@@ -41,6 +41,13 @@ export const getDetailUser = async (id, accessToken) => {
 	return res.data;
 };
 
+export const getAllUser = async () => {
+	const res = await axios.get(
+		`${import.meta.env.VITE_DATABASE_URL}/user/get-all-user`
+	);
+	return res.data;
+};
+
 export const refreshToken = async token => {
 	const res = await axios.post(
 		`${import.meta.env.VITE_DATABASE_URL}/user/get-new-token`,
