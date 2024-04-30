@@ -284,20 +284,22 @@ const CashierPage = () => {
 				className='flex-col gap-2 '
 				ref={ref}
 			>
-				<div className='flex flex-col items-center justify-center gap-2 '>
+				<div className='flex flex-col items-center justify-center gap-2 p-4'>
 					<h1 className='text-2xl font-bold'>Hệ thống ITViet</h1>
-					<div className='flex items-center text-[14px] gap-1'>
+					<div className='flex items-center text-base gap-1'>
 						<span>Địa chỉ:</span>
 						<span>
 							254 Nguyễn Văn Linh, Quận Thanh Khê - Tp. Đà Nẵng
 						</span>
 					</div>
-					<div className='flex items-center text-[14px] gap-1'>
+					<div className='flex items-center text-base gap-1'>
 						<span>Điện thoại:</span>
 						<span>(+84) 236.3650403 - (+84) 236.3827111</span>
 					</div>
-
-					<h3 className='text-xl font-bold'>Hóa đơn thanh toán</h3>
+				</div>
+				<div className='text-xl text-center p-4'>
+					<h3 className='font-bold'>Hóa đơn thanh toán</h3>
+					<h3>{label}</h3>
 				</div>
 				<div>
 					<Table
@@ -305,27 +307,32 @@ const CashierPage = () => {
 						dataSource={dataSource}
 						pagination={false}
 					/>
-					<div className='flex items-center justify-between px-4 mt-2'>
+					<div className='flex justify-between px-4 mt-2'>
+						<span>Tổng tiền:</span>
+						<span className='mr-24'>{priceMemo}</span>
+					</div>
+					<div className='flex justify-between px-4 mt-2'>
+						<span>Giảm giá:</span>
+						<span className='mr-24'>{
+							discount
+								? `${convertPrice(
+									Number(discount)
+								)} ${checked ? '%' : 'đ'}`
+								: '0'}</span>
+					</div>
+					<div className='flex justify-between px-4 mt-2'>
 						<span>Tổng cộng:</span>
 						<span className='mr-24'>{priceTotal}</span>
 					</div>
 				</div>
 
-				<span className='flex justify-center mt-5 text-sm'>
-					Vui lòng quét mã QR code nếu bạn muốn chuyển khoản
-				</span>
-
-				<div className='mt-2 flex justify-center'>
-					<img
-						src='../src/assets/images/QRcode.jpg'
-						alt='qrcode'
-						width={260}
-						height={260}
-					/>
-				</div>
 				<span className='flex justify-center mt-2 text-sm'>
 					Cảm ơn quý khách và hẹn gặp lại !!!
 				</span>
+				<div className='mt-4 flex justify-center text-sm flex-col items-center'>
+					<span>Wifi : HETHONGITVIET</span>
+					<span>PassWifi : 86868686</span>
+				</div>
 			</div>
 		);
 	});
@@ -567,7 +574,7 @@ const CashierPage = () => {
 																		'decrease',
 																		item.id,
 																		item?.amount ===
-																			1
+																		1
 																	)
 																}
 															>
@@ -602,7 +609,7 @@ const CashierPage = () => {
 													<div className='font-semibold w-[100px]'>
 														{convertPrice(
 															item?.price *
-																item?.amount
+															item?.amount
 														)}
 														<sup>đ</sup>
 													</div>
@@ -632,8 +639,8 @@ const CashierPage = () => {
 										<span className='flex items-center hover:boxShadow hover:cursor-pointer px-2 rounded-md'>
 											{discount
 												? `${convertPrice(
-														Number(discount)
-												  )} ${checked ? '%' : 'đ'}`
+													Number(discount)
+												)} ${checked ? '%' : 'đ'}`
 												: '0'}
 										</span>
 									</div>
