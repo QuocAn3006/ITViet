@@ -12,11 +12,17 @@ import AdminLayout from './Layouts/AdminLayout';
 function App() {
 	const user = useSelector(state => state?.user);
 	const dispatch = useDispatch();
+
 	const handleGetDetailUser = async (id, token) => {
 		const refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
 		const res = await UserService.getDetailUser(id, token);
+
 		dispatch(
-			updatedUser({ ...res?.data, accessToken: token, refreshToken })
+			updatedUser({
+				...res?.data,
+				accessToken: token,
+				refreshToken
+			})
 		);
 	};
 

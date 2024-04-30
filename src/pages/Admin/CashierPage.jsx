@@ -32,6 +32,7 @@ import { useNavigate } from 'react-router-dom';
 import config from '../../config';
 import { resetUser } from '../../redux/Slice/userSlice';
 import { useDebounce } from '../../hook/useDebounce';
+import axios from 'axios';
 
 const CashierPage = () => {
 	const [selectedTable, setSelectedTable] = useState(null);
@@ -45,12 +46,22 @@ const CashierPage = () => {
 	const [searchValue, setSearchValue] = useState('');
 	const navigate = useNavigate();
 	const user = useSelector(state => state?.user);
+	const [allStore, setAllStore] = useState([]);
+	const fetchAllStore = async () => {
+		const res = await StoreService.getAllStore();
+		setAllStore(res?.data);
+	};
 
+	useEffect(() => {
+		fetchAllStore();
+	}, []);
+	console.log(allStore);
 	const searchDebounce = useDebounce(searchValue);
 
 	const printref = useRef();
 	const dispatch = useDispatch();
 	const order = useSelector(state => state?.order);
+
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const showModal = () => {
 		setIsModalOpen(true);
@@ -100,18 +111,18 @@ const CashierPage = () => {
 		return result;
 	}, [priceMemo, discount]);
 
-	const getProductStore = async storeId => {
+	const getProductStore = async () => {
 		setLoadingProduct(true);
 		try {
 			let res = {};
-			if (storeId) {
+			if (user?.storeId) {
 				if (searchDebounce.length > 0) {
 					res = await StoreService.getProductStore(
-						storeId,
+						user?.storeId,
 						searchDebounce
 					);
 				} else {
-					res = await StoreService.getProductStore(storeId);
+					res = await StoreService.getProductStore(user?.storeId);
 				}
 			}
 			setAllProduct(res?.data);
@@ -123,8 +134,8 @@ const CashierPage = () => {
 	};
 
 	useEffect(() => {
-		getProductStore(user?.storeId, searchDebounce);
-	}, [user, user?.storeId, searchDebounce]);
+		getProductStore();
+	}, [user?.storeId, searchDebounce]);
 
 	const handleAddOrder = data => {
 		dispatch(
@@ -380,6 +391,22 @@ const CashierPage = () => {
 		setOpen(!open);
 	};
 
+	const handleVNPayMethod = async () => {
+		try {
+			const res = await axios.post(
+				`http://localhost:8000/api/payment/create_payment_url`,
+				{
+					amount: priceTotalMemo,
+					bankCode: 'NCB',
+					language: 'vn'
+				}
+			);
+			console.log(res.data);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	return (
 		<>
 			<div>
@@ -617,13 +644,23 @@ const CashierPage = () => {
 								</span>
 							</div>
 
-							<button
-								onClick={handleCreateOrder}
-								className='flex items-center py-4 px-6 w-full bg-[#28b44f] rounded-2xl justify-center font-semibold text-white'
-							>
-								<Icon icon='solar:dollar-linear' />
-								Thanh toán (F9)
-							</button>
+							<div className='flex items-center gap-2'>
+								<button
+									onClick={handleVNPayMethod}
+									className='flex gap-1 items-center py-4 px-6 w-full bg-primary rounded-2xl justify-center font-semibold text-white'
+								>
+									<Icon icon='solar:dollar-linear' />
+									Chuyển khoản
+								</button>
+
+								<button
+									onClick={handleCreateOrder}
+									className='flex gap-1 items-center py-4 px-6 w-full bg-[#28b44f] rounded-2xl justify-center font-semibold text-white'
+								>
+									<Icon icon='solar:dollar-linear' />
+									Tiền mặt
+								</button>
+							</div>
 
 							<div className='hidden'>
 								<PrintOrder
