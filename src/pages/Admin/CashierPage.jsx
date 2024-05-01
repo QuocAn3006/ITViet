@@ -55,6 +55,22 @@ const CashierPage = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isVNPayModal, setVNPayModal] = useState(false);
 	const [countdown, setCountdown] = useState(180);
+
+	const [allStore, setAllStore] = useState([]);
+
+	// get all store
+	const getAllStore = async () => {
+		try {
+			const res = await StoreService.getAllStore();
+			setAllStore(res?.data);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+	useEffect(() => {
+		getAllStore();
+	}, []);
+	// payment online
 	const handleCanceVNPaylModal = () => {
 		setVNPayModal(false);
 		setCountdown(180);
@@ -77,6 +93,8 @@ const CashierPage = () => {
 			handleCanceVNPaylModal(); // Khi đếm ngược đạt 0, gọi hàm để đóng modal
 		}
 	}, [countdown, handleCanceVNPaylModal]);
+
+	// modal discount
 	const showModal = () => {
 		setIsModalOpen(true);
 	};
@@ -104,6 +122,7 @@ const CashierPage = () => {
 		dispatch(removeProduct({ idProduct }));
 	};
 
+	// price memo
 	const priceMemo = useMemo(() => {
 		const result = order?.orderItems.reduce((total, current) => {
 			return total + current?.price * current?.amount;
@@ -125,6 +144,7 @@ const CashierPage = () => {
 		return result;
 	}, [priceMemo, discount]);
 
+	// get product by storeId
 	const getProductStore = async () => {
 		setLoadingProduct(true);
 		try {
@@ -322,8 +342,8 @@ const CashierPage = () => {
 						pagination={false}
 					/>
 					<div className='flex justify-between px-4 mt-2'>
-						<span>Tổng tiền:</span>
-						<span className='mr-24'>{priceMemo}</span>
+						<span>Tạm tính:</span>
+						<span className='mr-24'>{convertPrice(priceMemo)}</span>
 					</div>
 					<div className='flex justify-between px-4 mt-2'>
 						<span>Giảm giá:</span>
@@ -480,7 +500,7 @@ const CashierPage = () => {
 								</div>
 
 								<input
-									className='peer h-full w-full outline-none text-sm text-gray-700 focus-within:border-b-2 focus-within:border-primary mr-4 pb-1'
+									className='peer h-full w-full border outline-none text-sm text-gray-700 focus-within:border-b-2 focus-within:border-primary mr-5 rounded-2xl p-2'
 									type='text'
 									id='search'
 									placeholder='Tìm kiếm sản phẩm'
@@ -491,18 +511,91 @@ const CashierPage = () => {
 								/>
 							</div>
 						</div>
-						<Tabs
-							items={items}
-							activeKey={selectedTabKey}
-							onChange={setSelectedTabKey}
-						/>
+
+						{allStore.map(item => {
+							if (
+								item?.user === user?.id &&
+								item.name === 'cafe'
+							) {
+								return (
+									<Tabs
+										key={item.name}
+										items={items}
+										activeKey={selectedTabKey}
+										onChange={setSelectedTabKey}
+									/>
+								);
+							} else if (
+								item?.user === user?.id &&
+								item.name === 'shop'
+							) {
+								return (
+									<Spin
+										key={item.name}
+										delay={500}
+										spinning={loadingProduct}
+										className='flex items-center justify-center '
+									>
+										<ul className='flex flex-wrap gap-y-6 h-full mt-16'>
+											{allProduct?.map(item => (
+												<li
+													key={item._id}
+													onClick={() =>
+														handleAddOrder({
+															name: item.name,
+															amount: 1,
+															image: item.image,
+															price: item.price,
+															id: item._id
+														})
+													}
+													className='cursor-pointer w-[20%] h-[25%] hover:bg-[#d5d5d5d5] rounded-2xl gap-1 flex flex-col items-center justify-center'
+												>
+													<div className='overflow-hidden text-center h-[263px] '>
+														<img
+															src={item?.image}
+															alt='anh-cf'
+															width={146}
+															className='pt-2'
+															loading='lazy'
+														/>
+													</div>
+													<h2 className='overflow-hidden font-semibold text-center w-[120px] truncate'>
+														{item?.name}
+													</h2>
+													<span className='text-primary font-semibold'>
+														{convertPrice(
+															item?.price
+														)}
+														<sup>đ</sup>
+													</span>
+												</li>
+											))}
+										</ul>
+									</Spin>
+								);
+							}
+						})}
 					</div>
 
 					<div className='w-[35%] flex flex-col bg-white rounded-2xl p-4'>
 						<div className='h-full '>
-							<div className='w-full border-b-2 p-3'>
-								<h1>{label || 'Số bàn'}</h1>
-							</div>
+							{allStore.map(item => {
+								if (
+									item?.user === user?.id &&
+									item.name === 'cafe'
+								) {
+									return (
+										<div
+											className='w-full border-b-2 p-3'
+											key={item.name}
+										>
+											<h1>{label || 'Số bàn'}</h1>
+										</div>
+									);
+								}
+							})}
+
 							{order?.orderItems.length === 0 && (
 								<div className='flex items-center flex-col justify-center mt-10'>
 									<i

@@ -27,20 +27,24 @@ const ChartAdmin = ({ allOrder }) => {
 	const [dailyOrders, setDailyOrders] = useState([]);
 	const [sumOrders, setSumOrders] = useState(0);
 
-	useEffect(() => {
-		const orders = allOrder.filter(
-			item =>
-				item.createdAt.split('T')[0] ===
-				date.toISOString().split('T')[0]
-		);
+	const orders = allOrder.filter(
+		item =>
+			item.createdAt.split('T')[0] === date.toISOString().split('T')[0]
+	);
 
+	console.log(orders);
+
+	useEffect(() => {
+		setDailyOrders(orders);
+	}, [allOrder]);
+
+	useEffect(() => {
 		const totalPrice = dailyOrders.reduce(
 			(acc, order) => acc + order.totalPrice,
 			0
 		);
-		setDailyOrders(orders);
 		setSumOrders(totalPrice);
-	}, [allOrder]);
+	}, [dailyOrders]);
 
 	return (
 		<div className='max-w-7xl mx-auto pt-5'>
