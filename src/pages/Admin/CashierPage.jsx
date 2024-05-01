@@ -333,7 +333,11 @@ const CashierPage = () => {
 				</div>
 				<div className='text-xl text-center p-4'>
 					<h3 className='font-bold'>Hóa đơn thanh toán</h3>
-					<h3>{label}</h3>
+					{allStore.map(item => {
+						if (item?.user === user?.id && item.name === 'cafe') {
+							return <h3 key={item.name}>{label}</h3>;
+						}
+					})}
 				</div>
 				<div>
 					<Table
