@@ -3,13 +3,28 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import config from '../../config';
 import * as UserService from '../../services/user';
+import * as StoreService from '../../services/store';
 import { resetUser } from '../../redux/Slice/userSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ChartOwner from '../../components/AdminOwner/ChartOwner';
 import ManageUserOwner from '../../components/AdminOwner/ManageUserOwner';
 import StatisticOwner from '../../components/AdminOwner/StatisticOwner';
 
 const AdminOwnerPage = () => {
+	const [allStore, setAllStore] = useState([]);
+
+	const getAllStore = async () => {
+		try {
+			const res = await StoreService.getAllStore();
+			setAllStore(res.data);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	useEffect(() => {
+		Promise.all([getAllStore()]);
+	}, []);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -46,11 +61,11 @@ const AdminOwnerPage = () => {
 	const renderPage = key => {
 		switch (key) {
 			case 'product':
-				return <ChartOwner />;
+				return <ChartOwner allStore={allStore} />;
 			case 'user':
-				return <ManageUserOwner />;
+				return <ManageUserOwner allStore={allStore} />;
 			case 'order':
-				return <StatisticOwner />;
+				return <StatisticOwner allStore={allStore} />;
 			default:
 				return <></>;
 		}

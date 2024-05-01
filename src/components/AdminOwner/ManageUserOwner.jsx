@@ -1,23 +1,8 @@
+/* eslint-disable react/prop-types */
 import { Table } from 'antd';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import * as StoreService from '../../services/store';
-import { useEffect, useState } from 'react';
 
-const ManageUserOwner = () => {
-	const [allStore, setAllStore] = useState([]);
-
-	const getAllStore = async () => {
-		try {
-			const res = await StoreService.getAllStore();
-			setAllStore(res.data);
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
-	useEffect(() => {
-		Promise.all([getAllStore()]);
-	}, []);
+const ManageUserOwner = ({ allStore }) => {
 	// column user
 	const columns = [
 		{

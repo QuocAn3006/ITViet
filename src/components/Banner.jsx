@@ -13,8 +13,12 @@ const Banner = props => {
 					<div className='max-w-7xl mx-auto'>
 						<div className='flex h-screen flex-nowrap flex-col lg:flex-row gap-10 items-center'>
 							<div className='flex flex-col items-center justify-center mt-36 lg:mt-0 gap-8 lg:w-[35%] w-full'>
-								<h1 className='font-bold text-5xl leading-tight text-center'>
-									{title}
+								<h1 className='font-bold text-5xl leading-tight text-left'>
+									Phần mềm
+									<br />
+									quản lý bán hàng
+									<br />
+									phổ biến nhất
 								</h1>
 
 								<div className='flex items-center gap-2 '>

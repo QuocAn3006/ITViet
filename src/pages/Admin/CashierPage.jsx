@@ -32,7 +32,7 @@ import { useNavigate } from 'react-router-dom';
 import config from '../../config';
 import { resetUser } from '../../redux/Slice/userSlice';
 import { useDebounce } from '../../hook/useDebounce';
-import axios from 'axios';
+import QRCode from '../../assets/images/QRcode.jpg';
 
 const CashierPage = () => {
 	const [selectedTable, setSelectedTable] = useState(null);
@@ -46,16 +46,6 @@ const CashierPage = () => {
 	const [searchValue, setSearchValue] = useState('');
 	const navigate = useNavigate();
 	const user = useSelector(state => state?.user);
-	const [allStore, setAllStore] = useState([]);
-	const fetchAllStore = async () => {
-		const res = await StoreService.getAllStore();
-		setAllStore(res?.data);
-	};
-
-	useEffect(() => {
-		fetchAllStore();
-	}, []);
-	console.log(allStore);
 	const searchDebounce = useDebounce(searchValue);
 
 	const printref = useRef();
@@ -63,6 +53,30 @@ const CashierPage = () => {
 	const order = useSelector(state => state?.order);
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isVNPayModal, setVNPayModal] = useState(false);
+	const [countdown, setCountdown] = useState(180);
+	const handleCanceVNPaylModal = () => {
+		setVNPayModal(false);
+		setCountdown(180);
+	};
+	useEffect(() => {
+		let interval;
+		if (isVNPayModal) {
+			interval = setInterval(() => {
+				setCountdown(prevCountdown => prevCountdown - 1);
+			}, 1000); // Cập nhật giá trị mỗi giây
+		} else {
+			clearInterval(interval); // Dừng đếm ngược khi modal đóng
+		}
+
+		return () => clearInterval(interval); // Clean up
+	}, [isVNPayModal]);
+
+	useEffect(() => {
+		if (countdown === 0) {
+			handleCanceVNPaylModal(); // Khi đếm ngược đạt 0, gọi hàm để đóng modal
+		}
+	}, [countdown, handleCanceVNPaylModal]);
 	const showModal = () => {
 		setIsModalOpen(true);
 	};
@@ -195,7 +209,7 @@ const CashierPage = () => {
 		},
 		{
 			key: '2',
-			label: 'Thực đơn',
+			label: 'Sản phẩm',
 			children: (
 				<Spin
 					delay={500}
@@ -313,12 +327,13 @@ const CashierPage = () => {
 					</div>
 					<div className='flex justify-between px-4 mt-2'>
 						<span>Giảm giá:</span>
-						<span className='mr-24'>{
-							discount
-								? `${convertPrice(
-									Number(discount)
-								)} ${checked ? '%' : 'đ'}`
-								: '0'}</span>
+						<span className='mr-24'>
+							{discount
+								? `${convertPrice(Number(discount))} ${
+										checked ? '%' : 'đ'
+								  }`
+								: '0'}
+						</span>
 					</div>
 					<div className='flex justify-between px-4 mt-2'>
 						<span>Tổng cộng:</span>
@@ -355,6 +370,7 @@ const CashierPage = () => {
 	const createOrderApi = async data => {
 		const { orderItems, itemPrice, discountPrice, totalPrice, userId } =
 			data;
+
 		const res = await OrderService.createOrder({
 			orderItems,
 			itemPrice,
@@ -366,15 +382,16 @@ const CashierPage = () => {
 	};
 
 	const handleCreateOrder = () => {
-		const params = {
-			orderItems: order?.orderItems,
-			itemPrice: priceMemo,
-			discountPrice: Number(discount),
-			totalPrice: priceTotalMemo,
-			userId: user.id
-		};
-
-		createOrderApi(params);
+		if (order && order.orderItems && order.orderItems.length > 0) {
+			const params = {
+				orderItems: order?.orderItems,
+				itemPrice: priceMemo,
+				discountPrice: Number(discount),
+				totalPrice: priceTotalMemo,
+				userId: user.id
+			};
+			createOrderApi(params);
+		}
 	};
 
 	useEffect(() => {
@@ -382,7 +399,9 @@ const CashierPage = () => {
 			try {
 				dispatch(resetOrder());
 				setDiscount('');
-				handlePrint();
+				if (order?.orderItems && order.orderItems.length > 0) {
+					handlePrint();
+				}
 			} catch (error) {
 				console.error(error);
 			}
@@ -396,22 +415,6 @@ const CashierPage = () => {
 
 	const handleOpen = () => {
 		setOpen(!open);
-	};
-
-	const handleVNPayMethod = async () => {
-		try {
-			const res = await axios.post(
-				`http://localhost:8000/api/payment/create_payment_url`,
-				{
-					amount: priceTotalMemo,
-					bankCode: 'NCB',
-					language: 'vn'
-				}
-			);
-			console.log(res.data);
-		} catch (error) {
-			console.error(error);
-		}
 	};
 
 	return (
@@ -511,9 +514,9 @@ const CashierPage = () => {
 									></i>
 									<div className='text-center'>
 										<p className='font-medium text-xl'>
-											Chưa có món nào
+											Chưa có sản phẩm nào
 										</p>
-										<span>Vui lòng chọn thực đơn</span>
+										<span>Vui lòng chọn sản phẩm</span>
 									</div>
 								</div>
 							)}
@@ -574,7 +577,7 @@ const CashierPage = () => {
 																		'decrease',
 																		item.id,
 																		item?.amount ===
-																		1
+																			1
 																	)
 																}
 															>
@@ -609,7 +612,7 @@ const CashierPage = () => {
 													<div className='font-semibold w-[100px]'>
 														{convertPrice(
 															item?.price *
-															item?.amount
+																item?.amount
 														)}
 														<sup>đ</sup>
 													</div>
@@ -639,8 +642,8 @@ const CashierPage = () => {
 										<span className='flex items-center hover:boxShadow hover:cursor-pointer px-2 rounded-md'>
 											{discount
 												? `${convertPrice(
-													Number(discount)
-												)} ${checked ? '%' : 'đ'}`
+														Number(discount)
+												  )} ${checked ? '%' : 'đ'}`
 												: '0'}
 										</span>
 									</div>
@@ -653,7 +656,7 @@ const CashierPage = () => {
 
 							<div className='flex items-center gap-2'>
 								<button
-									onClick={handleVNPayMethod}
+									onClick={() => setVNPayModal(true)}
 									className='flex gap-1 items-center py-4 px-6 w-full bg-primary rounded-2xl justify-center font-semibold text-white'
 								>
 									<Icon icon='solar:dollar-linear' />
@@ -738,6 +741,38 @@ const CashierPage = () => {
 									</span>
 								</div>
 							</div>
+						</div>
+					</div>
+				</Modal>
+
+				<Modal
+					forceRender
+					title=''
+					open={isVNPayModal}
+					footer={null}
+					onCancel={handleCanceVNPaylModal}
+					width={400}
+					height={400}
+				>
+					<div className='flex flex-col'>
+						<div className='flex gap-2 items-center justify-between text-xl mt-4 flex-col'>
+							<h1 className=''>Thanh toán bằng QR Code</h1>
+
+							<span className='text-base'>
+								Thời gian còn lại: {Math.floor(countdown / 60)}:
+								{countdown % 60 < 10
+									? `0${countdown % 60}`
+									: countdown % 60}
+							</span>
+						</div>
+						<img
+							src={QRCode}
+							alt=''
+						/>
+						<div className='flex gap-2 items-center justify-center text-2xl'>
+							<span className='text-red-600 font-bold'>
+								{`${convertPrice(priceTotalMemo)} VND` || 0}
+							</span>
 						</div>
 					</div>
 				</Modal>

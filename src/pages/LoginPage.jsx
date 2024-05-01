@@ -105,22 +105,42 @@ const LoginPage = () => {
 			delay={500}
 		>
 			<div
-				className='relative'
-				style={{
-					background:
-						'url(https://cdn-app.kiotviet.vn/retailler/Content/login-bg-fnb.jpg) no-repeat center bottom',
-					overflow: 'hidden',
-					backgroundSize: 'cover',
-					minHeight: '100%',
-					height: '100vh',
-					zIndex: 0
-				}}
+				className='relative bg-gradient-to-b from-[#86d89e] to-[#7aa9f0] min-h-screen'
+				// style={{
+				// 	background:
+				// 		'url(https://sapo.dktcdn.net/sso-service/images/background-bottom-pos-app.svg) no-repeat center bottom',
+				// 	overflow: 'hidden',
+				// 	backgroundSize: 'cover',
+				// 	minHeight: '100%',
+				// 	height: '100vh',
+				// 	zIndex: 0
+				// }}
 			>
 				<form
 					action=''
 					className='m-0 p-0 relative flex'
 					style={{ height: 'calc(100vh - 52px)', zIndex: 2 }}
 				>
+					{/* <div className='absolute left-[142px] top-[71%] w-fit'>
+						<div
+							className='flex items-center bg-white rounded-3xl px-4 py-2'
+							style={{
+								boxShadow: ' 0 8px 24px 0 rgba(0,48,104,.04)'
+							}}
+						>
+							<span className='w-14 h-14 flex items-center justify-center'>
+								<img
+									src={logo}
+									alt='logo'
+									width={45}
+									height={45}
+								/>
+							</span>
+							<span className='text-base font-semibold text-[#002249]'>
+								Phần mềm quản lý bán hàng phổ biến nhất
+							</span>
+						</div>
+					</div> */}
 					<div
 						style={{ zIndex: 5 }}
 						className='w-full max-w-[440px] min-w-[320px] m-auto h-auto pt-10 px-6 pb-6 box-border bg-white rounded-2xl'
