@@ -100,7 +100,7 @@ const ProductAdmin = () => {
 		});
 		setDataCreateProduct(res);
 	};
-
+	// create product
 	const handleCreateProduct = () => {
 		const params = {
 			name: product.name,
@@ -234,7 +234,7 @@ const ProductAdmin = () => {
 			dataIndex: 'brand'
 		},
 		{
-			title: 'Loại hàng',
+			title: 'Nhóm cửa hàng',
 			dataIndex: 'category'
 		},
 		{

@@ -139,6 +139,9 @@ const CashierPage = () => {
 			result = priceMemo - Number(discount);
 		} else {
 			let dis = (priceMemo * Number(discount)) / 100;
+			if (dis > priceMemo) {
+				message.warning('Phần trăm giảm giá không hợp lệ');
+			}
 			result = priceMemo - dis;
 		}
 		return result;

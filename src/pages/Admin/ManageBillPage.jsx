@@ -5,6 +5,7 @@ import { Spin, Table } from 'antd';
 import { Icon } from '@iconify/react';
 import { useDebounce } from '../../hook/useDebounce';
 import { useSelector } from 'react-redux';
+import { Excel } from 'antd-table-saveas-excel';
 
 const ManageBillPage = () => {
 	const [loading, setLoading] = useState(false);
@@ -92,23 +93,44 @@ const ManageBillPage = () => {
 		});
 	}
 
+	const exportExcel = () => {
+		const excel = new Excel();
+		excel
+			.addSheet('Danh sách hóa đơn')
+			.addColumns(column)
+			.addDataSource(dataTables, { str2Percent: true })
+			.saveAs('DSHoadon.xlsx');
+	};
 	return (
 		<>
 			<div className='w-full min-h-screen h-full'>
 				<div className='max-w-7xl mx-auto pt-5'>
-					<div className='my-2 w-[560px] relative'>
-						<input
-							type='text'
-							placeholder='Tìm mã hóa đơn'
-							className='w-full pl-3 py-2 rounded-2xl'
-							value={value}
-							onChange={handleOnChange}
-						/>
-						<Icon
-							icon='tabler:search'
-							height={22}
-							className='absolute top-2 right-4'
-						/>
+					<div className='flex justify-between items-center'>
+						<div className='my-2 w-[560px] relative'>
+							<input
+								type='text'
+								placeholder='Tìm mã hóa đơn'
+								className='w-full pl-3 py-2 rounded-2xl'
+								value={value}
+								onChange={handleOnChange}
+							/>
+							<Icon
+								icon='tabler:search'
+								height={22}
+								className='absolute top-2 right-4'
+							/>
+						</div>
+
+						<button
+							onClick={exportExcel}
+							className='bg-green-600 text-white font-semibold text-base px-2 py-3 rounded-md flex items-center gap-1'
+						>
+							<Icon
+								icon='clarity:export-solid'
+								height={19}
+							/>
+							Xuất file
+						</button>
 					</div>
 					<div className='mt-4 w-full'>
 						<Spin

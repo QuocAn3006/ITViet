@@ -32,8 +32,6 @@ const ChartAdmin = ({ allOrder }) => {
 			item.createdAt.split('T')[0] === date.toISOString().split('T')[0]
 	);
 
-	console.log(orders);
-
 	useEffect(() => {
 		setDailyOrders(orders);
 	}, [allOrder]);

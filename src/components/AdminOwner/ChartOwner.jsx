@@ -69,8 +69,22 @@ const ChartOwner = ({ allStore }) => {
 		const earning =
 			270000 * (endDate.getMonth() - createdAtDate.getMonth());
 		// Cộng vào tổng tiền của tháng
-		tolal = monthlyEarnings[month] += earning;
+		monthlyEarnings[month] += earning;
 		// tolal = monthlyEarnings[month] += earning;
+		tolal += earning;
+	});
+	const currentDate = new Date();
+
+	// Lọc ra các mục được tạo trong tháng mới nhất trong năm
+	const newestMonth = currentDate.getMonth();
+	const newestYear = currentDate.getFullYear();
+
+	const newestMembers = allStore.filter(item => {
+		const createdAtDate = new Date(item.createdAt);
+		const itemMonth = createdAtDate.getMonth();
+		const itemYear = createdAtDate.getFullYear();
+
+		return itemMonth === newestMonth && itemYear === newestYear;
 	});
 
 	const data = {
@@ -119,7 +133,7 @@ const ChartOwner = ({ allStore }) => {
 					></Icon>
 					<div className='px-4 text-lg'>
 						<h1>Thành viên mới</h1>
-						<h1 className='font-bold'>2</h1>
+						<h1 className='font-bold'>{newestMembers.length}</h1>
 					</div>
 				</div>
 			</div>

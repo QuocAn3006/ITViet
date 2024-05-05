@@ -1,10 +1,8 @@
 import { Icon } from '@iconify/react';
 import Banner from '../components/Banner';
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 const SolutionPage = () => {
 	const { id } = useParams();
-	console.log(id);
 	return (
 		<>
 			<Banner

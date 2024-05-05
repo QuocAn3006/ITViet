@@ -7,6 +7,14 @@ export const getDetailStore = async idStore => {
 	return res.data;
 };
 
+export const createStore = async data => {
+	const res = await axios.post(
+		`${import.meta.env.VITE_DATABASE_URL}/store/create-store`,
+		data
+	);
+	return res.data;
+};
+
 export const getAllStore = async () => {
 	const res = await axios.get(
 		`${import.meta.env.VITE_DATABASE_URL}/store/get-all-store`
