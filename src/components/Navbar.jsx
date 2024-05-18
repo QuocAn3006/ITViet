@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { mobileDropMenus, navItemTypes, navItems } from '../constants';
 import { useNavigate } from 'react-router-dom';
 import config from '../config';
-
+import logo from '../assets/images/logo.png';
 const Navbar = () => {
 	const [displayBgColor, setDisplayBgColor] = useState(false);
 	const [openMenu, setOpenMenu] = useState(false);
@@ -145,7 +145,7 @@ const Navbar = () => {
 						onClick={() => navigate(config.routes.home)}
 					>
 						<img
-							src='../src/assets/images/logo.png'
+							src={logo}
 							alt='logo'
 							width={45}
 							height={45}
