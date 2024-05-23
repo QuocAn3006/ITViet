@@ -127,7 +127,7 @@ const NavbarAdmin = () => {
 				</div>
 			</nav>
 			<nav className='bg-[#4b6580] text-white h-10 items-center'>
-				<div className='max-w-7xl mx-auto flex item-center'>
+				<div className='max-w-7xl mx-auto flex item-center '>
 					<div
 						onClick={() => navigate(config.routes.admin)}
 						className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'
@@ -156,26 +156,26 @@ const NavbarAdmin = () => {
 						<Icon icon='fluent:arrow-swap-16-filled'></Icon>
 						<h1>Kho</h1>
 					</div>
-					<div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
+					{/* <div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
 						<Icon icon='mdi:partnership-outline'></Icon>
 						<h1>Đối tác</h1>
-					</div>
+					</div> */}
 					<div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
 						<Icon icon='mdi:human-queue'></Icon>
 						<h1>Nhân viên</h1>
 					</div>
-					<div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
+					{/* <div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
 						<Icon icon='material-symbols:shopping-cart-outline'></Icon>
 						<h1>Website</h1>
-					</div>
-					<div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
+					</div> */}
+					{/* <div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
 						<Icon icon='dashicons:money-alt'></Icon>
 						<h1>Sổ quỹ</h1>
 					</div>
 					<div className='flex gap-2 items-center h-10 px-2 hover:bg-[#3e5369] cursor-pointer rounded-md'>
 						<Icon icon='tabler:report'></Icon>
 						<h1>Báo cáo</h1>
-					</div>
+					</div> */}
 				</div>
 			</nav>
 		</header>

@@ -11,17 +11,17 @@ const ChartAdmin = ({ allOrder }) => {
 			key: '1',
 			label: 'Theo ngày',
 			children: <VerticalChart allOrder={allOrder} />
-		},
-		{
-			key: '2',
-			label: 'Theo tháng',
-			children: 'Content of Tab Pane 3'
-		},
-		{
-			key: '3',
-			label: 'Theo năm',
-			children: 'Content of Tab Pane 3'
 		}
+		// {
+		// 	key: '2',
+		// 	label: 'Theo tháng',
+		// 	children: 'Content of Tab Pane 3'
+		// },
+		// {
+		// 	key: '3',
+		// 	label: 'Theo năm',
+		// 	children: 'Content of Tab Pane 3'
+		// }
 	];
 	const date = new Date();
 	const [dailyOrders, setDailyOrders] = useState([]);

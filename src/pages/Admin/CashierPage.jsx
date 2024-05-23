@@ -276,11 +276,6 @@ const CashierPage = () => {
 					</ul>
 				</Spin>
 			)
-		},
-		{
-			key: '3',
-			label: 'Khác',
-			children: 'Content of Tab Pane 3'
 		}
 	];
 
@@ -387,6 +382,7 @@ const CashierPage = () => {
 		const res = await UserService.logout();
 		if (res?.status === 'OK') {
 			dispatch(resetUser());
+			dispatch(resetOrder());
 			localStorage.removeItem('accessToken');
 			localStorage.removeItem('refreshToken');
 			navigate(config.routes.login);
@@ -551,7 +547,6 @@ const CashierPage = () => {
 														handleAddOrder({
 															name: item.name,
 															amount: 1,
-															image: item.image,
 															price: item.price,
 															id: item._id
 														})

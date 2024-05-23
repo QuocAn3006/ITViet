@@ -277,18 +277,18 @@ const ManageProductPage = () => {
 						</div>
 
 						<div className='border-b border-b-[#ccc] pb-2 flex items-center gap-2'>
-							<span>Loại thực đơn: </span>
+							<span>Loại hàng: </span>
 							<span className='font-semibold'>
 								{productDetail.brand}
 							</span>
 						</div>
 
-						<div className='border-b border-b-[#ccc] pb-2 flex items-center gap-2'>
+						{/* <div className='border-b border-b-[#ccc] pb-2 flex items-center gap-2'>
 							<span>Nhóm hàng: </span>
 							<span className='font-semibold'>
 								{productDetail.category}
 							</span>
-						</div>
+						</div> */}
 
 						<div className='border-b border-b-[#ccc] pb-2 flex items-center gap-2'>
 							<span>Giá bán: </span>
@@ -335,7 +335,7 @@ const ManageProductPage = () => {
 			.saveAs('DSSanPham.xlsx');
 	};
 	return (
-		<div className='w-full h-screen'>
+		<div className='w-full h-fit'>
 			<div className='max-w-7xl mx-auto pt-5'>
 				<div className='flex gap-4 '>
 					<div className='min-w-[284px] flex flex-col gap-3'>
