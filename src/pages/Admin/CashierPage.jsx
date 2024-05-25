@@ -405,7 +405,15 @@ const CashierPage = () => {
 	};
 
 	const handleCreateOrder = () => {
-		if (order && order.orderItems && order.orderItems.length > 0) {
+		if (priceTotalMemo < 0) {
+			message.warning('Số tiền thành toán không hợp lệ');
+			return;
+		} else if (
+			order &&
+			order.orderItems &&
+			order.orderItems.length > 0 &&
+			priceTotalMemo > 0
+		) {
 			const params = {
 				orderItems: order?.orderItems,
 				itemPrice: priceMemo,

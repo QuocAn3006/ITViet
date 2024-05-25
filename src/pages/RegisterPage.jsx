@@ -97,7 +97,7 @@ const RegisterPage = () => {
 								<div className='w-full flex items-center border rounded-lg min-h-[48px] py-[5px]'>
 									<input
 										type='text'
-										placeholder='Nhập họ tên chủ sỡ hữu'
+										placeholder='Nhập họ tên chủ cửa hàng'
 										className='px-3 focus:outline-none w-full'
 										value={fullName}
 										onChange={e =>
